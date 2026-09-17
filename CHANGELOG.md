@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- dodano `WebSim~/`: gotowy backend Docker Compose dla Lab 06 z ROS 2 Jazzy, rosbridge i deterministycznym generatorem `JointState` per sesja;
+- backend obsługuje `RRBot 2R`, `WiRR Arm 3R`, komendy `Motion A/B/C`, `Home`, `Reset`, status i `/clock` zgodnie z klientem Unity;
+- dodano instrukcję uruchomienia na tym samym komputerze oraz przez LAN.
+
 ## 0.4.2 — 2026-09-17
 
 - rozdzielono instalowalny pakiet UPM od referencyjnego projektu Unity: projekt deweloperski znajduje się teraz w `Project~/` i nie jest importowany do projektu studenta;
