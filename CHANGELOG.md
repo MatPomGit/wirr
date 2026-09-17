@@ -5,6 +5,7 @@
 - dodano `WebSim~/`: gotowy backend Docker Compose dla Lab 06 z ROS 2 Jazzy, rosbridge i deterministycznym generatorem `JointState` per sesja;
 - backend obsługuje `RRBot 2R`, `WiRR Arm 3R`, komendy `Motion A/B/C`, `Home`, `Reset`, status i `/clock` zgodnie z klientem Unity;
 - dodano instrukcję uruchomienia na tym samym komputerze oraz przez LAN.
+- dodano workflow CI budujący kontener i sprawdzający utworzenie sesji ROS 2 oraz publikację `JointState`.
 
 ## 0.4.2 — 2026-09-17
 
