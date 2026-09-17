@@ -1,6 +1,10 @@
 name: Deploy WebSim Pages
 
 on:
+  pull_request:
+    paths:
+      - 'WebSim~/site/**'
+      - '.github/workflows/deploy-websim-pages.yml'
   push:
     branches: [main]
     paths:
@@ -32,6 +36,7 @@ jobs:
           path: WebSim~/site
 
   deploy:
+    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:
