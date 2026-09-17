@@ -7,6 +7,7 @@
 - dodano instrukcję uruchomienia na tym samym komputerze oraz przez LAN.
 - dodano workflow CI budujący kontener i sprawdzający utworzenie sesji ROS 2 oraz publikację `JointState`.
 - poprawiono inicjalizację środowiska ROS 2 w kontenerze dla powłok z włączonym `nounset`.
+- usunięto kolizję nazwy wewnętrznego zegara `rclpy` z publisherem `/clock`.
 
 ## 0.4.2 — 2026-09-17
 

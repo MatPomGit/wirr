@@ -48,7 +48,7 @@ class WiRRWebSim(Node):
         self._sessions: Dict[str, Session] = {}
         self._status = self.create_publisher(String, "/wirr/status", 10)
         self.create_subscription(String, "/wirr/control", self._on_control, 20)
-        self._clock = self.create_publisher(Clock, "/clock", 10)
+        self._clock_publisher = self.create_publisher(Clock, "/clock", 10)
         hz = max(1.0, float(os.getenv("WIRR_PUBLISH_HZ", "30")))
         self._dt = 1.0 / hz
         self.create_timer(self._dt, self._publish)
@@ -155,7 +155,7 @@ class WiRRWebSim(Node):
 
     def _publish(self) -> None:
         now = self.get_clock().now().to_msg()
-        self._clock.publish(Clock(clock=now))
+        self._clock_publisher.publish(Clock(clock=now))
         # Critically damped-like first-order motion: observable but repeatable.
         alpha = 1.0 - math.exp(-6.0 * self._dt)
         for session in self._sessions.values():
