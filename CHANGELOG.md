@@ -6,6 +6,7 @@
 - backend obsługuje `RRBot 2R`, `WiRR Arm 3R`, komendy `Motion A/B/C`, `Home`, `Reset`, status i `/clock` zgodnie z klientem Unity;
 - dodano instrukcję uruchomienia na tym samym komputerze oraz przez LAN.
 - dodano workflow CI budujący kontener i sprawdzający utworzenie sesji ROS 2 oraz publikację `JointState`.
+- poprawiono inicjalizację środowiska ROS 2 w kontenerze dla powłok z włączonym `nounset`.
 
 ## 0.4.2 — 2026-09-17
 

@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-set -euo pipefail
-
+# Skrypty setup ROS 2 czytają opcjonalne zmienne środowiskowe. Włączamy `nounset`
+# dopiero po ich załadowaniu, aby kontener działał także w czystym środowisku.
+set -eo pipefail
 source /opt/ros/jazzy/setup.bash
+set -u
 
 # rosbridge exposes ROS 2 topics to the Unity WebSocket client.  The node below
 # owns only the deterministic laboratory model; it can later be replaced by a
