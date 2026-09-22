@@ -400,8 +400,16 @@ namespace KIA.WiRR.Editor
                 root.transform.localScale = Vector3.one * 0.01f;
                 var note = new GameObject("FAULTS_wrong_scale_many_materials_expensive_colliders");
                 note.transform.SetParent(root.transform, false);
-                foreach (var meshCollider in root.GetComponentsInChildren<MeshCollider>())
+
+                foreach (var meshFilter in root.GetComponentsInChildren<MeshFilter>())
+                {
+                    var existingCollider = meshFilter.GetComponent<Collider>();
+                    if (existingCollider != null)
+                        UnityEngine.Object.DestroyImmediate(existingCollider);
+                    var meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
+                    meshCollider.sharedMesh = meshFilter.sharedMesh;
                     meshCollider.convex = false;
+                }
             }
             else
             {
