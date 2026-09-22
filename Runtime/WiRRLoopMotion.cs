@@ -43,6 +43,7 @@ namespace KIA.WiRR
         private Vector3 baseWorldPosition;
         private Quaternion baseLocalRotation;
         private Quaternion baseWorldRotation;
+        private float startTime;
 
         public WiRRLoopMotionMode Mode => mode;
         public float PeriodSeconds => periodSeconds;
@@ -51,6 +52,7 @@ namespace KIA.WiRR
         {
             CaptureOrigin();
             body = GetComponent<Rigidbody>();
+            startTime = Time.time;
         }
 
         private void OnEnable()
@@ -58,20 +60,21 @@ namespace KIA.WiRR
             if (!Application.isPlaying)
                 return;
             CaptureOrigin();
+            startTime = Time.time;
         }
 
         private void Update()
         {
             if (body != null && body.isKinematic && useRigidbody)
                 return;
-            ApplyAt(Time.time);
+            ApplyAt(Time.time - startTime);
         }
 
         private void FixedUpdate()
         {
             if (body == null || !body.isKinematic || !useRigidbody)
                 return;
-            ApplyAt(Time.fixedTime);
+            ApplyAt(Time.fixedTime - startTime);
         }
 
         public void Configure(
