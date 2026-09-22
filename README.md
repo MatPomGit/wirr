@@ -80,9 +80,9 @@ Materiały **nie rozwiązują ćwiczenia za studenta**. Nie konfigurują automat
 
 Drugi generator, `WiRRPrefabTools`, tworzy dodatkowe obiekty o bardziej charakterystycznej warstwie wizualnej. Korzysta z map PBR dostarczonych w projekcie deweloperskim w `Assets/Textures`:
 
-- `grid-1_*` → `Grid1`;
+- `grid_1_*` → `Grid1`; bieżące pliki `grid-1_*` są obsługiwane jako fallback;
 - `grid_2_*` → `Grid2`;
-- `grid-4_*` → logiczny `Grid3` (repozytorium nie zawiera obecnie `grid_3_*`).
+- `grid_3_*` → `Grid3`; bieżące pliki `grid-4_*` są obsługiwane jako fallback.
 
 Przy instalacji UPM te same mapy są dostępne w `Textures/Grid`. Narzędzie kopiuje je do `Assets/WiRR/Common/Textures/Generated`, ustawia właściwości importera oraz buduje materiały URP w `Assets/WiRR/Common/Materials/Generated/Grid`. Prefaby trafiają do `Assets/WiRR/LabXX/Prefabs/GridGenerated`.
 
