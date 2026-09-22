@@ -129,7 +129,7 @@ namespace KIA.WiRR.Editor
 
         public static Material GetResolutionMaterial(WiRRSurfaceFamily family, int maxTextureSize)
         {
-            if (maxTextureSize is not (128 or 256 or 512 or 1024))
+            if (maxTextureSize != 128 && maxTextureSize != 256 && maxTextureSize != 512 && maxTextureSize != 1024)
                 throw new ArgumentOutOfRangeException(nameof(maxTextureSize), "Dozwolone rozdzielczości: 128, 256, 512, 1024.");
 
             EnsureFolders();
@@ -407,7 +407,8 @@ namespace KIA.WiRR.Editor
             packed.SetPixels32(output);
             packed.Apply(false, false);
 
-            var absolute = Path.Combine(Application.dataPath, outputPath["Assets/".Length..].Replace('/', Path.DirectorySeparatorChar));
+            var relative = outputPath.Substring("Assets/".Length).Replace('/', Path.DirectorySeparatorChar);
+            var absolute = Path.Combine(Application.dataPath, relative);
             Directory.CreateDirectory(Path.GetDirectoryName(absolute) ?? Application.dataPath);
             File.WriteAllBytes(absolute, packed.EncodeToPNG());
             UnityEngine.Object.DestroyImmediate(packed);
