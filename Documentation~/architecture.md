@@ -54,7 +54,7 @@ Przy pierwszym użyciu generator:
 4. zapisuje prefaby w `Assets/WiRR/LabXX/Prefabs/GridGenerated`;
 5. umieszcza instancje w scenie pod `WiRR_TeachingAssets/GridPrefabs`.
 
-`grid-4_*` jest oznaczone w API jako `Grid3`, ponieważ jest trzecim dostępnym zestawem, a w repozytorium nie ma obecnie `grid_3_*`. Nazwy rzeczywistych plików nie są zmieniane.
+API używa kanonicznych rodzin `grid_1`, `grid_2` i `grid_3`. Dla zgodności z bieżącą zawartością repozytorium resolver akceptuje również `grid-1_*` jako źródło `Grid1` oraz `grid-4_*` jako źródło `Grid3`.
 
 
 ## Zależności
