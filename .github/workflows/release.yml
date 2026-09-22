@@ -55,6 +55,7 @@ jobs:
               "Editor",
               "Runtime",
               "Samples~",
+              "Textures",
               "package.json",
               "README.md",
               "CHANGELOG.md",
@@ -171,6 +172,7 @@ jobs:
             Editor
             Runtime
             Samples~
+            Textures
             Documentation~
             WebSim~
             scripts~
