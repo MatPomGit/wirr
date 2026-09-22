@@ -42,6 +42,21 @@ Generator może zostać uruchomiony ponownie. Nadpisuje wyłącznie zasoby w fol
 
 Prefaby są pomocami dydaktycznymi, a nie kompletnymi rozwiązaniami. Przykładowo moduł Laboratorium 02 ma Rigidbody, Collider i punkt mocowania, ale student sam konfiguruje XRI. Artefakt Laboratorium 03 nie otrzymuje automatycznie kotwicy AR. Wizualne ramię Laboratorium 06 zachowuje nazwy `joint1`, `joint2` i `joint3`, lecz student nadal wykonuje mapowanie stanu.
 
+### Warstwa Grid
+
+`WiRRPrefabTextureLibrary` oddziela źródłowe mapy PBR od materiałów projektu studenta. W projekcie deweloperskim źródła znajdują się w `Project~/Assets/Textures`, natomiast instalowalny pakiet udostępnia te same mapy pod `Textures/Grid`.
+
+Przy pierwszym użyciu generator:
+
+1. kopiuje tekstury do `Assets/WiRR/Common/Textures/Generated`;
+2. ustawia normal map, sRGB, mipmapy, wrap mode i parametry importu;
+3. tworzy warianty materiałów URP dla ról `Floor`, `Wall`, `Panel` i `Accent`;
+4. zapisuje prefaby w `Assets/WiRR/LabXX/Prefabs/GridGenerated`;
+5. umieszcza instancje w scenie pod `WiRR_TeachingAssets/GridPrefabs`.
+
+`grid-4_*` jest oznaczone w API jako `Grid3`, ponieważ jest trzecim dostępnym zestawem, a w repozytorium nie ma obecnie `grid_3_*`. Nazwy rzeczywistych plików nie są zmieniane.
+
+
 ## Zależności
 
 Pakiet bazowy wymusza tylko URP i Input System. Pozostałe pakiety są instalowane dla konkretnego laboratorium:
