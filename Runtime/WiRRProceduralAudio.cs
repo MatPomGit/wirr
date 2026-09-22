@@ -68,6 +68,12 @@ namespace KIA.WiRR
                 source.Stop();
         }
 
+        private void OnDestroy()
+        {
+            if (generatedClip != null)
+                Destroy(generatedClip);
+        }
+
         public void Configure(
             WiRRProceduralAudioProfile newProfile,
             float frequency,
