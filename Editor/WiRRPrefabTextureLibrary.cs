@@ -66,9 +66,9 @@ namespace KIA.WiRR.Editor
         {
             return set switch
             {
-                WiRRGridTextureSet.Grid1 => "Assets/Textures/grid-1_*",
+                WiRRGridTextureSet.Grid1 => "Assets/Textures/grid_1_* (fallback: grid-1_*)",
                 WiRRGridTextureSet.Grid2 => "Assets/Textures/grid_2_*",
-                WiRRGridTextureSet.Grid3 => "Assets/Textures/grid-4_* (logiczny alias Grid3)",
+                WiRRGridTextureSet.Grid3 => "Assets/Textures/grid_3_* (fallback: grid-4_*)",
                 _ => throw new ArgumentOutOfRangeException(nameof(set))
             };
         }
@@ -77,18 +77,18 @@ namespace KIA.WiRR.Editor
         {
             foreach (var suffix in MapSuffixes)
             {
-                var fileName = $"{Prefix(set)}_{suffix}.png";
-                var destination = $"{GeneratedTextureRoot}/{fileName}";
+                var destinationFileName = $"{CanonicalPrefix(set)}_{suffix}.png";
+                var destination = $"{GeneratedTextureRoot}/{destinationFileName}";
 
                 if (force && AssetDatabase.LoadAssetAtPath<Texture2D>(destination) != null)
                     AssetDatabase.DeleteAsset(destination);
 
                 if (AssetDatabase.LoadAssetAtPath<Texture2D>(destination) == null)
                 {
-                    var source = ResolveSourcePath(fileName);
+                    var source = ResolveSourcePath(set, suffix);
                     if (string.IsNullOrWhiteSpace(source))
                     {
-                        Debug.LogWarning($"[WiRR] Nie znaleziono tekstury {fileName}. Sprawdź Assets/Textures lub katalog Textures/Grid pakietu.");
+                        Debug.LogWarning($"[WiRR] Nie znaleziono mapy {CanonicalPrefix(set)}_{suffix}.png. Sprawdź Assets/Textures lub katalog Textures/Grid pakietu.");
                         continue;
                     }
 
@@ -103,19 +103,27 @@ namespace KIA.WiRR.Editor
             }
         }
 
-        private static string ResolveSourcePath(string fileName)
+        private static string ResolveSourcePath(WiRRGridTextureSet set, string suffix)
         {
             // Development project: MatPomGit/wirr/Project~/Assets/Textures becomes Assets/Textures.
-            var developmentPath = $"Assets/Textures/{fileName}";
-            if (AssetDatabase.LoadAssetAtPath<Texture2D>(developmentPath) != null)
-                return developmentPath;
+            foreach (var prefix in SourcePrefixes(set))
+            {
+                var fileName = $"{prefix}_{suffix}.png";
+                var developmentPath = $"Assets/Textures/{fileName}";
+                if (AssetDatabase.LoadAssetAtPath<Texture2D>(developmentPath) != null)
+                    return developmentPath;
+            }
 
             var package = UnityEditor.PackageManager.PackageInfo.FindForAssembly(typeof(WiRRPrefabTextureLibrary).Assembly);
             if (package != null && !string.IsNullOrWhiteSpace(package.assetPath))
             {
-                var packagePath = $"{package.assetPath}/Textures/Grid/{fileName}";
-                if (AssetDatabase.LoadAssetAtPath<Texture2D>(packagePath) != null)
-                    return packagePath;
+                foreach (var prefix in SourcePrefixes(set))
+                {
+                    var fileName = $"{prefix}_{suffix}.png";
+                    var packagePath = $"{package.assetPath}/Textures/Grid/{fileName}";
+                    if (AssetDatabase.LoadAssetAtPath<Texture2D>(packagePath) != null)
+                        return packagePath;
+                }
             }
 
             return null;
@@ -276,18 +284,27 @@ namespace KIA.WiRR.Editor
         private static Texture2D LoadGenerated(WiRRGridTextureSet set, string suffix)
         {
             return AssetDatabase.LoadAssetAtPath<Texture2D>(
-                $"{GeneratedTextureRoot}/{Prefix(set)}_{suffix}.png");
+                $"{GeneratedTextureRoot}/{CanonicalPrefix(set)}_{suffix}.png");
         }
 
-        private static string Prefix(WiRRGridTextureSet set)
+        private static string CanonicalPrefix(WiRRGridTextureSet set)
         {
             return set switch
             {
-                WiRRGridTextureSet.Grid1 => "grid-1",
+                WiRRGridTextureSet.Grid1 => "grid_1",
                 WiRRGridTextureSet.Grid2 => "grid_2",
-                // The repository currently has no grid_3_* files.
-                // grid-4_* is therefore used as the third logical family.
-                WiRRGridTextureSet.Grid3 => "grid-4",
+                WiRRGridTextureSet.Grid3 => "grid_3",
+                _ => throw new ArgumentOutOfRangeException(nameof(set))
+            };
+        }
+
+        private static string[] SourcePrefixes(WiRRGridTextureSet set)
+        {
+            return set switch
+            {
+                WiRRGridTextureSet.Grid1 => new[] { "grid_1", "grid-1" },
+                WiRRGridTextureSet.Grid2 => new[] { "grid_2" },
+                WiRRGridTextureSet.Grid3 => new[] { "grid_3", "grid-4" },
                 _ => throw new ArgumentOutOfRangeException(nameof(set))
             };
         }
