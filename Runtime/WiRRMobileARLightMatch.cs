@@ -78,7 +78,7 @@ namespace KIA.WiRR
         private void Update()
         {
             var stale = Time.unscaledTime - lastEstimate > estimateTimeout;
-            if (stale && simulateWhenStale)
+            if (stale && simulateWhenStale && Application.isEditor)
             {
                 var cycle = Mathf.Sin(Time.time * 0.45f) * 0.5f + 0.5f;
                 targetIntensity01 = Mathf.Lerp(0.22f, 0.92f, cycle);
@@ -105,7 +105,11 @@ namespace KIA.WiRR
 
             if (targetDirection.sqrMagnitude > 0.0001f)
             {
-                var rotation = Quaternion.LookRotation(-targetDirection.normalized, Vector3.up);
+                var forward = -targetDirection.normalized;
+                var up = Mathf.Abs(Vector3.Dot(forward, Vector3.up)) > 0.98f
+                    ? Vector3.forward
+                    : Vector3.up;
+                var rotation = Quaternion.LookRotation(forward, up);
                 virtualLight.transform.rotation = Quaternion.Slerp(virtualLight.transform.rotation, rotation, t);
             }
         }
