@@ -29,6 +29,8 @@ namespace KIA.WiRR
 
         private Transform viewer;
         private Vector3[] baseLocalPositions = System.Array.Empty<Vector3>();
+        private Vector3 viewerReferenceLocal;
+        private bool hasViewerReference;
         private int cameraLookupFrame;
 
         public void Configure(Transform[] newLayers, float[] newDepthFactors, float newMaxShift = 0.24f)
@@ -62,9 +64,16 @@ namespace KIA.WiRR
                 CaptureBasePositions();
 
             var viewerLocal = transform.InverseTransformPoint(viewer.position);
+            if (!hasViewerReference)
+            {
+                viewerReferenceLocal = viewerLocal;
+                hasViewerReference = true;
+            }
+
+            var delta = viewerLocal - viewerReferenceLocal;
             var lateral = new Vector2(
-                Mathf.Clamp(viewerLocal.x, -maxShift, maxShift),
-                verticalParallax ? Mathf.Clamp(viewerLocal.y, -maxShift, maxShift) : 0f);
+                Mathf.Clamp(delta.x, -maxShift, maxShift),
+                verticalParallax ? Mathf.Clamp(delta.y, -maxShift, maxShift) : 0f);
 
             var t = 1f - Mathf.Exp(-smoothing * Time.deltaTime);
             for (var i = 0; i < layers.Length; i++)
@@ -92,6 +101,18 @@ namespace KIA.WiRR
                 baseLocalPositions[i] = layers[i] != null ? layers[i].localPosition : Vector3.zero;
         }
 
+        public void Recenter()
+        {
+            if (viewer == null)
+                ResolveViewer(true);
+
+            if (viewer != null)
+            {
+                viewerReferenceLocal = transform.InverseTransformPoint(viewer.position);
+                hasViewerReference = true;
+            }
+        }
+
         private void ResolveViewer(bool force)
         {
             if (!force && viewer != null)
@@ -100,7 +121,10 @@ namespace KIA.WiRR
                 return;
 
             var camera = Camera.main;
-            viewer = camera != null ? camera.transform : null;
+            var nextViewer = camera != null ? camera.transform : null;
+            if (nextViewer != viewer)
+                hasViewerReference = false;
+            viewer = nextViewer;
             cameraLookupFrame = Time.frameCount + 30;
         }
     }
