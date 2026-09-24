@@ -27,7 +27,7 @@ namespace KIA.WiRR.Editor
             foreach (var pair in templates)
             {
                 var path = $"{root}/{pair.Key}";
-                if (AssetDatabase.LoadAssetAtPath<MonoScript>(path) != null)
+                if (System.IO.File.Exists(path))
                     continue;
 
                 System.IO.File.WriteAllText(path, pair.Value, new System.Text.UTF8Encoding(false));
