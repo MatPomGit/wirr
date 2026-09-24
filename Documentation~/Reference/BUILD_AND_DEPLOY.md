@@ -85,3 +85,10 @@ Quest 3 wymaga:
 - mobilnego budżetu GPU odpowiedniego dla dwóch widoków oka.
 
 Przed każdym benchmarkiem zapisz platformę, urządzenie, profil buildu i istotne ustawienia renderowania.
+
+## Dokumentacja producentów
+
+- Unity — Build Profiles / Build Configuration: https://docs.unity3d.com/
+- Meta — Unity project setup for Meta Quest: https://developers.meta.com/horizon/documentation/unity/unity-project-setup/
+- Meta — headset development setup and ADB: https://developers.meta.com/horizon/documentation/unity/unity-env-device-setup/
+- Meta — build configuration overview: https://developers.meta.com/horizon/documentation/unity/unity-build/
