@@ -13,15 +13,15 @@ Przykłady:
 - `AR Foundation camera texture → CameraFeedAdapterStarter → WiRRCameraFeedMixer → MR_CameraWindow`;
 - `XR Hands joints → HandTrackingAdapterStarter → WiRRHandAura → MR_HandAura`;
 - `people detector / body tracker → PeopleDetectorAdapterStarter → WiRRPeopleAwareness → MR_PeopleAwareness`;
-- `Depth API / spatial mesh → SpatialDepthAdapterStarter → WiRRSpatialSurfaceScanner → MR_SpatialSurfaceScanner`;
+- `Depth API / siatki przestrzennej → SpatialDepthAdapterStarter → WiRRSpatialSurfaceScanner → MR_SpatialSurfaceScanner`;
 - `Scene Understanding planes → WallPlaneAdapterStarter → WiRRWallAnchor → MR_WallPortal`.
 
-Adapter powinien być mały. Jego zadaniem jest przetłumaczenie danych konkretnego SDK do prostych typów Unity (`Texture`, `Vector3`, `Quaternion`, `Vector2`). Dzięki temu prefab może działać z innym providerem bez zmian w warstwie Runtime.
+Adapter powinien być mały. Jego zadaniem jest przetłumaczenie danych konkretnego SDK do prostych typów Unity (`Texture`, `Vector3`, `Quaternion`, `Vector2`). Dzięki temu prefab może działać z innym dostawcą danych bez zmian w warstwie Runtime.
 
-## Przygotowanie workspace
+## Przygotowanie obszar roboczy
 
 1. Otwórz `WiRR → Narzędzia kursu`.
-2. Wybierz laboratorium i przygotuj jego workspace.
+2. Wybierz laboratorium i przygotuj jego obszar roboczy.
 3. W sekcji `Mixed Reality: świat rzeczywisty + wirtualny` dodaj wybrany prefab.
 4. Kliknij `Jak to zaimplementować i rozbudować?`.
 5. Ustaw numer laboratorium i kliknij `Utwórz 5 starterów adapterów`.
@@ -40,9 +40,9 @@ Generator nie nadpisuje istniejących plików. Kod utworzony w `Assets` należy 
 2. Uruchom Play Mode.
 3. Zezwól na kamerę, jeśli system o to poprosi.
 4. Sprawdź, czy `WiRRCameraFeedMixer` znajduje się na korzeniu prefabu.
-5. Sprawdź, czy renderer `RealCameraFeed` pokazuje obraz lub fallback.
+5. Sprawdź, czy renderer `RealCameraFeed` pokazuje obraz lub tryb zastępczy.
 
-### Etap 2: wybór providera
+### Etap 2: wybór dostawcy danych
 
 Możliwe źródła:
 
@@ -58,7 +58,7 @@ Otwórz `CameraFeedAdapterStarter.cs` i:
 
 1. dodaj referencję do wybranego SDK;
 2. zasubskrybuj zdarzenie dostarczenia klatki lub tekstury;
-3. gdy provider ma nową `Texture`, wywołaj `PushFrame(texture)`;
+3. gdy dostawca danych ma nową `Texture`, wywołaj `PushFrame(texture)`;
 4. przy zatrzymaniu sesji wywołaj `ClearFrame()`;
 5. przy zmianie orientacji sprawdź `SetMirror(horizontal, vertical)`.
 
@@ -90,7 +90,7 @@ Sprawdź:
 - segmentacja ludzi/obiektów i selektywne nakładanie grafiki;
 - rekonstrukcja głębi i poprawna okluzja;
 - foveated processing region sterowany gaze;
-- porównanie dwóch providerów kamery pod kątem latency i jakości.
+- porównanie dwóch dostawców danych kamery pod kątem latency i jakości.
 
 **Przykładowa metryka:** mediana i p95 opóźnienia kamera → obraz oraz błąd reprojekcji punktu 2D → 3D.
 
@@ -116,17 +116,17 @@ Do wersji podstawowej potrzebujesz:
 - middle tip;
 - ring tip;
 - little tip;
-- flagi tracking valid.
+- flagi śledzenie valid.
 
 ### Etap 3: adapter
 
 W `HandTrackingAdapterStarter.cs`:
 
-1. odczytaj jointy z providera;
-2. przelicz je do world space Unity;
+1. odczytaj jointy z dostawcy danych;
+2. przelicz je do układ świata Unity;
 3. upewnij się, że jednostką są metry;
 4. wywołaj `PushPose(...)`;
-5. przy utracie trackingu wywołaj `LostTracking()`.
+5. przy utracie śledzenia wywołaj `LostTracking()`.
 
 ### Etap 4: kontrola jakości
 
@@ -135,7 +135,7 @@ Zmierz:
 - jitter końcówki index finger przy nieruchomej dłoni;
 - latency podczas szybkiego ruchu;
 - false positive / false negative pinch;
-- czas odzyskania trackingu po zasłonięciu dłoni.
+- czas odzyskania śledzenia po zasłonięciu dłoni.
 
 ### Proponowane dalsze modyfikacje
 
@@ -175,16 +175,16 @@ Preferowane:
 - pelvis / root joint body trackera;
 - torso;
 - środek 3D bounding box;
-- punkt na podłodze wyliczony z sylwetki i depth.
+- punkt na podłodze wyliczony z sylwetki i dane głębi.
 
-Nie używaj środka twarzy jako jedynej pozycji do proxemics, jeśli provider oferuje stabilniejszy punkt ciała.
+Nie używaj środka twarzy jako jedynej pozycji do proxemics, jeśli dostawca danych oferuje stabilniejszy punkt ciała.
 
 ### Etap 3: adapter
 
 W `PeopleDetectorAdapterStarter.cs`:
 
 1. pobierz listę wykrytych osób;
-2. dla każdej oblicz `Vector3` w world space;
+2. dla każdej oblicz `Vector3` w układ świata Unity;
 3. wywołaj `PushPeople(worldPositions)`;
 4. przy pustej scenie wywołaj `ClearPeople()`;
 5. nie przechowuj danych identyfikacyjnych, jeśli nie są potrzebne.
@@ -210,7 +210,7 @@ Ustaw osobę w znanych odległościach 1 m, 2 m, 3 m i porównaj pozycję marker
 - dynamiczne strefy człowiek–robot;
 - estymacja orientacji ciała;
 - multimodalne ostrzeżenie audio + wizualizacja;
-- fusion vision + LiDAR/depth;
+- fusion vision + LiDAR/dane głębi;
 - social referencing bez identyfikowania osoby.
 
 **Przykładowa metryka:** błąd lokalizacji osoby [m], czas detekcji wejścia do strefy i liczba fałszywych alarmów.
@@ -223,17 +223,17 @@ Ustaw osobę w znanych odległościach 1 m, 2 m, 3 m i porównaj pozycję marker
 
 1. Dodaj `Spatial Surface Scanner`.
 2. Upewnij się, że scena ma collidery.
-3. W Play Mode fallback wysyła raycasty z kamery i oznacza trafione powierzchnie.
+3. W Play Mode tryb zastępczy wysyła rzuty promieni z kamery i oznacza trafione powierzchnie.
 
-### Etap 2: provider depth/spatial
+### Etap 2: dostawca danych danych głębi / siatki przestrzennej
 
 Źródłem może być:
 
-- raycast depth;
-- environment depth;
-- spatial mesh;
+- rzutowanie promienia (raycast) dane głębi;
+- environment dane głębi;
+- siatki przestrzennej;
 - scene mesh;
-- depth image po unprojection.
+- dane głębi image po unprojection.
 
 ### Etap 3: adapter
 
@@ -267,14 +267,14 @@ Na płaskiej ścianie policz:
 - lokalny mesh z punktów;
 - plane fitting RANSAC;
 - klasyfikacja floor/wall/table;
-- depth-only occlusion material.
+- dane głębi-only occlusion material.
 
 **Zaawansowane:**
 - incremental mesh reconstruction;
 - real-world physics collisions;
 - navigable surface extraction;
-- fusion kilku klatek depth;
-- porównanie latency i dokładności dwóch źródeł depth.
+- fusion kilku klatek dane głębi;
+- porównanie latency i dokładności dwóch źródeł dane głębi.
 
 **Przykładowa metryka:** RMSE punktów do płaszczyzny, błąd normalnej [°], CPU ms i liczba próbek/s.
 
@@ -289,7 +289,7 @@ Na płaskiej ścianie policz:
 3. W Play Mode możesz wywołać `TryAnchorFromViewerRay()`.
 4. Sprawdź, czy portal ustawia się na powierzchni i czy paralaksa reaguje na ruch głowy.
 
-### Etap 2: provider płaszczyzn
+### Etap 2: dostawca danych płaszczyzn
 
 Potrzebujesz:
 
@@ -357,7 +357,7 @@ Nie zaczynaj od pytania „jaki efekt dodać?”. Zacznij od pytania „jaki pro
 - semantic scene understanding;
 - real-world occlusion;
 - real-world physics;
-- cross-provider benchmarking;
+- cross-dostawca danych benchmarking;
 - dynamic safety zones;
 - privacy-preserving perception;
 - shared anchors dla wielu użytkowników;
@@ -366,14 +366,14 @@ Nie zaczynaj od pytania „jaki efekt dodać?”. Zacznij od pytania „jaki pro
 
 ## Co warto pokazać w sprawozdaniu z własnej rozbudowy
 
-- diagram `provider → adapter → WiRR component → visual`;
+- diagram `dostawca danych → adapter → WiRR component → visual`;
 - nazwę i wersję SDK;
 - transformacje układów współrzędnych;
-- sposób obsługi utraty trackingu;
+- sposób obsługi utraty śledzenia;
 - parametry filtracji;
 - metrykę i procedurę A/B;
 - trzy lub więcej powtórzeń, gdy mierzone są czasy/błędy;
 - jeden zrzut pokazujący efekt;
 - wniosek opisujący także ograniczenia.
 
-Gotowy prefab WiRR powinien być traktowany jak **kontrolowany baseline**. Najbardziej wartościowym etapem jest moment, w którym student zastępuje fallback prawdziwym providerem, rozbudowuje zachowanie i potrafi zmierzyć wpływ własnej decyzji implementacyjnej.
+Gotowy prefab WiRR powinien być traktowany jak **kontrolowany wariant bazowy**. Najbardziej wartościowym etapem jest moment, w którym student zastępuje tryb zastępczy prawdziwym dostawcą danych, rozbudowuje zachowanie i potrafi zmierzyć wpływ własnej decyzji implementacyjnej.
