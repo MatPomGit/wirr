@@ -4,7 +4,7 @@ Zestaw **Mobile AR Showcase** zawiera pięć gotowych demonstratorów zaprojekto
 
 Każdy prefab ma przypisany skrypt Runtime oraz tryb zastępczy do testów w Unity Editor. Wersja urządzeniowa pozostaje niezależna od dostawcy danych: kod studenta może podać wyniki AR Foundation do prostego API WiRR bez dodawania zależności AR Foundation do Runtime pakietu.
 
-Fallbacki są celowo aktywne **tylko w Unity Editor**. W buildzie Android brak danych od dostawcy danych AR oznacza brak hitu/śledzenia/estymacji zamiast sztucznego wyniku; dzięki temu nie da się pomylić symulacji z realnym pomiarem na telefonie.
+Tryby zastępcze są celowo aktywne **tylko w Unity Editor**. W buildzie Android brak danych od dostawcy danych AR oznacza brak trafienia, śledzenia lub estymacji zamiast sztucznego wyniku; dzięki temu nie da się pomylić symulacji z realnym pomiarem na telefonie.
 
 Prefaby powstają w `Assets/WiRR/Common/Prefabs/MobileAR`, a ich instancje w scenie w `WiRR_TeachingAssets/MobileARShowcase`.
 
@@ -22,7 +22,7 @@ Prefaby powstają w `Assets/WiRR/Common/Prefabs/MobileAR`, a ich instancje w sce
 
 Na telefonie adapter zwykle wykorzystuje `ARRaycastManager`. W Editorze skrypt używa `Physics.Raycast` do colliderów sceny.
 
-**Co warto badać:** czas pierwszej detekcji powierzchni, błąd skali 1:1, stabilność reticle, zachowanie na krawędzi plane i różnicę plane rzutowanie promienia (raycast) vs dane głębi rzutowanie promienia (raycast).
+**Co warto badać:** czas pierwszej detekcji powierzchni, błąd skali 1:1, stabilność wskaźnika położenia, zachowanie na krawędzi płaszczyzny oraz różnicę między rzutowaniem promienia do płaszczyzny i wykorzystaniem danych głębi.
 
 ## 2. AR_ImageMarkerPortal
 
@@ -66,9 +66,9 @@ Komponent celowo nie wymaga TextMeshPro. Student może wyświetlić `DistanceMet
 - `SetLightEstimate(normalizedIntensity, lightColor, mainLightDirection, confidence)`;
 - właściwości `Intensity01`, `Confidence`.
 
-Adapter AR Foundation zwykle korzysta z `ARCameraManager.frameReceived`. Należy pamiętać, że konkretne urządzenie może udostępniać tylko część pól estymacja oświetlenia (Light Estimation).
+Adapter AR Foundation zwykle korzysta z `ARCameraManager.frameReceived`. Należy pamiętać, że konkretne urządzenie może udostępniać tylko część parametrów estymacji oświetlenia (Light Estimation).
 
-**Co warto badać:** dopasowanie obiektu w jasnym/ciemnym środowisku, różnicę z/bez estymacja oświetlenia, dostępność parametrów na różnych telefonach oraz opóźnienie reakcji.
+**Co warto badać:** dopasowanie obiektu w jasnym/ciemnym środowisku, różnicę między wersją z estymacją oświetlenia i bez niej, dostępność parametrów na różnych telefonach oraz opóźnienie reakcji.
 
 ## 5. AR_SurfacePainter
 
@@ -85,7 +85,7 @@ Adapter AR Foundation zwykle korzysta z `ARCameraManager.frameReceived`. Należy
 
 Prefab używa puli 120 markerów i nie tworzy nowych GameObjectów podczas rysowania. W urządzeniu adapter aktualizuje hit dla aktualnej pozycji palca.
 
-**Co warto badać:** ciągłość śladu, jitter, różnicę plane/dane głębi rzutowanie promienia (raycast), koszt dużej liczby punktów i zachowanie przy granicy kilku wykrytych płaszczyzn.
+**Co warto badać:** ciągłość śladu, drgania położenia (jitter), różnicę między rzutowaniem do płaszczyzny i wykorzystaniem danych głębi, koszt dużej liczby punktów i zachowanie przy granicy kilku wykrytych płaszczyzn.
 
 ## Startery AR Foundation
 
@@ -111,7 +111,7 @@ Startery nie są nadpisywane przy ponownym użyciu generatora. Są kodem student
 4. Sprawdź działanie elementu bez szybkich ruchów telefonu.
 5. Powtórz przy innym kącie i odległości.
 6. Wykonaj co najmniej trzy pomiary, jeśli element zwraca błąd/czas/dystans.
-7. Zapisz model telefonu, wersję Androida, warunki i aktywny dostawca danych.
+7. Zapisz model telefonu, wersję Androida, warunki i aktywny moduł AR / dostawcę danych.
 
 ## Proponowane dalsze rozszerzenia
 
@@ -121,9 +121,9 @@ Startery nie są nadpisywane przy ponownym użyciu generatora. Są kodem student
 - image-to-world handoff po utracie markera;
 - pomiar powierzchni i objętości w AR Ruler;
 - confidence-aware ruler pokazujący niepewność;
-- occlusion z environment dane głębi;
+- okluzję wykorzystującą mapę głębi otoczenia (environment depth);
 - mesh/stroke zamiast punktowego Surface Painter;
 - zapisywanie i współdzielenie rysunków między urządzeniami;
 - porównanie dwóch telefonów pod kątem plane detection, dryfu i błędu pomiaru.
 
-Najlepszą rozbudową jest taka, dla której można zdefiniować wariant bazowy, jedną kontrolowaną zmianę i konkretną metrykę: czas [s], błąd [cm], dryf [cm/min], FPS, latency [ms] albo skuteczność rozpoznania [%].
+Najlepszą rozbudową jest taka, dla której można zdefiniować wariant bazowy, jedną kontrolowaną zmianę i konkretną metrykę: czas [s], błąd [cm], dryf [cm/min], FPS, opóźnienie [ms] albo skuteczność rozpoznania [%].
