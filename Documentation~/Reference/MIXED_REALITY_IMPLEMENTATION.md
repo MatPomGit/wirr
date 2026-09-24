@@ -81,7 +81,7 @@ Sprawdź:
 - overlay FPS i timestamp.
 
 **Średnie:**
-- pomiar camera-to-display latency;
+- pomiar opóźnienie kamera → ekran;
 - bounding boxes z modelu detekcji obiektów;
 - reticle przyklejony do punktu wykrytego w obrazie;
 - korekcja intrinsics i ray z piksela do świata.
@@ -89,7 +89,7 @@ Sprawdź:
 **Zaawansowane:**
 - segmentacja ludzi/obiektów i selektywne nakładanie grafiki;
 - rekonstrukcja głębi i poprawna okluzja;
-- foveated processing region sterowany gaze;
+- obszar przetwarzania zależny od punktu fiksacji (foveated processing);
 - porównanie dwóch źródeł obrazu pod kątem opóźnienia i jakości.
 
 **Przykładowa metryka:** mediana i p95 opóźnienia kamera → obraz oraz błąd reprojekcji punktu 2D → 3D.
@@ -132,16 +132,16 @@ W `HandTrackingAdapterStarter.cs`:
 
 Zmierz:
 
-- jitter końcówki index finger przy nieruchomej dłoni;
-- latency podczas szybkiego ruchu;
-- false positive / false negative pinch;
+- drgania położenia końcówki palca wskazującego przy nieruchomej dłoni;
+- opóźnienie podczas szybkiego ruchu;
+- fałszywie dodatnie i fałszywie ujemne detekcje gestu szczypnięcia (pinch);
 - czas odzyskania śledzenia po zasłonięciu dłoni.
 
 ### Proponowane dalsze modyfikacje
 
 **Łatwe:**
 - osobne kolory dla lewej i prawej dłoni;
-- zmiana wielkości markerów w zależności od confidence;
+- zmiana wielkości markerów w zależności od poziomu pewności;
 - wizualny stan `TRACKED / LOST`.
 
 **Średnie:**
@@ -156,7 +156,7 @@ Zmierz:
 - near-touch przyciski z deformacją;
 - porównanie predykcji vs brak predykcji przy szybkich gestach.
 
-**Przykładowa metryka:** RMS jitter jointu, średni czas detekcji pinch oraz opóźnienie ruch rzeczywisty → marker wirtualny.
+**Przykładowa metryka:** RMS drgań położenia przegubu, średni czas detekcji gestu szczypnięcia (pinch) oraz opóźnienie ruch rzeczywisty → marker wirtualny.
 
 ---
 
@@ -241,7 +241,7 @@ W `SpatialDepthAdapterStarter.cs`:
 
 1. pobierz `worldPoint`;
 2. pobierz lub policz `worldNormal`;
-3. jeżeli dostępne jest confidence, znormalizuj je do 0–1;
+3. jeżeli dostępny jest poziom pewności (`confidence`), znormalizuj je do 0–1;
 4. wywołaj `PushSample(point, normal, confidence)`;
 5. dla batcha użyj `PushBatch(points, normals)`;
 6. ogranicz częstotliwość i liczbę punktów.
@@ -259,7 +259,7 @@ Na płaskiej ścianie policz:
 ### Proponowane dalsze modyfikacje
 
 **Łatwe:**
-- kolor wg confidence;
+- kolor według poziomu pewności;
 - marker wg typu powierzchni;
 - kontrolowana długość życia próbek.
 
@@ -341,7 +341,7 @@ Nie zaczynaj od pytania „jaki efekt dodać?”. Zacznij od pytania „jaki pro
 
 ### Schemat pracy
 
-1. **Hipoteza** — np. „filtr One Euro zmniejszy jitter dłoni bez wzrostu opóźnienia > 20 ms”.
+1. **Hipoteza** — np. „filtr One Euro zmniejszy drgania położenia dłoni bez wzrostu opóźnienia > 20 ms”.
 2. **Wariant bazowy** — zmierz gotowy prefab.
 3. **Jedna modyfikacja** — wprowadź tylko jeden nowy mechanizm.
 4. **Powtórzony pomiar** — te same warunki i urządzenie.
@@ -362,7 +362,7 @@ Nie zaczynaj od pytania „jaki efekt dodać?”. Zacznij od pytania „jaki pro
 - privacy-preserving perception;
 - shared anchors dla wielu użytkowników;
 - adaptive quality zależna od obciążenia GPU;
-- pomiar motion-to-photon / sensor-to-photon latency.
+- pomiar opóźnienia ruch → obraz (motion-to-photon) i sensor → obraz (sensor-to-photon).
 
 ## Co warto pokazać w sprawozdaniu z własnej rozbudowy
 
