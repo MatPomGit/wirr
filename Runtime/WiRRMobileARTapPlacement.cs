@@ -115,8 +115,10 @@ namespace KIA.WiRR
         private void Update()
         {
             var externalFresh = Time.unscaledTime - lastExternalHit <= externalHitTimeout;
-            if (!externalFresh && fallbackRaycast)
+            if (!externalFresh && fallbackRaycast && Application.isEditor)
                 UpdateFallbackHit();
+            else if (!externalFresh && !Application.isEditor)
+                candidateValid = false;
 
             UpdateReticle();
 
