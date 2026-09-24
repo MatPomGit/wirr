@@ -60,6 +60,8 @@ jobs:
               "README.md",
               "CHANGELOG.md",
               "LICENSE",
+              "RoboAnimation.unitypackage",
+              "RoboAnimation.unitypackage.meta",
           ]
           missing = [path for path in required if not (root / path).exists()]
           if missing:
@@ -81,6 +83,7 @@ jobs:
               "WiRRSurfaceTextureLibrary.cs",
               "WiRROptionalPrefabTools.cs",
               "WiRRDynamicPrefabTools.cs",
+              "WiRRAdditionalModelTools.cs",
           ):
               source = root / "Editor" / editor_file
               meta = root / "Editor" / f"{editor_file}.meta"
