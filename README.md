@@ -22,7 +22,7 @@ Pakiet zawiera:
 - **Dependency Installer**: instalację wymaganych pakietów Unity;
 - **Samples Manager**: import materiałów dla wybranego laboratorium;
 - **Scene Tools / Validator**: przygotowanie i kontrolę sceny;
-- **Runtime Utilities**: lekkie komponenty pomiarowe;
+- **Narzędzia warstwy Runtime**: lekkie komponenty pomiarowe;
 - **Checklisty zadań Lab 01–07**: krok po kroku prowadzą przez punkty kontrolne 3.0–5.0 i wskazują wymagany dowód pomiarowy;
 - **WebSim**: połączenie Unity ze środowiskiem ROS 2/Gazebo przez rosbridge;
 - **Raporty WiRR**: formularz, automatyczny zapis, tabele pomiarowe i raport JSON;
@@ -31,7 +31,7 @@ Pakiet zawiera:
 - **Unitree G1 EDU**: dodatkowy model humanoidalnego robota z przykładowymi animacjami, importowany z `RoboAnimation.unitypackage`;
 - **HDRI i skybox**: dziewięć środowisk HDR dostępnych po instalacji UPM, z automatycznym tworzeniem materiału `Skybox/Panoramic`;
 - **XR Showcase**: pięć gotowych efektów przestrzennych z własną logiką Runtime: portal paralaksy 6DoF, Gaze Bloom, Telekinesis Orb, Diegetic HUD i World Scale Totem;
-- **Mixed Reality Showcase**: pięć prefabów łączących warstwę wirtualną z kamerą, dłońmi, ludźmi, danych głębi / siatki przestrzennej i wykrytymi ścianami;
+- **Mixed Reality Showcase**: pięć prefabów łączących warstwę wirtualną z kamerą, dłońmi, ludźmi, danymi głębi, siatką przestrzenną i wykrytymi ścianami;
 - **Mobile AR Showcase**: pięć demonstratorów na smartfon: Tap Placement, Image Marker Portal, World Ruler, Light Match Object i Surface Painter;
 - **Build & Deploy**: instrukcja wewnątrz Unity dla Windows PC, smartfona z Androidem i Meta Quest 3, razem z ADB i Build Profiles.
 
@@ -117,7 +117,7 @@ Do standardowych materiałów używany jest `NormalGL`, ponieważ Unity oczekuje
 
 WiRR 0.8.0 dodaje opcjonalne demonstratory działające w **Play Mode**. Są dostępne z sekcji **Scena i pomiary → Ruch, fizyka i dźwięk**.
 
-Komponenty runtime:
+Komponenty warstwy Runtime:
 
 - `WiRRLoopMotion` — ruch PingPong, Bob, Orbit i Rotate; może używać zwykłego Transform albo `Rigidbody.MovePosition/MoveRotation` dla obiektu kinematycznego;
 - `WiRRPhysicsImpulsePad` — trigger nadający dynamicznym Rigidbody impuls i opcjonalny moment obrotowy;
@@ -141,21 +141,21 @@ Ruchome platformy **nie mają automatycznie skonfigurowanego XRI Teleportation A
 W sekcji **Scena i pomiary → Efekty charakterystyczne dla XR** dostępnych jest pięć samodzielnych demonstratorów. Każdy prefab ma już przypisany komponent Runtime i działa po wejściu w Play Mode bez zależności od XRI:
 
 - **XR_ParallaxPortal** + `WiRRHeadParallax` — wielowarstwowa paralaksa sterowana translacją głowy; pokazuje różnicę 3DoF/6DoF i head-coupled perspective;
-- **XR_GazeBloom** + `WiRRGazeBloom` — obiekt przestrzenny reagujący na kierunek patrzenia, z publicznym `SetExternalActivation()` do eye śledzenia/XRI;
+- **XR_GazeBloom** + `WiRRGazeBloom` — obiekt przestrzenny reagujący na kierunek patrzenia, z publicznym `SetExternalActivation()` do śledzenia wzroku lub XRI;
 - **XR_TelekinesisOrb** + `WiRRTelekinesisOrb` — gaze dwell i force-grab; `BeginHold()`, `Release()` i `ToggleHold()` można przypisać do zdarzeń XRI;
-- **XR_DiegeticHUD** + `WiRRHeadFollower` — miękko podążający panel; `Pin()`/`Unpin()` pozwala porównać UI odniesione do ciała/głowy z zakotwiczone w świecie;
+- **XR_DiegeticHUD** + `WiRRHeadFollower` — miękko podążający panel; `Pin()`/`Unpin()` pozwala porównać interfejs odnoszony do ciała/głowy z interfejsem zakotwiczonym w świecie;
 - **XR_WorldScaleTotem** + `WiRRProximityScale` — przejście miniatura → skala pomieszczenia (room-scale) w funkcji odległości; `SetExternalFactor()` umożliwia sterowanie gestem, suwakiem lub kontrolerem.
 
 Zestaw jest przeznaczony do obserwacji zjawisk typowych dla XR, eksperymentów HCI i rozbudowy przez studentów. Nie zastępuje ocenianych zadań XRI. Szczegóły: `Documentation~/Reference/XR_SHOWCASE.md`.
 
 ## Mixed Reality Showcase — rzeczywistość jako część sceny
 
-W sekcji **Scena i pomiary → Mixed Reality: świat rzeczywisty + wirtualny** znajduje się pięć kolejnych prefabów. Ich logika jest niezależny od dostawcy danych: mogą działać z trybem zastępczym w Editorze, ale mają jawne API wejściowe dla realnych sensorów i SDK.
+W sekcji **Scena i pomiary → Mixed Reality: świat rzeczywisty + wirtualny** znajduje się pięć kolejnych prefabów. Ich logika jest niezależna od dostawcy danych: mogą działać z trybem zastępczym w Editorze, ale mają jawne API wejściowe dla realnych sensorów i SDK.
 
 - **MR_CameraWindow** + `WiRRCameraFeedMixer` — obraz z `WebCamTexture` albo zewnętrznej `Texture` z wirtualnym reticle; użyteczne do nakładania grafiki na obraz rzeczywisty;
 - **MR_HandAura** + `WiRRHandAura` — holograficzne markery nadgarstka i pięciu opuszków, linie palców oraz `Pinch01`; prawdziwy hand tracker przekazuje dane przez `SetHandPose(...)`;
 - **MR_PeopleAwareness** + `WiRRPeopleAwareness` — anonimowe markery i strefy wokół wykrytych osób; komponent potrzebuje tylko pozycji w świecie, bez identyfikacji twarzy;
-- **MR_SpatialSurfaceScanner** + `WiRRSpatialSurfaceScanner` — dynamiczna wizualizacja próbek danych głębi / siatki przestrzennej; bez zewnętrznego API danych głębi skanuje collidery rzutowanie promienia (raycast)ami;
+- **MR_SpatialSurfaceScanner** + `WiRRSpatialSurfaceScanner` — dynamiczna wizualizacja próbek danych głębi / siatki przestrzennej; bez zewnętrznego API danych głębi skanuje collidery za pomocą rzutowania promieni (raycastów);
 - **MR_WallPortal** + `WiRRWallAnchor` — wirtualny portal dopasowywany do wykrytej ściany przez `SetWallPlane(center, normal, size)`; zawartość za ścianą ma dodatkowo head-coupled parallax.
 
 Pełny opis API, trybów zastępczych, prywatności i scenariuszy integracji znajduje się w `Documentation~/Reference/MIXED_REALITY_SHOWCASE.md`.
@@ -164,7 +164,7 @@ Pełny opis API, trybów zastępczych, prywatności i scenariuszy integracji zna
 
 W sekcji **Scena i pomiary → Mobile AR: rozszerzona rzeczywistość na telefonie** dostępnych jest pięć prefabów przeznaczonych pod dotyk, tylną kamerę i AR Foundation/ARCore:
 
-- **AR_TapPlacement** + `WiRRMobileARTapPlacement` — reticle śledzący plane/dane głębi i umieszczanie obiektu przez tap;
+- **AR_TapPlacement** + `WiRRMobileARTapPlacement` — wskaźnik położenia śledzący wykrytą płaszczyznę lub dane głębi i umieszczanie obiektu przez tap;
 - **AR_ImageMarkerPortal** + `WiRRMobileARImageAnchor` — wirtualna zawartość kotwiona do rozpoznanego obrazu;
 - **AR_WorldRuler** + `WiRRMobileARRuler` — dwupunktowy pomiar dystansu z wynikiem `DistanceMeters`;
 - **AR_LightMatchObject** + `WiRRMobileARLightMatch` — adaptacja wirtualnego światła i materiałów do estymacji oświetlenia kamery;
@@ -175,9 +175,9 @@ Każdy komponent działa w Editorze z trybem zastępczym opartym na colliderach 
 Instrukcja w Unity: **WiRR → Pomoc → Mobile AR: telefon**. Dokumentacja: `Documentation~/Reference/MOBILE_AR_SHOWCASE.md`.
 
 
-Dla studentów dostępna jest również szczegółowa ścieżka implementacyjna **WiRR → Pomoc → Mixed Reality: implementacja i rozbudowa**. Okno prowadzi przez architekturę `dostawca danych → adapter → komponent WiRR → wizualizacja`, konwersję współrzędnych, lifecycle śledzenia, walidację i proponowane rozszerzenia.
+Dla studentów dostępna jest również szczegółowa ścieżka implementacyjna **WiRR → Pomoc → Mixed Reality: implementacja i rozbudowa**. Okno prowadzi przez architekturę `dostawca danych → adapter → komponent WiRR → wizualizacja`, konwersję współrzędnych i cykl życia śledzenia, walidację i proponowane rozszerzenia.
 
-Przycisk **Utwórz startery adapterów MR** generuje w `Assets/WiRR/LabXX/Scripts/MixedRealityAdapters` pięć kompilowalnych plików startowych. Są one własnym kodem studenta i nie są automatycznie nadpisywane. Dzięki nim zależność od Meta SDK, AR Foundation, XR Hands lub własnego CV/dane głębi pozostaje w projekcie studenta, a nie w niezależny od dostawcy danychm Runtime WiRR.
+Przycisk **Utwórz startery adapterów MR** generuje w `Assets/WiRR/LabXX/Scripts/MixedRealityAdapters` pięć kompilowalnych plików startowych. Są one własnym kodem studenta i nie są automatycznie nadpisywane. Dzięki nim zależność od Meta SDK, AR Foundation, XR Hands lub własnego modułu CV lub danych głębi pozostaje w projekcie studenta, a nie w warstwie Runtime WiRR niezależnej od dostawcy danych.
 
 Dokument `Documentation~/Reference/MIXED_REALITY_IMPLEMENTATION.md` zawiera pełną procedurę dla każdego elementu oraz propozycje rozbudowy w poziomach łatwy / średni / zaawansowany z przykładowymi metrykami.
 
@@ -217,7 +217,7 @@ W Unity dostępne jest okno **WiRR → Pomoc → Budowanie i instalacja**, a skr
 - **smartfon Android** — Android Build Support, SDK/NDK/OpenJDK, Debugowanie USB, `adb devices`, profil Android, ARCore w laboratoriach AR, instalacja przez `Build And Run` lub `adb install -r`;
 - **Meta Quest 3 standalone** — Developer Mode, ADB, profil Meta Quest/Android, OpenXR dla Android/Meta Quest, Meta Quest Support, ARM64 i instalacja APK na headset.
 
-Pakiet wyjaśnia również, dlaczego aplikacja PC i APK nie są tym samym buildem oraz dlaczego APK dla smartfona AR i Quest 3 może wymagać różnych dostawców danych XR/AR, wejścia, uprawnień i ustawień renderowania. Meta Horizon Link jest opisany jako szybka ścieżka PC VR, a nie zamiennik pomiarów buildu standalone na Quest 3.
+Pakiet wyjaśnia również, dlaczego aplikacja PC i APK nie są tym samym buildem oraz dlaczego APK dla smartfona AR i Quest 3 może wymagać różnych modułów obsługi XR/AR, wejścia, uprawnień i ustawień renderowania. Meta Horizon Link jest opisany jako szybka ścieżka PC VR, a nie zamiennik pomiarów samodzielnej wersji aplikacji uruchamianej na Quest 3.
 
 Pełne materiały referencyjne: `Documentation~/Reference/EXTRA_ASSETS.md` oraz `Documentation~/Reference/BUILD_AND_DEPLOY.md`.
 
