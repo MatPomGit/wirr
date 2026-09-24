@@ -209,9 +209,6 @@ namespace KIA.WiRR.Editor
                 Primitive(marker.transform, "BodyProxy", PrimitiveType.Capsule, new Vector3(0f, 0.9f, 0f), new Vector3(0.34f, 0.72f, 0.34f), metal, false);
                 Primitive(marker.transform, "HeadProxy", PrimitiveType.Sphere, new Vector3(0f, 1.75f, 0f), Vector3.one * 0.30f, accent, false);
                 Primitive(marker.transform, "SafetyHalo", PrimitiveType.Cylinder, new Vector3(0f, 0.018f, 0f), new Vector3(0.85f, 0.018f, 0.85f), accent, false);
-
-                var bob = marker.AddComponent<WiRRLoopMotion>();
-                bob.Configure(WiRRLoopMotionMode.Bob, new Vector3(0f, 0.035f, 0f), 1.8f + i * 0.15f, i * 0.13f, true);
             }
 
             var awareness = root.AddComponent<WiRRPeopleAwareness>();
