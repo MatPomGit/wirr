@@ -41,7 +41,7 @@ W Unity wybierz:
 Repozytorium studenckie:
 
 ```text
-https://github.com/KIA-students/wirr.git
+https://github.com/KIA-students/wirr.git#v0.9.0
 ```
 
 Pakiet znajduje się w katalogu głównym repozytorium. Po pierwszej instalacji danej wersji w projekcie panel **WiRR Course Toolkit** otworzy się automatycznie jeden raz i wskaże kolejny krok. Później można go otworzyć ręcznie przez **WiRR → Narzędzia kursu**. Wymagana wersja to Unity **6000.6.x** lub nowsza zgodna wersja 6000.6.
