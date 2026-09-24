@@ -84,6 +84,7 @@ jobs:
               "WiRROptionalPrefabTools.cs",
               "WiRRDynamicPrefabTools.cs",
               "WiRRAdditionalModelTools.cs",
+              "WiRROnboarding.cs",
           ):
               source = root / "Editor" / editor_file
               meta = root / "Editor" / f"{editor_file}.meta"
