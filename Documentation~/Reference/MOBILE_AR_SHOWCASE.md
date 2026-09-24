@@ -4,6 +4,8 @@ Zestaw **Mobile AR Showcase** zawiera pięć gotowych demonstratorów zaprojekto
 
 Każdy prefab ma przypisany skrypt Runtime oraz fallback do testów w Unity Editor. Wersja urządzeniowa pozostaje provider-neutralna: kod studenta może podać wyniki AR Foundation do prostego API WiRR bez dodawania zależności AR Foundation do Runtime pakietu.
 
+Fallbacki są celowo aktywne **tylko w Unity Editor**. W buildzie Android brak danych od providera AR oznacza brak hitu/trackingu/estymacji zamiast sztucznego wyniku; dzięki temu nie da się pomylić symulacji z realnym pomiarem na telefonie.
+
 Prefaby powstają w `Assets/WiRR/Common/Prefabs/MobileAR`, a ich instancje w scenie w `WiRR_TeachingAssets/MobileARShowcase`.
 
 ## 1. AR_TapPlacement
