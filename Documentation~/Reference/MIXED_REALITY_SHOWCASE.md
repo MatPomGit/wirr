@@ -1,10 +1,10 @@
 # Mixed Reality Showcase — łączenie świata rzeczywistego i wirtualnego
 
-Zestaw **Mixed Reality Showcase** zawiera pięć prefabów przeznaczonych do ćwiczeń, w których dane z rzeczywistego otoczenia sterują warstwą wirtualną. Każdy prefab ma przypisany własny komponent Runtime, działa także bez konkretnego SDK dzięki trybowi demonstracyjnemu i udostępnia publiczne API do podłączenia rzeczywistego providera.
+Zestaw **Mixed Reality Showcase** zawiera pięć prefabów przeznaczonych do ćwiczeń, w których dane z rzeczywistego otoczenia sterują warstwą wirtualną. Każdy prefab ma przypisany własny komponent Runtime, działa także bez konkretnego SDK dzięki trybowi demonstracyjnemu i udostępnia publiczne API do podłączenia rzeczywistego dostawcy danych.
 
 Prefaby są generowane do `Assets/WiRR/Common/Prefabs/MixedReality` i umieszczane w scenie pod `WiRR_TeachingAssets/MixedRealityShowcase`.
 
-> **Chcesz zbudować własną wersję?** Otwórz `WiRR → Pomoc → Mixed Reality: implementacja i rozbudowa` albo dokument `MIXED_REALITY_IMPLEMENTATION.md`. Znajdziesz tam procedurę provider → adapter → WiRR, generator starterów kodu, walidację i propozycje dalszych modyfikacji.
+> **Chcesz zbudować własną wersję?** Otwórz `WiRR → Pomoc → Mixed Reality: implementacja i rozbudowa` albo dokument `MIXED_REALITY_IMPLEMENTATION.md`. Znajdziesz tam procedurę dostawca danych → adapter → WiRR, generator starterów kodu, walidację i propozycje dalszych modyfikacji.
 
 ## 1. MR_CameraWindow
 
@@ -15,11 +15,11 @@ Prefaby są generowane do `Assets/WiRR/Common/Prefabs/MixedReality` i umieszczan
 **Działanie:**
 - na PC i smartfonie komponent może uruchomić `WebCamTexture` po uzyskaniu zgody systemowej;
 - wirtualna ramka i reticle pozostają obiektami Unity;
-- zewnętrzny provider może podać dowolną `Texture` przez `SetExternalTexture(Texture)`;
+- zewnętrzny dostawca danych może podać dowolną `Texture` przez `SetExternalTexture(Texture)`;
 - `SetMirror(bool horizontal, bool vertical)` pozwala dostosować orientację obrazu;
-- `StopWebCamera()` zatrzymuje strumień, a `ClearExternalTexture()` wraca do źródła lokalnego/fallbacku.
+- `StopWebCamera()` zatrzymuje strumień, a `ClearExternalTexture()` wraca do źródła lokalnego/trybu zastępczego.
 
-**Quest 3:** passthrough jest zwykle realizowany przez warstwę/platformowy compositor, a nie jako zwykły `WebCamTexture`. Ten prefab może wtedy pozostać wirtualną nakładką nad passthrough albo otrzymać teksturę od providera, jeśli użyte API ją udostępnia.
+**Quest 3:** passthrough jest zwykle realizowany przez warstwę/platformowy compositor, a nie jako zwykły `WebCamTexture`. Ten prefab może wtedy pozostać wirtualną nakładką nad passthrough albo otrzymać teksturę od dostawcy danych, jeśli użyte API ją udostępnia.
 
 **Pomysły dydaktyczne:** HUD na realnym obrazie, celownik AR, porównanie opóźnienia kamera → obraz, analiza kadrowania i mirrorowania.
 
@@ -29,14 +29,14 @@ Prefaby są generowane do `Assets/WiRR/Common/Prefabs/MixedReality` i umieszczan
 
 **Skrypt:** `WiRRHandAura`.
 
-**Działanie:** provider wysyła pozycję nadgarstka oraz pięciu opuszków przez `SetHandPose(...)`. Prefab rysuje markery, linie palców i wirtualny rdzeń pinch pomiędzy kciukiem i palcem wskazującym.
+**Działanie:** dostawca danych wysyła pozycję nadgarstka oraz pięciu opuszków przez `SetHandPose(...)`. Prefab rysuje markery, linie palców i wirtualny rdzeń pinch pomiędzy kciukiem i palcem wskazującym.
 
 **API:**
 - `SetHandPose(...)` — aktualizacja pozycji dłoni;
-- `SetTracked(bool)` — jawna informacja o utracie/odzyskaniu trackingu;
+- `SetTracked(bool)` — jawna informacja o utracie/odzyskaniu śledzenia;
 - `Pinch01` — znormalizowana wartość 0–1 wyliczana z odległości kciuk–wskazujący.
 
-Jeżeli nie ma providera, prefab symuluje dłoń przed kamerą i okresowo demonstruje pinch. Dzięki temu student widzi zachowanie komponentu jeszcze przed integracją z XR Hands/Meta Hand Tracking.
+Jeżeli nie ma dostawcy danych, prefab symuluje dłoń przed kamerą i okresowo demonstruje pinch. Dzięki temu student widzi zachowanie komponentu jeszcze przed integracją z XR Hands/Meta Hand Tracking.
 
 **Pomysły dydaktyczne:** feedback śledzenia dłoni, wizualizacja niepewności, gest pinch, problem jitteru i filtrowania.
 
@@ -61,12 +61,12 @@ Bez zewnętrznego detektora prefab symuluje dwie poruszające się osoby.
 **Skrypt:** `WiRRSpatialSurfaceScanner`.
 
 **Działanie:**
-- provider depth/spatial mesh wysyła punkty i normalne przez `SubmitSurfaceSample(...)` lub `SubmitSurfaceSamples(...)`;
+- dostawca danych danych głębi / siatki przestrzennej wysyła punkty i normalne przez `SubmitSurfaceSample(...)` lub `SubmitSurfaceSamples(...)`;
 - prefab rozmieszcza na realnych powierzchniach krótkotrwałe wirtualne markery;
 - markery wygasają, dzięki czemu widać aktualnie obserwowaną geometrię;
-- bez depth API skrypt wykonuje rozproszone raycasty z `Camera.main` do colliderów sceny, co pozwala testować cały mechanizm w Editorze.
+- bez API danych głębi skrypt wykonuje rozproszone rzuty promieni z `Camera.main` do colliderów sceny, co pozwala testować cały mechanizm w Editorze.
 
-**Pomysły dydaktyczne:** depth sensing, spatial mapping, normals, okluzja, raycast względem realnej geometrii, opóźnienie i gęstość próbkowania.
+**Pomysły dydaktyczne:** dane głębi sensing, spatial mapping, normals, okluzja, rzutowanie promienia (raycast) względem realnej geometrii, opóźnienie i gęstość próbkowania.
 
 ## 5. MR_WallPortal
 
@@ -82,14 +82,14 @@ Do testów bez Scene Understanding służy `TryAnchorFromViewerRay()`, który u�
 
 ## Integracja z konkretnymi źródłami danych
 
-Warstwa WiRR jest celowo provider-neutral. Typowy adapter ma tylko odczytać dane z właściwego SDK i wywołać metodę komponentu:
+Warstwa WiRR jest celowo niezależny od dostawcy danych. Typowy adapter ma tylko odczytać dane z właściwego SDK i wywołać metodę komponentu:
 
 | Źródło | Komponent WiRR | Punkt integracji |
 |---|---|---|
-| kamera / texture provider | `WiRRCameraFeedMixer` | `SetExternalTexture(Texture)` |
-| hand tracking | `WiRRHandAura` | `SetHandPose(...)` |
-| detekcja ludzi / body tracking | `WiRRPeopleAwareness` | `SetPeople(...)` |
-| depth / spatial mesh | `WiRRSpatialSurfaceScanner` | `SubmitSurfaceSample(s)` |
+| kamera / texture dostawca danych | `WiRRCameraFeedMixer` | `SetExternalTexture(Texture)` |
+| hand śledzenie | `WiRRHandAura` | `SetHandPose(...)` |
+| detekcja ludzi / body śledzenie | `WiRRPeopleAwareness` | `SetPeople(...)` |
+| dane głębi / siatki przestrzennej | `WiRRSpatialSurfaceScanner` | `SubmitSurfaceSample(s)` |
 | Scene Understanding / wall plane | `WiRRWallAnchor` | `SetWallPlane(...)` |
 
 Takie rozdzielenie pozwala studentowi porównać np. AR Foundation i Meta SDK bez przepisywania logiki wizualizacji.
@@ -100,7 +100,7 @@ Takie rozdzielenie pozwala studentowi porównać np. AR Foundation i Meta SDK be
 - Nie wykonuj identyfikacji twarzy w demonstratorze People Awareness — do celu ćwiczenia wystarcza pozycja.
 - Przy pracy z osobami postronnymi stosuj zgodę i ograniczaj dane do minimum potrzebnego w eksperymencie.
 - Wizualizacja strefy bezpieczeństwa nie jest certyfikowanym systemem bezpieczeństwa funkcjonalnego.
-- Dane ze spatial mesh/depth mogą ujawniać geometrię pomieszczenia; nie eksportuj ich bez potrzeby.
+- Dane ze siatki przestrzennej/dane głębi mogą ujawniać geometrię pomieszczenia; nie eksportuj ich bez potrzeby.
 
 ## Zalecana kolejność
 
@@ -113,4 +113,4 @@ Takie rozdzielenie pozwala studentowi porównać np. AR Foundation i Meta SDK be
 
 ## Następny krok studenta
 
-Nie kończ pracy na uruchomieniu fallbacku. Wybierz co najmniej jeden demonstrator, podłącz rzeczywisty provider i wprowadź jedną własną modyfikację, której efekt można zmierzyć. Gotowy prefab jest kontrolowanym baseline'em; wartość dydaktyczna zaczyna się przy porównaniu baseline → własna wersja.
+Nie kończ pracy na uruchomieniu trybu zastępczego. Wybierz co najmniej jeden demonstrator, podłącz rzeczywisty dostawca danych i wprowadź jedną własną modyfikację, której efekt można zmierzyć. Gotowy prefab jest kontrolowanym wariantem bazowym; wartość dydaktyczna zaczyna się przy porównaniu wariant bazowy → własna wersja.
