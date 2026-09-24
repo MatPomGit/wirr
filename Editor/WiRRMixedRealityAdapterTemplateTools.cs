@@ -77,7 +77,7 @@ using UnityEngine;
 // STARTER DYDAKTYCZNY WiRR
 // Cel: {purpose}
 // Ten plik należy do projektu studenta. Możesz go swobodnie zmieniać.
-// Zasada architektury: SDK/provider -> ten adapter -> provider-neutralny komponent WiRR.
+// Zasada architektury: SDK/dostawca danych -> ten adapter -> niezależny od dostawcy danych komponent WiRR.
 // Nie dodawaj zależności od Meta/AR Foundation do pakietu WiRR Runtime.
 // Dodaj je tutaj, w kodzie własnego projektu.
 
@@ -89,7 +89,7 @@ public sealed class {className} : MonoBehaviour
 Header("CameraFeedAdapterStarter", "podłączenie wybranego źródła obrazu do MR_CameraWindow") +
 @"    [SerializeField] private WiRRCameraFeedMixer target;
 
-    // Wywołaj tę metodę, gdy provider dostarczy nową lub zaktualizowaną Texture.
+    // Wywołaj tę metodę, gdy dostawca danych dostarczy nową lub zaktualizowaną Texture.
     public void PushFrame(Texture texture)
     {
         if (target != null && texture != null)
@@ -108,12 +108,12 @@ Header("CameraFeedAdapterStarter", "podłączenie wybranego źródła obrazu do 
     // 2. Zasubskrybuj callback/zdarzenie, które udostępnia klatkę lub Texture.
     // 3. Wywołaj PushFrame(texture).
     // 4. Sprawdź orientację obrazu; w razie potrzeby użyj target.SetMirror(...).
-    // 5. Obsłuż OnEnable/OnDisable i zwolnij zasoby providera.
+    // 5. Obsłuż OnEnable/OnDisable i zwolnij zasoby dostawcy danych.
 }
 ";
 
         private static string HandTemplate() =>
-Header("HandTrackingAdapterStarter", "mapowanie jointów dłoni providera na MR_HandAura") +
+Header("HandTrackingAdapterStarter", "mapowanie jointów dłoni dostawcy danych na MR_HandAura") +
 @"    [SerializeField] private WiRRHandAura target;
 
     public void PushPose(
@@ -149,9 +149,9 @@ Header("HandTrackingAdapterStarter", "mapowanie jointów dłoni providera na MR_
     // TODO:
     // 1. Odczytaj wrist + 5 fingertip joints z XR Hands/Meta Hand Tracking.
     // 2. Przelicz pozycje do przestrzeni świata Unity i metrów.
-    // 3. Przekazuj aktualizację tylko wtedy, gdy tracking jest ważny.
+    // 3. Przekazuj aktualizację tylko wtedy, gdy śledzenie jest ważny.
     // 4. Porównaj Pinch01 z gestem pinch raportowanym przez SDK.
-    // 5. Dodaj filtrację confidence/jitter, ale mierz opóźnienie wprowadzone filtrem.
+    // 5. Dodaj filtrację pewność/drgania (jitter), ale mierz opóźnienie wprowadzone filtrem.
 }
 ";
 
@@ -174,7 +174,7 @@ Header("PeopleDetectorAdapterStarter", "przekazanie anonimowych pozycji osób do
     // TODO:
     // 1. Provider powinien zwracać pozycję osoby/szkieletu, nie jej tożsamość.
     // 2. Wybierz stabilny punkt reprezentatywny, np. pelvis/torso/środek bbox po projekcji 3D.
-    // 3. Przelicz wynik do world space Unity.
+    // 3. Przelicz wynik do układu świata Unity.
     // 4. Przy utracie detekcji usuń slot albo wywołaj ClearPeople().
     // 5. Nie zapisuj twarzy, nazw ani embeddingów, jeśli eksperyment ich nie wymaga.
 }
@@ -184,10 +184,10 @@ Header("PeopleDetectorAdapterStarter", "przekazanie anonimowych pozycji osób do
 Header("SpatialDepthAdapterStarter", "przekazanie punktów depth/spatial mesh do MR_SpatialSurfaceScanner") +
 @"    [SerializeField] private WiRRSpatialSurfaceScanner target;
 
-    public void PushSample(Vector3 worldPoint, Vector3 worldNormal, float confidence = 1f)
+    public void PushSample(Vector3 worldPoint, Vector3 worldNormal, float pewność = 1f)
     {
         if (target != null)
-            target.SubmitSurfaceSample(worldPoint, worldNormal, confidence);
+            target.SubmitSurfaceSample(worldPoint, worldNormal, pewność);
     }
 
     public void PushBatch(Vector3[] worldPoints, Vector3[] worldNormals)
@@ -198,9 +198,9 @@ Header("SpatialDepthAdapterStarter", "przekazanie punktów depth/spatial mesh do
 
     // TODO:
     // 1. Pobierz depth hit / spatial mesh / scene mesh z wybranego SDK.
-    // 2. Przekształć punkt i normalną do world space Unity.
+    // 2. Przekształć punkt i normalną do układu świata Unity.
     // 3. Ogranicz gęstość próbek; nie wysyłaj całej mapy co klatkę.
-    // 4. Jeżeli SDK podaje confidence, przekaż je do PushSample().
+    // 4. Jeżeli SDK podaje pewność, przekaż je do PushSample().
     // 5. Porównaj gęstość próbkowania, opóźnienie i stabilność normalnych.
 }
 ";
