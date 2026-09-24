@@ -2,9 +2,9 @@
 
 Zestaw **Mobile AR Showcase** zawiera pięć gotowych demonstratorów zaprojektowanych pod klasyczny scenariusz AR na telefonie: kamera tylna, ekran dotykowy, AR Foundation/ARCore i obserwowanie świata przez ekran urządzenia.
 
-Każdy prefab ma przypisany skrypt Runtime oraz tryb zastępczy do testów w Unity Editor. Wersja urządzeniowa pozostaje niezależna od dostawcy danych: kod studenta może podać wyniki AR Foundation do prostego API WiRR bez dodawania zależności AR Foundation do Runtime pakietu.
+Każdy prefab ma przypisany skrypt Runtime oraz tryb zastępczy do testów w Edytorze Unity. Wersja urządzeniowa pozostaje niezależna od dostawcy danych: kod studenta może podać wyniki AR Foundation do prostego API WiRR bez dodawania zależności AR Foundation do Runtime pakietu.
 
-Tryby zastępcze są celowo aktywne **tylko w Unity Editor**. W buildzie Android brak danych od dostawcy danych AR oznacza brak trafienia, śledzenia lub estymacji zamiast sztucznego wyniku; dzięki temu nie da się pomylić symulacji z realnym pomiarem na telefonie.
+Tryby zastępcze są celowo aktywne **tylko w Edytorze Unity**. W buildzie Android brak danych od dostawcy danych AR oznacza brak trafienia, śledzenia lub estymacji zamiast sztucznego wyniku; dzięki temu nie da się pomylić symulacji z realnym pomiarem na telefonie.
 
 Prefaby powstają w `Assets/WiRR/Common/Prefabs/MobileAR`, a ich instancje w scenie w `WiRR_TeachingAssets/MobileARShowcase`.
 
@@ -115,12 +115,12 @@ Startery nie są nadpisywane przy ponownym użyciu generatora. Są kodem student
 
 ## Proponowane dalsze rozszerzenia
 
-- pinch-to-scale i obrót dwoma palcami dla Tap Placement;
+- skalowanie gestem szczypnięcia i obrót dwoma palcami dla Tap Placement;
 - persistent anchors i odtwarzanie po restarcie;
 - semantic placement tylko na podłodze/stole/ścianie;
 - image-to-world handoff po utracie markera;
 - pomiar powierzchni i objętości w AR Ruler;
-- confidence-aware ruler pokazujący niepewność;
+- linijkę AR pokazującą niepewność pomiaru;
 - okluzję wykorzystującą mapę głębi otoczenia (environment depth);
 - mesh/stroke zamiast punktowego Surface Painter;
 - zapisywanie i współdzielenie rysunków między urządzeniami;
