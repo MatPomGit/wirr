@@ -77,8 +77,8 @@ using UnityEngine;
 // STARTER DYDAKTYCZNY WiRR
 // Cel: {purpose}
 // Ten plik należy do projektu studenta. Możesz go swobodnie zmieniać.
-// Zasada architektury: SDK/dostawca danych -> ten adapter -> niezależny od dostawcy danych komponent WiRR.
-// Nie dodawaj zależności od Meta/AR Foundation do pakietu WiRR Runtime.
+// Zasada architektury: SDK / źródło danych -> ten adapter -> niezależny od dostawcy danych komponent WiRR.
+// Nie dodawaj zależności od Meta/AR Foundation do warstwy Runtime pakietu WiRR.
 // Dodaj je tutaj, w kodzie własnego projektu.
 
 public sealed class {className} : MonoBehaviour
@@ -113,7 +113,7 @@ Header("CameraFeedAdapterStarter", "podłączenie wybranego źródła obrazu do 
 ";
 
         private static string HandTemplate() =>
-Header("HandTrackingAdapterStarter", "mapowanie jointów dłoni dostawcy danych na MR_HandAura") +
+Header("HandTrackingAdapterStarter", "mapowanie przegubów dłoni z modułu śledzenia na MR_HandAura") +
 @"    [SerializeField] private WiRRHandAura target;
 
     public void PushPose(
@@ -147,11 +147,11 @@ Header("HandTrackingAdapterStarter", "mapowanie jointów dłoni dostawcy danych 
     }
 
     // TODO:
-    // 1. Odczytaj wrist + 5 fingertip joints z XR Hands/Meta Hand Tracking.
+    // 1. Odczytaj nadgarstek i 5 opuszków z XR Hands / Meta Hand Tracking.
     // 2. Przelicz pozycje do przestrzeni świata Unity i metrów.
-    // 3. Przekazuj aktualizację tylko wtedy, gdy śledzenie jest ważny.
+    // 3. Przekazuj aktualizację tylko wtedy, gdy dane śledzenia są ważne.
     // 4. Porównaj Pinch01 z gestem pinch raportowanym przez SDK.
-    // 5. Dodaj filtrację pewność/drgania (jitter), ale mierz opóźnienie wprowadzone filtrem.
+    // 5. Dodaj filtrację zależną od pewności i drgań (jitteru), ale mierz opóźnienie wprowadzone przez filtr.
 }
 ";
 
@@ -172,7 +172,7 @@ Header("PeopleDetectorAdapterStarter", "przekazanie anonimowych pozycji osób do
     }
 
     // TODO:
-    // 1. Provider powinien zwracać pozycję osoby/szkieletu, nie jej tożsamość.
+    // 1. Moduł detekcji powinien zwracać pozycję osoby lub szkieletu, a nie jej tożsamość.
     // 2. Wybierz stabilny punkt reprezentatywny, np. pelvis/torso/środek bbox po projekcji 3D.
     // 3. Przelicz wynik do układu świata Unity.
     // 4. Przy utracie detekcji usuń slot albo wywołaj ClearPeople().
@@ -184,10 +184,10 @@ Header("PeopleDetectorAdapterStarter", "przekazanie anonimowych pozycji osób do
 Header("SpatialDepthAdapterStarter", "przekazanie punktów depth/spatial mesh do MR_SpatialSurfaceScanner") +
 @"    [SerializeField] private WiRRSpatialSurfaceScanner target;
 
-    public void PushSample(Vector3 worldPoint, Vector3 worldNormal, float pewność = 1f)
+    public void PushSample(Vector3 worldPoint, Vector3 worldNormal, float confidence = 1f)
     {
         if (target != null)
-            target.SubmitSurfaceSample(worldPoint, worldNormal, pewność);
+            target.SubmitSurfaceSample(worldPoint, worldNormal, confidence);
     }
 
     public void PushBatch(Vector3[] worldPoints, Vector3[] worldNormals)
@@ -200,7 +200,7 @@ Header("SpatialDepthAdapterStarter", "przekazanie punktów depth/spatial mesh do
     // 1. Pobierz depth hit / spatial mesh / scene mesh z wybranego SDK.
     // 2. Przekształć punkt i normalną do układu świata Unity.
     // 3. Ogranicz gęstość próbek; nie wysyłaj całej mapy co klatkę.
-    // 4. Jeżeli SDK podaje pewność, przekaż je do PushSample().
+    // 4. Jeżeli SDK podaje poziom pewności, przekaż go do PushSample().
     // 5. Porównaj gęstość próbkowania, opóźnienie i stabilność normalnych.
 }
 ";
