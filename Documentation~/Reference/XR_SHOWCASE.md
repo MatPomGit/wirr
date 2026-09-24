@@ -20,35 +20,35 @@ Prefaby są generowane do `Assets/WiRR/Common/Prefabs/XRShowcase` i umieszczane 
 - różnicę między 3DoF i 6DoF;
 - wpływ amplitudy paralaksy na wiarygodność głębi;
 - konflikt między stereoskopią, paralaksą i błędną skalą sceny;
-- wpływ opóźnienia head śledzenie → rendering na komfort.
+- wpływ opóźnienia śledzenie głowy → renderowanie na komfort.
 
 ## 2. XR_GazeBloom
 
 **Efekt:** przestrzenny „kwiat/hologram” otwiera się, pulsuje i obraca, gdy użytkownik na niego patrzy.
 
-**Dlaczego jest charakterystyczny dla XR:** pokazuje implicit interaction — obiekt reaguje bez kliknięcia. W zestawie podstawowym źródłem jest kierunek głowy/kamery, a tę samą logikę można później sterować prawdziwym eye śledzeniem lub hoverem kontrolera.
+**Dlaczego jest charakterystyczny dla XR:** pokazuje interakcję niejawną (implicit interaction) — obiekt reaguje bez kliknięcia. W zestawie podstawowym źródłem jest kierunek głowy/kamery, a tę samą logikę można później sterować rzeczywistym śledzeniem wzroku lub stanem wskazania (hover) kontrolera.
 
 **Skrypt:** `WiRRGazeBloom`.
 
 **Logika:** obliczany jest kąt między osią patrzenia a kierunkiem do obiektu oraz odległość. Wartość aktywacji 0–1 steruje skalą rdzenia, rozwarciem satelitów i ruchem.
 
-**API do XRI/eye śledzenia:**
+**API do XRI / śledzenia wzroku:**
 - `SetExternalActivation(float)` — wymusza aktywację 0–1;
 - `ClearExternalActivation()` — wraca do reakcji na spojrzenie głową.
 
-**Co student może zbadać:** dwell, Midas-touch problem, wielkość celu, feedback przed selekcją i różnicę gaze/kierunek głowy (head-gaze).
+**Co student może zbadać:** czas utrzymania spojrzenia (dwell), problem Midasa, wielkość celu, informację zwrotną przed selekcją oraz różnicę między śledzeniem wzroku i kierunkiem głowy (head-gaze).
 
 ## 3. XR_TelekinesisOrb
 
 **Efekt:** po utrzymaniu spojrzenia na kuli przez około 0,85 s obiekt leci do punktu przed użytkownikiem. Pojawia się wiązka z piedestału. Po odwróceniu wzroku kula wraca.
 
-**Dlaczego jest charakterystyczny dla XR:** jest to demonstracja interakcję na odległość (distant interaction) i „zdalne przyciąganie (force grab)” — techniki często stosowanej, gdy bezpośrednie sięganie dłonią byłoby niewygodne.
+**Dlaczego jest charakterystyczny dla XR:** jest to demonstracja interakcji na odległość (distant interaction) i „zdalnego przyciągania” (force grab) — techniki często stosowanej, gdy bezpośrednie sięganie dłonią byłoby niewygodne.
 
 **Skrypt:** `WiRRTelekinesisOrb`.
 
 **Logika:** gaze dwell ładuje selekcję; po aktywacji obiekt płynnie śledzi pozycję przed kamerą. Utrata spojrzenia przez określony czas zwalnia obiekt i uruchamia powrót do pozycji bazowej.
 
-**API do XRI/hand śledzenia:**
+**API do XRI / śledzenia dłoni:**
 - `BeginHold()`;
 - `Release()`;
 - `ToggleHold()`.
@@ -59,7 +59,7 @@ Te metody można przypisać np. do `Select Entered`/`Select Exited` bez przepisy
 
 **Efekt:** panel informacyjny miękko podąża za użytkownikiem, ale nie jest sztywno przyklejony do HMD.
 
-**Dlaczego jest charakterystyczny dla XR:** pokazuje różnicę między UI head-locked, body-referenced i zakotwiczone w świecie. Sztywne UI przyklejone do głowy może być męczące; opóźnione podążanie i możliwość przypięcia do świata pozwala porównać strategie.
+**Dlaczego jest charakterystyczny dla XR:** pokazuje różnicę między interfejsem przywiązanym do głowy (head-locked), odnoszonym do ciała (body-referenced) i zakotwiczonym w świecie. Sztywne UI przyklejone do głowy może być męczące; opóźnione podążanie i możliwość przypięcia do świata pozwala porównać strategie.
 
 **Skrypt:** `WiRRHeadFollower`.
 
@@ -90,10 +90,10 @@ Te metody można przypisać np. do `Select Entered`/`Select Exited` bez przepisy
 
 1. Portal — najpierw czysta obserwacja 6DoF.
 2. Gaze Bloom — reakcja systemu na uwagę użytkownika.
-3. Telekinesis — przejście od obserwacji do interakcję na odległość (distant interaction).
+3. Telekinesis — przejście od obserwacji do interakcji na odległość (distant interaction).
 4. Diegetic HUD — projektowanie informacji przestrzennej.
 5. World Scale Totem — manipulacja skalą i embodied perception.
 
 ## Zasada dydaktyczna
 
-Demonstratory mają gotową logikę, ponieważ ich celem jest pokazanie efektu i umożliwienie pomiaru. Nie zastępują ćwiczeń XRI. Gdy laboratorium wymaga samodzielnego skonfigurowania `XR Grab Interactable`, ray interactor, teleportacji lub hand śledzenia, student nadal wykonuje tę część samodzielnie. Publiczne API demonstratorów jest punktem integracji, a nie gotowym rozwiązaniem ocenianego zadania.
+Demonstratory mają gotową logikę, ponieważ ich celem jest pokazanie efektu i umożliwienie pomiaru. Nie zastępują ćwiczeń XRI. Gdy laboratorium wymaga samodzielnego skonfigurowania `XR Grab Interactable`, interaktora promieniowego (ray interactor), teleportacji lub śledzenia dłoni, student nadal wykonuje tę część samodzielnie. Publiczne API demonstratorów jest punktem integracji, a nie gotowym rozwiązaniem ocenianego zadania.
