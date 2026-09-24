@@ -1,6 +1,6 @@
 # XR Showcase — gotowe demonstratory efektów przestrzennych
 
-Zestaw **XR Showcase** zawiera pięć prefabów, które mają pokazywać zjawiska szczególnie czytelne w headsetcie 6DoF. Każdy prefab ma już przypisany skrypt Runtime i działa po wejściu w Play Mode. XRI nie jest wymagane do działania wersji demonstracyjnej; publiczne metody komponentów pozwalają jednak podłączyć później `Select`, `Hover`, kontrolery lub hand śledzenie.
+Zestaw **XR Showcase** zawiera pięć prefabów, które mają pokazywać zjawiska szczególnie czytelne w goglach 6DoF. Każdy prefab ma już przypisany skrypt Runtime i działa po wejściu w Play Mode. XRI nie jest wymagane do działania wersji demonstracyjnej; publiczne metody komponentów pozwalają jednak podłączyć później `Select`, `Hover`, kontrolery lub śledzenie dłoni.
 
 Prefaby są generowane do `Assets/WiRR/Common/Prefabs/XRShowcase` i umieszczane w aktywnej scenie pod `WiRR_TeachingAssets/XRShowcase`.
 
@@ -46,7 +46,7 @@ Prefaby są generowane do `Assets/WiRR/Common/Prefabs/XRShowcase` i umieszczane 
 
 **Skrypt:** `WiRRTelekinesisOrb`.
 
-**Logika:** gaze dwell ładuje selekcję; po aktywacji obiekt płynnie śledzi pozycję przed kamerą. Utrata spojrzenia przez określony czas zwalnia obiekt i uruchamia powrót do pozycji bazowej.
+**Logika:** utrzymanie spojrzenia przez określony czas (gaze dwell) uruchamia selekcję; po aktywacji obiekt płynnie śledzi pozycję przed kamerą. Utrata spojrzenia przez określony czas zwalnia obiekt i uruchamia powrót do pozycji bazowej.
 
 **API do XRI / śledzenia dłoni:**
 - `BeginHold()`;
@@ -81,7 +81,7 @@ Te metody można przypisać np. do `Select Entered`/`Select Exited` bez przepisy
 **Logika:** odległość głowy od obiektu jest mapowana na współczynnik 0–1, a następnie na skalę miniaturową → skala pomieszczenia (room-scale).
 
 **API:**
-- `SetExternalFactor(float)` — sterowanie skalą suwakiem, kontrolerem albo gestem pinch;
+- `SetExternalFactor(float)` — sterowanie skalą suwakiem, kontrolerem albo gestem szczypnięcia (pinch);
 - `UseProximity()` — powrót do automatyki odległościowej.
 
 **Co student może zbadać:** world scale, propriocepcję, perceived size, near-field comfort oraz błędy wynikające z niepoprawnej skali 1 Unity unit = 1 m.
