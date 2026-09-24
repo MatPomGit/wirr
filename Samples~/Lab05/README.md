@@ -12,7 +12,7 @@ Ten folder jest próbką pakietu **WiRR Course Toolkit** przeznaczoną dla Labor
 6. Przygotuj model CAD i co najmniej dwa alternatywne formaty/ustawienia eksportu.
 7. Opcjonalnie w sekcji **Scena i pomiary → Dodatkowe modele 3D** zaimportuj model **Unitree G1 EDU + animacje** jako dodatkowy, bardziej złożony zasób porównawczy. Nie zastępuje on obowiązkowego modelu CAD.
 8. Utwórz scenę Lab05 i geometrię referencyjną do kontroli skali.
-9. Wszystkie pomiary porównawcze wykonuj w tych samych warunkach Editor/Build i na tej samej kamerze.
+9. Wszystkie pomiary porównawcze wykonuj w tych samych warunkach Edytor/kompilacja i na tej samej kamerze.
 
 ## Zadania krok po kroku
 
