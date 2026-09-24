@@ -107,13 +107,13 @@ namespace KIA.WiRR
                 return;
 
             var gazed = IsGazedAt();
-            if (!held)
+            if (!held && !returning)
             {
                 dwell = gazed ? Mathf.Min(dwellSeconds, dwell + Time.deltaTime) : Mathf.Max(0f, dwell - Time.deltaTime * 1.6f);
                 if (dwell >= dwellSeconds)
                     BeginHold();
             }
-            else
+            else if (held)
             {
                 if (gazed)
                     lostGaze = 0f;
