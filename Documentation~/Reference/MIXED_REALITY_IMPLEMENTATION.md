@@ -6,19 +6,19 @@ Ten dokument pokazuje **jak przejść od gotowego demonstratora WiRR do własnej
 
 Stosuj układ:
 
-`sensor / SDK / model CV → adapter w Assets/WiRR/LabXX/Scripts → komponent WiRR Runtime → prefab / wizualizacja`
+`sensor / SDK / model CV → adapter w Assets/WiRR/LabXX/Scripts → komponent warstwy Runtime WiRR → prefab / wizualizacja`
 
 Przykłady:
 
 - `AR Foundation camera texture → CameraFeedAdapterStarter → WiRRCameraFeedMixer → MR_CameraWindow`;
 - `XR Hands joints → HandTrackingAdapterStarter → WiRRHandAura → MR_HandAura`;
 - `people detector / body tracker → PeopleDetectorAdapterStarter → WiRRPeopleAwareness → MR_PeopleAwareness`;
-- `Depth API / siatki przestrzennej → SpatialDepthAdapterStarter → WiRRSpatialSurfaceScanner → MR_SpatialSurfaceScanner`;
+- `API danych głębi / siatka przestrzenna → SpatialDepthAdapterStarter → WiRRSpatialSurfaceScanner → MR_SpatialSurfaceScanner`;
 - `Scene Understanding planes → WallPlaneAdapterStarter → WiRRWallAnchor → MR_WallPortal`.
 
 Adapter powinien być mały. Jego zadaniem jest przetłumaczenie danych konkretnego SDK do prostych typów Unity (`Texture`, `Vector3`, `Quaternion`, `Vector2`). Dzięki temu prefab może działać z innym dostawcą danych bez zmian w warstwie Runtime.
 
-## Przygotowanie obszar roboczy
+## Przygotowanie obszaru roboczego
 
 1. Otwórz `WiRR → Narzędzia kursu`.
 2. Wybierz laboratorium i przygotuj jego obszar roboczy.
@@ -90,7 +90,7 @@ Sprawdź:
 - segmentacja ludzi/obiektów i selektywne nakładanie grafiki;
 - rekonstrukcja głębi i poprawna okluzja;
 - foveated processing region sterowany gaze;
-- porównanie dwóch dostawców danych kamery pod kątem latency i jakości.
+- porównanie dwóch źródeł obrazu pod kątem opóźnienia i jakości.
 
 **Przykładowa metryka:** mediana i p95 opóźnienia kamera → obraz oraz błąd reprojekcji punktu 2D → 3D.
 
@@ -102,7 +102,7 @@ Sprawdź:
 
 1. Dodaj `Hand Aura`.
 2. Uruchom Play Mode.
-3. Fallback wygeneruje proceduralną dłoń przed kamerą.
+3. Tryb demonstracyjny wygeneruje proceduralną dłoń przed kamerą.
 4. Obserwuj `PinchCore` i wartość `Pinch01`.
 
 ### Etap 2: dane minimalne
@@ -116,13 +116,13 @@ Do wersji podstawowej potrzebujesz:
 - middle tip;
 - ring tip;
 - little tip;
-- flagi śledzenie valid.
+- flagi poprawności śledzenia.
 
 ### Etap 3: adapter
 
 W `HandTrackingAdapterStarter.cs`:
 
-1. odczytaj jointy z dostawcy danych;
+1. odczytaj przeguby (jointy) z modułu śledzenia dłoni;
 2. przelicz je do układ świata Unity;
 3. upewnij się, że jednostką są metry;
 4. wywołaj `PushPose(...)`;
@@ -165,7 +165,7 @@ Zmierz:
 ### Etap 1: wersja bazowa
 
 1. Dodaj `People Awareness`.
-2. Fallback symuluje dwie poruszające się osoby.
+2. Tryb demonstracyjny symuluje dwie poruszające się osoby.
 3. Obserwuj zmianę halo przy zmniejszaniu odległości.
 
 ### Etap 2: wybór punktu reprezentującego osobę
@@ -175,7 +175,7 @@ Preferowane:
 - pelvis / root joint body trackera;
 - torso;
 - środek 3D bounding box;
-- punkt na podłodze wyliczony z sylwetki i dane głębi.
+- punkt na podłodze wyliczony z sylwetki i danych głębi.
 
 Nie używaj środka twarzy jako jedynej pozycji do proxemics, jeśli dostawca danych oferuje stabilniejszy punkt ciała.
 
@@ -201,7 +201,7 @@ Ustaw osobę w znanych odległościach 1 m, 2 m, 3 m i porównaj pozycję marker
 - licznik osób bez identyfikacji.
 
 **Średnie:**
-- estymacja velocity;
+- estymacja prędkości;
 - predykowany tor na 0,5–1 s;
 - eliptyczna strefa proxemics;
 - chwilowy anonimowy track-id do ciągłości trajektorii.
@@ -210,7 +210,7 @@ Ustaw osobę w znanych odległościach 1 m, 2 m, 3 m i porównaj pozycję marker
 - dynamiczne strefy człowiek–robot;
 - estymacja orientacji ciała;
 - multimodalne ostrzeżenie audio + wizualizacja;
-- fusion vision + LiDAR/dane głębi;
+- fuzja danych wizyjnych z LiDAR-em lub danymi głębi;
 - social referencing bez identyfikowania osoby.
 
 **Przykładowa metryka:** błąd lokalizacji osoby [m], czas detekcji wejścia do strefy i liczba fałszywych alarmów.
@@ -225,15 +225,15 @@ Ustaw osobę w znanych odległościach 1 m, 2 m, 3 m i porównaj pozycję marker
 2. Upewnij się, że scena ma collidery.
 3. W Play Mode tryb zastępczy wysyła rzuty promieni z kamery i oznacza trafione powierzchnie.
 
-### Etap 2: dostawca danych danych głębi / siatki przestrzennej
+### Etap 2: źródło danych głębi lub siatki przestrzennej
 
 Źródłem może być:
 
-- rzutowanie promienia (raycast) dane głębi;
-- environment dane głębi;
+- trafienia z mapy głębi lub rzutowania promieni;
+- mapa głębi otoczenia (environment depth);
 - siatki przestrzennej;
 - scene mesh;
-- dane głębi image po unprojection.
+- obraz głębi po odwzorowaniu pikseli do przestrzeni 3D (unprojection).
 
 ### Etap 3: adapter
 
@@ -267,14 +267,14 @@ Na płaskiej ścianie policz:
 - lokalny mesh z punktów;
 - plane fitting RANSAC;
 - klasyfikacja floor/wall/table;
-- dane głębi-only occlusion material.
+- materiał okluzji zapisujący wyłącznie głębię;
 
 **Zaawansowane:**
 - incremental mesh reconstruction;
 - real-world physics collisions;
 - navigable surface extraction;
-- fusion kilku klatek dane głębi;
-- porównanie latency i dokładności dwóch źródeł dane głębi.
+- fuzja kilku kolejnych klatek danych głębi;
+- porównanie opóźnienia i dokładności dwóch źródeł danych głębi.
 
 **Przykładowa metryka:** RMSE punktów do płaszczyzny, błąd normalnej [°], CPU ms i liczba próbek/s.
 
@@ -342,7 +342,7 @@ Nie zaczynaj od pytania „jaki efekt dodać?”. Zacznij od pytania „jaki pro
 ### Schemat pracy
 
 1. **Hipoteza** — np. „filtr One Euro zmniejszy jitter dłoni bez wzrostu opóźnienia > 20 ms”.
-2. **Baseline** — zmierz gotowy prefab.
+2. **Wariant bazowy** — zmierz gotowy prefab.
 3. **Jedna modyfikacja** — wprowadź tylko jeden nowy mechanizm.
 4. **Powtórzony pomiar** — te same warunki i urządzenie.
 5. **Porównanie A/B** — liczby, nie tylko zrzuty ekranu.
@@ -357,7 +357,7 @@ Nie zaczynaj od pytania „jaki efekt dodać?”. Zacznij od pytania „jaki pro
 - semantic scene understanding;
 - real-world occlusion;
 - real-world physics;
-- cross-dostawca danych benchmarking;
+- porównanie wydajności i jakości kilku dostawców danych;
 - dynamic safety zones;
 - privacy-preserving perception;
 - shared anchors dla wielu użytkowników;
@@ -366,7 +366,7 @@ Nie zaczynaj od pytania „jaki efekt dodać?”. Zacznij od pytania „jaki pro
 
 ## Co warto pokazać w sprawozdaniu z własnej rozbudowy
 
-- diagram `dostawca danych → adapter → WiRR component → visual`;
+- diagram `dostawca danych → adapter → komponent WiRR → wizualizacja`;
 - nazwę i wersję SDK;
 - transformacje układów współrzędnych;
 - sposób obsługi utraty śledzenia;
