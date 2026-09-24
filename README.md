@@ -33,7 +33,7 @@ Pakiet zawiera:
 - **XR Showcase**: pięć gotowych efektów przestrzennych z własną logiką Runtime: portal paralaksy 6DoF, Gaze Bloom, Telekinesis Orb, Diegetic HUD i World Scale Totem;
 - **Mixed Reality Showcase**: pięć prefabów łączących warstwę wirtualną z kamerą, dłońmi, ludźmi, danymi głębi, siatką przestrzenną i wykrytymi ścianami;
 - **Mobile AR Showcase**: pięć demonstratorów na smartfon: Tap Placement, Image Marker Portal, World Ruler, Light Match Object i Surface Painter;
-- **Build & Deploy**: instrukcja wewnątrz Unity dla Windows PC, smartfona z Androidem i Meta Quest 3, razem z ADB i Build Profiles.
+- **Budowanie i instalacja**: instrukcja wewnątrz Unity dla Windows PC, smartfona z Androidem i Meta Quest 3, razem z ADB i profilami budowania (`Build Profiles`).
 
 ## Instalacja
 
@@ -142,7 +142,7 @@ W sekcji **Scena i pomiary → Efekty charakterystyczne dla XR** dostępnych jes
 
 - **XR_ParallaxPortal** + `WiRRHeadParallax` — wielowarstwowa paralaksa sterowana translacją głowy; pokazuje różnicę 3DoF/6DoF i head-coupled perspective;
 - **XR_GazeBloom** + `WiRRGazeBloom` — obiekt przestrzenny reagujący na kierunek patrzenia, z publicznym `SetExternalActivation()` do śledzenia wzroku lub XRI;
-- **XR_TelekinesisOrb** + `WiRRTelekinesisOrb` — gaze dwell i force-grab; `BeginHold()`, `Release()` i `ToggleHold()` można przypisać do zdarzeń XRI;
+- **XR_TelekinesisOrb** + `WiRRTelekinesisOrb` — utrzymanie spojrzenia (gaze dwell) i zdalne przyciąganie (force grab); `BeginHold()`, `Release()` i `ToggleHold()` można przypisać do zdarzeń XRI;
 - **XR_DiegeticHUD** + `WiRRHeadFollower` — miękko podążający panel; `Pin()`/`Unpin()` pozwala porównać interfejs odnoszony do ciała/głowy z interfejsem zakotwiczonym w świecie;
 - **XR_WorldScaleTotem** + `WiRRProximityScale` — przejście miniatura → skala pomieszczenia (room-scale) w funkcji odległości; `SetExternalFactor()` umożliwia sterowanie gestem, suwakiem lub kontrolerem.
 
@@ -177,7 +177,7 @@ Instrukcja w Unity: **WiRR → Pomoc → Mobile AR: telefon**. Dokumentacja: `Do
 
 Dla studentów dostępna jest również szczegółowa ścieżka implementacyjna **WiRR → Pomoc → Mixed Reality: implementacja i rozbudowa**. Okno prowadzi przez architekturę `dostawca danych → adapter → komponent WiRR → wizualizacja`, konwersję współrzędnych i cykl życia śledzenia, walidację i proponowane rozszerzenia.
 
-Przycisk **Utwórz startery adapterów MR** generuje w `Assets/WiRR/LabXX/Scripts/MixedRealityAdapters` pięć kompilowalnych plików startowych. Są one własnym kodem studenta i nie są automatycznie nadpisywane. Dzięki nim zależność od Meta SDK, AR Foundation, XR Hands lub własnego modułu CV lub danych głębi pozostaje w projekcie studenta, a nie w warstwie Runtime WiRR niezależnej od dostawcy danych.
+Przycisk **Utwórz startery adapterów MR** generuje w `Assets/WiRR/LabXX/Scripts/MixedRealityAdapters` pięć kompilowalnych plików startowych. Są one własnym kodem studenta i nie są automatycznie nadpisywane. Dzięki nim zależność od Meta SDK, AR Foundation, XR Hands lub własnego modułu CV albo modułu danych głębi pozostaje w projekcie studenta, a nie w warstwie Runtime WiRR niezależnej od dostawcy danych.
 
 Dokument `Documentation~/Reference/MIXED_REALITY_IMPLEMENTATION.md` zawiera pełną procedurę dla każdego elementu oraz propozycje rozbudowy w poziomach łatwy / średni / zaawansowany z przykładowymi metrykami.
 
@@ -213,9 +213,9 @@ Do oświetlenia używane są pliki `*_HDR.exr`; odpowiadające im pliki `*_TONEM
 
 W Unity dostępne jest okno **WiRR → Pomoc → Budowanie i instalacja**, a skrócony przycisk znajduje się także w sekcji **Scena i pomiary**. Instrukcja rozdziela trzy przypadki:
 
-- **Windows PC** — Build Profiles, Scene List, profil Standalone, `Build` / `Build And Run`, wynik `.exe + *_Data`;
-- **smartfon Android** — Android Build Support, SDK/NDK/OpenJDK, Debugowanie USB, `adb devices`, profil Android, ARCore w laboratoriach AR, instalacja przez `Build And Run` lub `adb install -r`;
-- **Meta Quest 3 standalone** — Developer Mode, ADB, profil Meta Quest/Android, OpenXR dla Android/Meta Quest, Meta Quest Support, ARM64 i instalacja APK na headset.
+- **Windows PC** — `Build Profiles`, lista scen (`Scene List`), profil samodzielnej aplikacji (`Standalone`), `Build` / `Build And Run`, wynik `.exe + *_Data`;
+- **smartfon z Androidem** — Android Build Support, SDK/NDK/OpenJDK, debugowanie USB, `adb devices`, profil Android, ARCore w laboratoriach AR oraz instalacja przez `Build And Run` lub `adb install -r`;
+- **Meta Quest 3 — aplikacja samodzielna** — tryb programisty (`Developer Mode`), ADB, profil Meta Quest/Android, OpenXR dla Android/Meta Quest, Meta Quest Support, ARM64 i instalacja APK na goglach.
 
 Pakiet wyjaśnia również, dlaczego aplikacja PC i APK nie są tym samym buildem oraz dlaczego APK dla smartfona AR i Quest 3 może wymagać różnych modułów obsługi XR/AR, wejścia, uprawnień i ustawień renderowania. Meta Horizon Link jest opisany jako szybka ścieżka PC VR, a nie zamiennik pomiarów samodzielnej wersji aplikacji uruchamianej na Quest 3.
 
@@ -230,7 +230,7 @@ Pełne materiały referencyjne: `Documentation~/Reference/EXTRA_ASSETS.md` oraz 
 - [SSQ](https://kia-students.github.io/wirr/#ssq): 16 objawów, pomiar przed/po, N/O/D/TS, różnica i eksport JSON. Braki odpowiedzi nie są zerami. Polskie tłumaczenie robocze nie jest zwalidowaną adaptacją. Dane nie opuszczają przeglądarki i nie są utrwalane po odświeżeniu.
 
 Źródła strony: `WebSim~/site/`. Testy punktacji: `node --test WebSim~/tests/*.test.mjs`.
-Workflow Pages uruchamia testy przed publikacją. Bieżący zakres strony jest kompletny;
+Proces GitHub Pages uruchamia testy przed publikacją. Bieżący zakres strony jest kompletny;
 pozostało 0 dodatkowych PR dla trzech zakładek. Walidacja polskiej adaptacji SSQ
 pozostaje osobnym zadaniem badawczym, poza zakresem wersji dydaktycznej.
 
@@ -283,7 +283,7 @@ i przygotowuje dedykowaną gałąź raportową. Pakiet korzysta z lokalnej konfi
 
 ## Walidacja CI
 
-Workflow `.github/workflows/wirr-report-grade.yml` wykonuje wyłącznie kontrolę techniczną raportu. Sprawdza m.in. wersję schematu, numer laboratorium, identyfikator raportu, identyfikator zespołu oraz 2–3 poprawne i unikalne numery indeksów.
+Proces CI `.github/workflows/wirr-report-grade.yml` wykonuje wyłącznie kontrolę techniczną raportu. Sprawdza m.in. wersję schematu, numer laboratorium, identyfikator raportu, identyfikator zespołu oraz 2–3 poprawne i unikalne numery indeksów.
 
 CI nie wystawia oceny merytorycznej i nie analizuje sposobu pracy studenta. Ocenę raportu wykonuje prowadzący.
 
