@@ -88,7 +88,7 @@ namespace KIA.WiRR
         private void Update()
         {
             var live = IsTracked;
-            if (!live && simulateWhenStale)
+            if (!live && simulateWhenStale && Application.isEditor)
             {
                 var bob = Mathf.Sin(Time.time * 1.7f) * 0.015f;
                 targetPosition = fallbackPosition + Vector3.up * bob;
