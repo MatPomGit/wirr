@@ -62,6 +62,10 @@ namespace KIA.WiRR
                 contentRoot.localScale = initialContentScale * uniform;
             }
 
+            var parallax = GetComponentInChildren<WiRRHeadParallax>();
+            if (parallax != null)
+                parallax.Recenter();
+
             anchored = true;
         }
 
