@@ -19,7 +19,7 @@ Prefaby są generowane do `Assets/WiRR/Common/Prefabs/MixedReality` i umieszczan
 - `SetMirror(bool horizontal, bool vertical)` pozwala dostosować orientację obrazu;
 - `StopWebCamera()` zatrzymuje strumień, a `ClearExternalTexture()` wraca do źródła lokalnego/trybu zastępczego.
 
-**Quest 3:** passthrough jest zwykle realizowany przez warstwę/platformowy compositor, a nie jako zwykły `WebCamTexture`. Ten prefab może wtedy pozostać wirtualną nakładką nad passthrough albo otrzymać teksturę od dostawcy danych, jeśli użyte API ją udostępnia.
+**Quest 3:** tryb passthrough jest zwykle realizowany przez warstwę kompozytora platformy, a nie jako zwykły `WebCamTexture`. Ten prefab może wtedy pozostać wirtualną nakładką nad passthrough albo otrzymać teksturę od dostawcy danych, jeśli użyte API ją udostępnia.
 
 **Pomysły dydaktyczne:** HUD na realnym obrazie, celownik AR, porównanie opóźnienia kamera → obraz, analiza kadrowania i mirrorowania.
 
@@ -29,16 +29,16 @@ Prefaby są generowane do `Assets/WiRR/Common/Prefabs/MixedReality` i umieszczan
 
 **Skrypt:** `WiRRHandAura`.
 
-**Działanie:** dostawca danych wysyła pozycję nadgarstka oraz pięciu opuszków przez `SetHandPose(...)`. Prefab rysuje markery, linie palców i wirtualny rdzeń pinch pomiędzy kciukiem i palcem wskazującym.
+**Działanie:** dostawca danych wysyła pozycję nadgarstka oraz pięciu opuszków przez `SetHandPose(...)`. Prefab rysuje markery, linie palców i wirtualny wskaźnik gestu szczypnięcia (pinch) pomiędzy kciukiem i palcem wskazującym.
 
 **API:**
 - `SetHandPose(...)` — aktualizacja pozycji dłoni;
 - `SetTracked(bool)` — jawna informacja o utracie/odzyskaniu śledzenia;
 - `Pinch01` — znormalizowana wartość 0–1 wyliczana z odległości kciuk–wskazujący.
 
-Jeżeli nie ma dostawcy danych, prefab symuluje dłoń przed kamerą i okresowo demonstruje pinch. Dzięki temu student widzi zachowanie komponentu jeszcze przed integracją z XR Hands/Meta Hand Tracking.
+Jeżeli nie ma dostawcy danych, prefab symuluje dłoń przed kamerą i okresowo demonstruje gest szczypnięcia (pinch). Dzięki temu student widzi zachowanie komponentu jeszcze przed integracją z XR Hands/Meta Hand Tracking.
 
-**Pomysły dydaktyczne:** feedback śledzenia dłoni, wizualizacja niepewności, gest pinch, problem jitteru i filtrowania.
+**Pomysły dydaktyczne:** informacja zwrotna o śledzeniu dłoni, wizualizacja niepewności, gest szczypnięcia (pinch), problem drgań położenia (jitteru) i filtrowania.
 
 ## 3. MR_PeopleAwareness
 
@@ -46,7 +46,7 @@ Jeżeli nie ma dostawcy danych, prefab symuluje dłoń przed kamerą i okresowo 
 
 **Skrypt:** `WiRRPeopleAwareness`.
 
-Provider przekazuje wyłącznie pozycje w świecie przez `SetPeople(Vector3[])` albo `SetPerson(slot, position)`. Wirtualne sylwetki/halo są nanoszone w tych miejscach, a ich pulsowanie rośnie przy małej odległości od użytkownika.
+Dostawca danych przekazuje wyłącznie pozycje w układzie świata Unity przez `SetPeople(Vector3[])` albo `SetPerson(slot, position)`. Wirtualne sylwetki/halo są nanoszone w tych miejscach, a ich pulsowanie rośnie przy małej odległości od użytkownika.
 
 **Założenie prywatności:** komponent nie wymaga obrazu twarzy, nazwisk, embeddingów biometrycznych ani trwałego identyfikatora osoby. Do demonstracji wystarczają anonimowe pozycje.
 
@@ -61,12 +61,12 @@ Bez zewnętrznego detektora prefab symuluje dwie poruszające się osoby.
 **Skrypt:** `WiRRSpatialSurfaceScanner`.
 
 **Działanie:**
-- dostawca danych danych głębi / siatki przestrzennej wysyła punkty i normalne przez `SubmitSurfaceSample(...)` lub `SubmitSurfaceSamples(...)`;
+- źródło danych głębi lub siatki przestrzennej wysyła punkty i normalne przez `SubmitSurfaceSample(...)` lub `SubmitSurfaceSamples(...)`;
 - prefab rozmieszcza na realnych powierzchniach krótkotrwałe wirtualne markery;
 - markery wygasają, dzięki czemu widać aktualnie obserwowaną geometrię;
 - bez API danych głębi skrypt wykonuje rozproszone rzuty promieni z `Camera.main` do colliderów sceny, co pozwala testować cały mechanizm w Editorze.
 
-**Pomysły dydaktyczne:** dane głębi sensing, spatial mapping, normals, okluzja, rzutowanie promienia (raycast) względem realnej geometrii, opóźnienie i gęstość próbkowania.
+**Pomysły dydaktyczne:** czujniki głębi, mapowanie przestrzenne i normalne powierzchni, okluzja, rzutowanie promienia (raycast) względem realnej geometrii, opóźnienie i gęstość próbkowania.
 
 ## 5. MR_WallPortal
 
@@ -74,7 +74,7 @@ Bez zewnętrznego detektora prefab symuluje dwie poruszające się osoby.
 
 **Skrypty:** `WiRRWallAnchor` + `WiRRHeadParallax`.
 
-Provider Scene Understanding przekazuje środek ściany, normalną i jej rozmiar przez `SetWallPlane(center, normal, size)`. Portal jest ustawiany kilka milimetrów przed powierzchnią i skaluje się do dostępnej ściany. Trzy warstwy wirtualne znajdują się optycznie za płaszczyzną i reagują paralaksą na ruch głowy.
+Moduł Scene Understanding przekazuje środek ściany, normalną i jej rozmiar przez `SetWallPlane(center, normal, size)`. Portal jest ustawiany kilka milimetrów przed powierzchnią i skaluje się do dostępnej ściany. Trzy warstwy wirtualne znajdują się optycznie za płaszczyzną i reagują paralaksą na ruch głowy.
 
 Do testów bez Scene Understanding służy `TryAnchorFromViewerRay()`, który używa zwykłego `Physics.Raycast` do collidera wskazywanego przez kamerę.
 
@@ -82,13 +82,13 @@ Do testów bez Scene Understanding służy `TryAnchorFromViewerRay()`, który u�
 
 ## Integracja z konkretnymi źródłami danych
 
-Warstwa WiRR jest celowo niezależny od dostawcy danych. Typowy adapter ma tylko odczytać dane z właściwego SDK i wywołać metodę komponentu:
+Warstwa WiRR jest celowo niezależna od dostawcy danych. Typowy adapter ma tylko odczytać dane z właściwego SDK i wywołać metodę komponentu:
 
 | Źródło | Komponent WiRR | Punkt integracji |
 |---|---|---|
-| kamera / texture dostawca danych | `WiRRCameraFeedMixer` | `SetExternalTexture(Texture)` |
-| hand śledzenie | `WiRRHandAura` | `SetHandPose(...)` |
-| detekcja ludzi / body śledzenie | `WiRRPeopleAwareness` | `SetPeople(...)` |
+| kamera / źródło tekstury | `WiRRCameraFeedMixer` | `SetExternalTexture(Texture)` |
+| śledzenie dłoni | `WiRRHandAura` | `SetHandPose(...)` |
+| detekcja ludzi / śledzenie ciała | `WiRRPeopleAwareness` | `SetPeople(...)` |
 | dane głębi / siatki przestrzennej | `WiRRSpatialSurfaceScanner` | `SubmitSurfaceSample(s)` |
 | Scene Understanding / wall plane | `WiRRWallAnchor` | `SetWallPlane(...)` |
 
@@ -100,7 +100,7 @@ Takie rozdzielenie pozwala studentowi porównać np. AR Foundation i Meta SDK be
 - Nie wykonuj identyfikacji twarzy w demonstratorze People Awareness — do celu ćwiczenia wystarcza pozycja.
 - Przy pracy z osobami postronnymi stosuj zgodę i ograniczaj dane do minimum potrzebnego w eksperymencie.
 - Wizualizacja strefy bezpieczeństwa nie jest certyfikowanym systemem bezpieczeństwa funkcjonalnego.
-- Dane ze siatki przestrzennej/dane głębi mogą ujawniać geometrię pomieszczenia; nie eksportuj ich bez potrzeby.
+- Dane z siatki przestrzennej lub mapy głębi mogą ujawniać geometrię pomieszczenia; nie eksportuj ich bez potrzeby.
 
 ## Zalecana kolejność
 
@@ -113,4 +113,4 @@ Takie rozdzielenie pozwala studentowi porównać np. AR Foundation i Meta SDK be
 
 ## Następny krok studenta
 
-Nie kończ pracy na uruchomieniu trybu zastępczego. Wybierz co najmniej jeden demonstrator, podłącz rzeczywisty dostawca danych i wprowadź jedną własną modyfikację, której efekt można zmierzyć. Gotowy prefab jest kontrolowanym wariantem bazowym; wartość dydaktyczna zaczyna się przy porównaniu wariant bazowy → własna wersja.
+Nie kończ pracy na uruchomieniu trybu zastępczego. Wybierz co najmniej jeden demonstrator, podłącz rzeczywistego dostawcę danych i wprowadź jedną własną modyfikację, której efekt można zmierzyć. Gotowy prefab jest kontrolowanym wariantem bazowym; wartość dydaktyczna zaczyna się przy porównaniu `wariant bazowy → własna wersja`.
