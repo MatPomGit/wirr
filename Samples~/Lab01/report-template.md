@@ -365,7 +365,7 @@ Stała liczba obiektów: 400.
 - OpenXR: aktywny / nieaktywny
 - `Mobile_RPAsset`: aktywny / nieaktywny
 - Render Scale baseline: __________
-- Build And Run: sukces / błąd
+- wynik polecenia `Build And Run`: sukces / błąd
 - Aplikacja działa bez aktywnego Meta Horizon Link: tak / nie
 - Uwagi / błąd buildu: __________
 
