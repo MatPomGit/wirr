@@ -45,7 +45,7 @@ W Unity wybierz:
 Repozytorium studenckie:
 
 ```text
-https://github.com/KIA-students/wirr.git#v1.0.0
+https://github.com/KIA-students/wirr.git#v1.0.1
 ```
 
 Pakiet znajduje się w katalogu głównym repozytorium. Po pierwszej instalacji danej wersji w projekcie panel **WiRR Course Toolkit** otworzy się automatycznie jeden raz i wskaże kolejny krok. Później można go otworzyć ręcznie przez **WiRR → Narzędzia kursu**. Wymagana wersja to Unity **6000.6.x** lub nowsza zgodna wersja 6000.6.
@@ -198,7 +198,7 @@ Przykładowe animacje z pakietu służą do demonstracji ruchu. Nie są źródł
 
 ## HDRI i skybox
 
-WiRR 1.0.0 udostępnia w instalowalnym pakiecie dziewięć środowisk HDRI: Amsterdam, Clean Horizon, Day Sky, Evening Environment, Forrest, Indoor Environment, Near Lake, Night Sky i Tower.
+Od WiRR 1.0.0 pakiet udostępnia dziewięć środowisk HDRI: Amsterdam, Clean Horizon, Day Sky, Evening Environment, Forrest, Indoor Environment, Near Lake, Night Sky i Tower.
 
 W panelu **Scena i pomiary → HDRI i skybox** student wybiera panoramę, widzi jej proponowane zastosowanie i może użyć **Ustaw wybrane HDRI jako Skybox**. Narzędzie tworzy edytowalny materiał `Skybox/Panoramic` w `Assets/WiRR/Common/Skyboxes`, przypisuje plik EXR i ustawia materiał jako skybox aktywnej sceny.
 
