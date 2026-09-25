@@ -29,6 +29,7 @@ Pakiet zawiera:
 - **Wysyłanie przez Git**: wysłanie raportu do repozytorium;
 - **Walidacja raportu w CI**: techniczną kontrolę integralności raportu;
 - **Unitree G1 EDU**: dodatkowy model humanoidalnego robota z przykładowymi animacjami, importowany z `RoboAnimation.unitypackage`;
+- **Lab 05: referencyjny STEP**: wspólny model CAD MakerBeam 90° do tessellacji, konwersji, audytu topologii i LOD oraz przewodnik po URDF, MJCF, USD, STEP, STL, OBJ i FBX;
 - **HDRI i skybox**: dziewięć środowisk HDR dostępnych po instalacji UPM, z automatycznym tworzeniem materiału `Skybox/Panoramic`;
 - **XR Showcase**: pięć gotowych efektów przestrzennych z własną logiką Runtime: portal paralaksy 6DoF, Gaze Bloom, Telekinesis Orb, Diegetic HUD i World Scale Totem;
 - **Mixed Reality Showcase**: pięć prefabów łączących warstwę wirtualną z kamerą, dłońmi, ludźmi, danymi głębi, siatką przestrzenną i wykrytymi ścianami;
@@ -70,6 +71,8 @@ Dodatkowa dokumentacja techniczna znajduje się w `Documentation~/`, a skrypt wa
 | 7 | Unity Test Framework |
 
 Materiały startowe znajdują się w `Samples~/Lab01`–`Samples~/Lab07`. Po imporcie próbki WiRR: z panelu WiRR albo bezpośrednio z Unity Package Manager: pakiet automatycznie przygotowuje folder roboczy `Assets/WiRR/LabXX` z folderami `Scenes`, `Scripts`, `Materials`, `Models`, `Prefabs`, `Textures`, `Data`, `Evidence` i `Documentation`. Przy pierwszym imporcie tworzona jest również scena `Scenes/LabXX.unity`.
+
+Dla Lab 05 przygotowanie workspace dodatkowo kopiuje obowiązkowy model `makerbeam_bracket_90degree.stp`, jego atrybucję oraz `MODEL_FORMATS_AND_CONVERSION.md` do `Assets/WiRR/Lab05`. Dzięki temu student nie musi samodzielnie wyszukiwać modelu wejściowego.
 
 ## Prefaby dydaktyczne
 
