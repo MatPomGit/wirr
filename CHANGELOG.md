@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- dodano do Lab 05 wspólny model referencyjny `makerbeam_bracket_90degree.stp` z FreeCAD Parts Library, wraz z atrybucją CC-BY-3.0;
+- przygotowanie workspace Lab 05 automatycznie kopiuje model STEP oraz przewodnik konwersji do `Assets/WiRR/Lab05`, bez nadpisywania istniejącej pracy studenta;
+- dodano przewodnik rozróżniający URDF, MJCF, USD, STEP, STL, OBJ i FBX, z macierzą typowych konwersji i listą kontroli jakości;
+- zaktualizowano materiały startowe Lab 05 tak, aby wszystkie zespoły pracowały na tym samym źródle CAD i porównywały rzeczywisty wpływ tessellacji, formatu oraz LOD.
+
 ## 1.0.0 (2026-09-24)
 
 - dodano pięć demonstratorów XR: `XR_ParallaxPortal`, `XR_GazeBloom`, `XR_TelekinesisOrb`, `XR_DiegeticHUD` i `XR_WorldScaleTotem`, każdy z własnym komponentem warstwy Runtime i publicznym API integracyjnym;
