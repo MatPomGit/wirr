@@ -47,7 +47,9 @@ https://docs.unity3d.com/6000.0/Manual/3D-formats.html
 
 ### Przykład internetowego konwertera
 
-Convert3D deklaruje m.in. ścieżki STEP do OBJ/FBX/STL/GLB, STL do OBJ/FBX oraz konwersje między OBJ i FBX. Jest wygodny do ćwiczeń i szybkiej diagnostyki, ale wynik trzeba zweryfikować w narzędziu docelowym.
+Aktualna dokumentacja Convert3D wymienia w tabeli typowych konwersji m.in. STEP/STP do GLB, STL, OBJ, DXF i DWG, STL do GLB/OBJ/FBX oraz konwersje pomiędzy OBJ i FBX. Sam fakt, że dany format występuje równocześnie na liście importu i eksportu, nie oznacza, że każda para wejście–wyjście jest równie dobrze obsługiwana. Dla STEP do FBX bezpieczniej przyjąć jawny pipeline STEP → OBJ/GLB → DCC → FBX albo użyć narzędzia CAD/Pixyz, jeśli zależy nam na kontrolowanej tessellacji.
+
+Convert3D jest wygodny do ćwiczeń i szybkiej diagnostyki, ale wynik trzeba zweryfikować w narzędziu docelowym.
 
 Lista formatów:
 https://convert3d.org/supported-apps/unity
@@ -57,8 +59,11 @@ W przypadku danych firmowych, niepublicznych lub objętych umową zawsze stosuj 
 
 ## 4. Przykład Unitree G1: geometria nie jest opisem robota
 
-Repozytorium Unitree ROS zawiera dla G1 zarówno URDF, jak i MJCF:
+Repozytorium Unitree ROS zawiera dla G1 modele URDF, które odwołują się do osobnych plików STL w katalogu `meshes`. W samym URDF znajdują się m.in. linki, jointy, limity, geometrie visual/collision oraz dane inertial:
 https://github.com/unitreerobotics/unitree_ros/tree/master/robots/g1_description
+https://github.com/unitreerobotics/unitree_ros/blob/master/robots/g1_description/g1_29dof.urdf
+
+To ważny przykład praktyczny: plik STL opisuje tylko geometrię powierzchni, natomiast URDF nadaje tym zasobom strukturę robota i znaczenie kinematyczne/dynamiczne.
 
 W plikach URDF link może zawierać osobno:
 - inertial: masa, położenie środka masy i tensor bezwładności;
@@ -71,7 +76,7 @@ Przykładowy G1 odwołuje się z URDF do plików meshes/*.STL. To dobry dowód, 
 URDF Studio:
 https://github.com/OpenLegged/URDF-Studio
 
-Projekt może otwierać i eksportować URDF, MJCF i USD oraz pozwala analizować topologię, visual/collision i parametry robota. Traktuj go jako narzędzie do jawnego mapowania reprezentacji. Nie zakładaj, że każda konwersja URDF, MJCF i USD jest bezstratna.
+Projekt może otwierać i eksportować m.in. URDF, MJCF, USD, SDF i Xacro oraz pozwala analizować topologię, visual/collision i parametry robota. Traktuj go jako narzędzie do jawnego mapowania reprezentacji, nie jako gwarancję bezstratnego round-trip. Przy konwersji zawsze sprawdź ramy odniesienia, osie jointów, limity, masy, bezwładności, collidery i elementy specyficzne dla danego symulatora.
 
 ## 5. Zasady, których trzeba przestrzegać
 
