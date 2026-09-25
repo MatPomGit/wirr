@@ -37,7 +37,7 @@
     },
     {
       "displayName": "Laboratorium 05: Optymalizacja modeli CAD",
-      "description": "Przygotowanie modeli inżynierskich do wydajnego użycia w XR. Próbka dostarcza referencyjny model STEP oraz przewodnik po URDF, MJCF, USD, STEP, STL, OBJ i FBX. Etapy kluczowe: 3.0: audyt CAD, tessellacja i topologia; 3.5: poziomy LOD; 4.0: czas importu, pamięć i koszt klatki; 4.5: diagnostyka i naprawa geometrii; 5.0: wybór oraz walidacja potoku konwersji.",
+      "description": "Przygotowanie modeli inżynierskich do wydajnego użycia w XR. Etapy kluczowe: 3.0: audyt modelu CAD i topologii; 3.5: poziomy LOD; 4.0: czas importu, pamięć i koszt klatki; 4.5: diagnostyka oraz naprawa geometrii; 5.0: wybór potoku przetwarzania STEP→DCC→FBX/glTF, USD lub bezpośredniej siatki i ocena ryzyka.",
       "path": "Samples~/Lab05"
     },
     {
