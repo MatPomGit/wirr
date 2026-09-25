@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.1 (2026-09-25)
+
+- dodano do Laboratorium 05 obowiązkowy model referencyjny `makerbeam_bracket_90degree.stp` w formacie STEP AP214/B-Rep z FreeCAD Parts Library, wraz z atrybucją autora i licencją CC-BY-3.0;
+- przygotowanie workspace Lab 05 automatycznie kopiuje model źródłowy, atrybucję oraz przewodnik po formatach do `Assets/WiRR/Lab05`, bez nadpisywania istniejącej pracy studenta;
+- dodano przewodnik porównujący URDF, MJCF, USD, STEP, STL, OBJ i FBX, macierz typowych konwersji oraz zasady walidacji jednostek, osi, tessellacji, hierarchii, materiałów, kolizji i dynamiki robota;
+- materiały Lab 05 wykorzystują przykłady Unitree G1, URDF Studio i Convert3D do pokazania różnicy pomiędzy geometrią, opisem robota i opisem sceny;
+- zaktualizowano checklistę zadań i szablony raportów Lab 05 tak, aby wszystkie zespoły rozpoczynały od tego samego źródła CAD i dokumentowały informacje utracone podczas konwersji.
+
 ## 1.0.0 (2026-09-24)
 
 - dodano pięć demonstratorów XR: `XR_ParallaxPortal`, `XR_GazeBloom`, `XR_TelekinesisOrb`, `XR_DiegeticHUD` i `XR_WorldScaleTotem`, każdy z własnym komponentem warstwy Runtime i publicznym API integracyjnym;
