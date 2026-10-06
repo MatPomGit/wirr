@@ -14,6 +14,7 @@ namespace KIA.WiRR.Editor
     {
         private const string LabPrefKey = "KIA.WiRR.SelectedLab";
         private const int MaxStoredEvents = 2000;
+        private const int MaxAttachedEvents = 500;
         private static readonly string Root = Path.GetFullPath(Path.Combine(Application.dataPath, "../Library/WiRRReports"));
         private static readonly string LogPath = Path.Combine(Root, "activity-log.json");
         private static DateTime? playModeStartedUtc;
@@ -28,7 +29,7 @@ namespace KIA.WiRR.Editor
         {
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
             EditorApplication.quitting += OnEditorQuitting;
-            Record("editor_session_started", CurrentLab(), "ok");
+            Record("unity_editor_context_loaded", CurrentLab(), "ok");
         }
 
         public static void Record(string eventName, int labNumber, string result = "")
@@ -78,6 +79,9 @@ namespace KIA.WiRR.Editor
                 .OrderBy(e => ParseUtc(e.timestampUtc))
                 .ToList();
 
+            if (events.Count > MaxAttachedEvents)
+                events = events.Skip(events.Count - MaxAttachedEvents).ToList();
+
             document.activityTimeline = events;
             document.activitySummary = BuildSummary(events);
         }
@@ -124,7 +128,7 @@ namespace KIA.WiRR.Editor
 
         private static void OnEditorQuitting()
         {
-            Record("editor_session_ended", CurrentLab(), "ok");
+            Record("unity_editor_quitting", CurrentLab(), "ok");
         }
 
         private static int CurrentLab() => Mathf.Clamp(EditorPrefs.GetInt(LabPrefKey, 1), 1, 7);
