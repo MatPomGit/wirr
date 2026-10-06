@@ -55,6 +55,7 @@ namespace KIA.WiRR.Editor
             SessionState.EraseString(CurrentKey);
             var labNumber = SessionState.GetInt(LabKey, 1);
             WiRRActivityLogger.Record("dependency_install_finished", labNumber, "cancelled");
+            WiRREnvironmentPreflight.Refresh(labNumber);
             SetStatus("Instalacja została anulowana. Aktywna operacja UPM może dokończyć się w tle.");
         }
 
@@ -87,6 +88,7 @@ namespace KIA.WiRR.Editor
                 SessionState.EraseString(PendingKey);
                 var labNumber = SessionState.GetInt(LabKey, 1);
                 WiRRActivityLogger.Record("dependency_install_finished", labNumber, "success");
+                WiRREnvironmentPreflight.Refresh(labNumber);
                 SetStatus("Instalacja zależności zakończona.");
                 return;
             }
@@ -157,6 +159,7 @@ namespace KIA.WiRR.Editor
             activeRequest = null;
             var labNumber = SessionState.GetInt(LabKey, 1);
             WiRRActivityLogger.Record("dependency_install_finished", labNumber, "failed");
+            WiRREnvironmentPreflight.Refresh(labNumber);
             SetStatus($"Błąd instalacji {identifier}: {error}");
             Debug.LogError($"[WiRR] Nie udało się zainstalować {identifier}: {error}");
         }
