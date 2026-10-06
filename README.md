@@ -50,6 +50,15 @@ https://github.com/KIA-students/wirr.git#main
 
 Pakiet znajduje się w katalogu głównym repozytorium. Adres z `#main` wskazuje bieżącą wersję z głównej gałęzi repozytorium, niezależnie od numeracji wydań. Repozytorium pakietu: [KIA-students/wirr](https://github.com/KIA-students/wirr). Po pierwszej instalacji w projekcie panel **WiRR Course Toolkit** otworzy się automatycznie jeden raz i wskaże kolejny krok. Później można go otworzyć ręcznie przez **WiRR → Narzędzia kursu**. Wymagana wersja to Unity **6000.6.x** lub nowsza zgodna wersja 6000.6.
 
+### Zalecane środowisko przed pierwszym laboratorium
+
+Środowisko referencyjne kursu to **Windows 11 64-bit**. W Unity Hub dla Unity **6000.6.x** należy doinstalować:
+- **Android Build Support**;
+- **Android SDK & NDK Tools**;
+- **OpenJDK**.
+
+Te moduły są wymagane do budowania na Androida i Meta Quest 3. Do pracy z C# zalecane jest **Visual Studio 2022 Community** z workloadem **Game development with Unity** albo równoważne IDE. **Android Studio** jest zalecane do diagnostyki Androida, ADB, SDK Manager i Logcat, ale nie jest wymagane do samego buildu Unity, jeśli używane są narzędzia Android dostarczone przez Unity Hub. Przed Laboratorium 06 należy również zainstalować **Docker Desktop**.
+
 ## Struktura repozytorium
 
 Katalog główny repozytorium jest czystym pakietem UPM. Kod pakietu znajduje się w `Editor/` i `Runtime/`, a materiały importowane przez Package Manager w `Samples~/`.
