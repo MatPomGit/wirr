@@ -101,6 +101,8 @@ namespace KIA.WiRR.Editor
                     : "Brak: " + string.Join(", ", missingPackages),
                 missingPackages.Count > 0));
 
+            AddCSharpProjectSanity(items);
+
             var git = CommandAvailable("git", "--version");
             items.Add(new WiRREnvironmentItem(
                 "Git",
@@ -129,6 +131,45 @@ namespace KIA.WiRR.Editor
             }
 
             return items;
+        }
+
+        private static void AddCSharpProjectSanity(List<WiRREnvironmentItem> items)
+        {
+            try
+            {
+                var assetsPath = Application.dataPath;
+                var generatedGlobalUsing = Directory
+                    .EnumerateFiles(assetsPath, "*.GlobalUsings.g.cs", SearchOption.AllDirectories)
+                    .FirstOrDefault();
+
+                if (!string.IsNullOrWhiteSpace(generatedGlobalUsing))
+                {
+                    var relative = generatedGlobalUsing.Replace('\\', '/');
+                    items.Add(new WiRREnvironmentItem(
+                        "C# / projekt .NET w Assets",
+                        WiRREnvironmentState.Missing,
+                        $"Wykryto wygenerowany plik C# 10: {relative}. Usuń dodatkowy projekt .NET lub katalogi bin/obj z Assets; nie wymuszaj C# 10 przez csc.rsp."));
+                    return;
+                }
+
+                var nestedProject = Directory
+                    .EnumerateFiles(assetsPath, "*.csproj", SearchOption.AllDirectories)
+                    .FirstOrDefault();
+
+                items.Add(new WiRREnvironmentItem(
+                    "C# / struktura projektu",
+                    string.IsNullOrWhiteSpace(nestedProject) ? WiRREnvironmentState.Ready : WiRREnvironmentState.Warning,
+                    string.IsNullOrWhiteSpace(nestedProject)
+                        ? "Nie wykryto dodatkowego projektu .NET wewnątrz Assets."
+                        : $"Wykryto plik projektu .NET w Assets: {nestedProject.Replace('\\', '/')}. Nie uruchamiaj dotnet new wewnątrz Assets."));
+            }
+            catch (Exception exception)
+            {
+                items.Add(new WiRREnvironmentItem(
+                    "C# / struktura projektu",
+                    WiRREnvironmentState.Warning,
+                    "Nie udało się sprawdzić katalogu Assets pod kątem wygenerowanych projektów .NET: " + exception.Message));
+            }
         }
 
         private static void AddAndroidStatus(List<WiRREnvironmentItem> items, int labNumber)
