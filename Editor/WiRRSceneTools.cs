@@ -88,6 +88,7 @@ namespace KIA.WiRR.Editor
             }
 
             var metrics = tools.GetComponent<WiRRFrameMetrics>();
+            var wasPresent = metrics != null;
             if (metrics == null)
             {
                 Undo.AddComponent<WiRRFrameMetrics>(tools);
@@ -100,7 +101,7 @@ namespace KIA.WiRR.Editor
             }
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            WiRRActivityLogger.Record("metrics_probe_toggled", labNumber, metrics == null ? "enabled" : "disabled");
+            WiRRActivityLogger.Record("metrics_probe_toggled", labNumber, wasPresent ? "disabled" : "enabled");
         }
 
         public static void EnsureFolders(int labNumber)
