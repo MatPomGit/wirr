@@ -2,6 +2,12 @@
 
 Ta instrukcja dotyczy Unity 6000.6.x i projektu URP używanego na kursie WiRR. W Unity dostępne jest także okno `WiRR → Pomoc → Budowanie i instalacja`, które prowadzi przez te same kroki.
 
+## Środowisko referencyjne
+
+Na kursie zalecany jest **Windows 11 64-bit**. Ułatwia to utrzymanie wspólnej konfiguracji stanowisk dla Unity, ADB, Android/Quest i Docker Desktop. Inne systemy mogą działać, ale mogą wymagać odmiennych kroków konfiguracyjnych.
+
+Do pracy z kodem C# zalecane jest **Visual Studio 2022 Community** z workloadem **Game development with Unity** albo inne IDE poprawnie skonfigurowane z Unity. **Android Studio** jest zalecane jako narzędzie pomocnicze do ADB, SDK Manager, Logcat i diagnostyki Androida. Nie jest wymagane do samego buildu, jeśli Unity korzysta z SDK, NDK i OpenJDK zainstalowanych przez Unity Hub.
+
 ## Najważniejsza zasada
 
 PC, smartfon z Androidem i Meta Quest 3 są osobnymi platformami docelowymi kompilacji. Ten sam projekt może obsługiwać wszystkie trzy, ale nie oznacza to identycznych ustawień. Zmiana platformy może wymagać innego modułu obsługi XR, interfejsu graficznego (`Graphics API`), architektury procesora, uprawnień, systemu wejścia (`Input System`) i profilu renderowania.
