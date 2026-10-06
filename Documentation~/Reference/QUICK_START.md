@@ -59,7 +59,7 @@ Wszystkie pliki znajdują się w: `/starter-files/`
 1. **Przygotowanie techniki:**
    - [ ] System: **Windows 11 64-bit** albo **Ubuntu 22.04 / 24.04 LTS 64-bit**
    - [ ] Unity Hub zainstalowany
-   - [ ] Unity **6000.6.x** zainstalowany
+   - [ ] Najnowsza dostępna wersja **Unity 6 (6000.x)** zainstalowana
    - [ ] Moduł **Android Build Support**
    - [ ] **Android SDK & NDK Tools**
    - [ ] **OpenJDK**
@@ -69,7 +69,7 @@ Wszystkie pliki znajdują się w: `/starter-files/`
    - [ ] Docker Desktop na Windows albo Docker Engine + Compose plugin na Ubuntu przed Laboratorium 06
    - [ ] Projekt **Universal 3D (URP)** otwarty
 
-   W Unity Hub moduły Androida można doinstalować także później przez **Installs → ustawienia danej wersji Unity → Add modules**.
+   W Unity Hub moduły Androida można doinstalować także później przez **Installs → ustawienia używanej wersji Unity → Add modules**.
 
    Pełna procedura dla Windows i Ubuntu: **ENVIRONMENT_SETUP.md**.
 
