@@ -45,10 +45,10 @@ W Unity wybierz:
 Repozytorium studenckie:
 
 ```text
-https://github.com/KIA-students/wirr.git#main
+https://github.com/KIA-students/wirr.git#upm
 ```
 
-Pakiet znajduje się w katalogu głównym repozytorium. Adres z `#main` wskazuje bieżącą wersję z głównej gałęzi repozytorium, niezależnie od numeracji wydań. Repozytorium pakietu: [KIA-students/wirr](https://github.com/KIA-students/wirr). Po pierwszej instalacji w projekcie panel **WiRR Course Toolkit** otworzy się automatycznie jeden raz i wskaże kolejny krok. Później można go otworzyć ręcznie przez **WiRR → Narzędzia kursu**. Wymagana wersja to najnowszą dostępną wersję **Unity 6 (6000.x)** lub nowsza zgodna wersja 6000.6.
+Pakiet znajduje się w katalogu głównym repozytorium. Adres z `#upm` wskazuje lekką gałąź instalacyjną pakietu. Nie zawiera projektu deweloperskiego ani ciężkich, opcjonalnych bibliotek HDRI/PBR, dzięki czemu instalacja w Unity jest znacznie szybsza. Repozytorium pakietu: [KIA-students/wirr](https://github.com/KIA-students/wirr). Po pierwszej instalacji w projekcie panel **WiRR Course Toolkit** otworzy się automatycznie jeden raz i wskaże kolejny krok. Później można go otworzyć ręcznie przez **WiRR → Narzędzia kursu**. Wymagana wersja to najnowszą dostępną wersję **Unity 6 (6000.x)** lub nowsza zgodna wersja 6000.6.
 
 ### Zalecane środowisko przed pierwszym laboratorium
 
