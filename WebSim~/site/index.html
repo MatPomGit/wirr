@@ -1,33 +1,34 @@
-<!doctype html><html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07121f"><meta name="description" content="WiRR: import pakietu Unity, uruchomienie WebSim dla Laboratorium 06 i interaktywny kwestionariusz SSQ."><link rel="canonical" href="https://kia-students.github.io/wirr/"><title>WiRR · Laboratorium XR</title><link rel="stylesheet" href="styles.css"><script type="module" src="app.mjs"></script></head><body><a class="skip" href="#content">Przejdź do treści</a><main><header><div class="eyebrow">Katedra Informatyki i Automatyki · PRz</div><h1>Laboratorium XR</h1><p>WiRR Course Toolkit · środowisko, symulacja i komfort</p></header><nav aria-label="Zakładki WiRR"><a href="#unity" aria-current="page">01 · Import do Unity</a><a href="#websim">02 · WebSim / Gazebo</a><a href="#ssq">03 · Kwestionariusz SSQ</a></nav><div id="content"><article id="unity"><div class="eyebrow">Zacznij tutaj · Unity Package Manager · WiRR · bieżąca wersja</div>
-<h2 class="page-title">Wytyczne dla studentów i import pakietu do Unity</h2>
-<p>Ta zakładka opisuje standardowy sposób rozpoczęcia i prowadzenia pracy na laboratoriach WiRR. Pakiet automatyzuje przygotowanie środowiska, zależności, materiały startowe, walidację i raportowanie, ale nie wykonuje zadań laboratoryjnych za studenta.</p>
-<p class="notice"><strong>Wersja referencyjna:</strong> Unity <strong>6000.6.x</strong>. Pakiet WiRR instaluj z głównej gałęzi <strong>main</strong>, aby korzystać z bieżącej wersji niezależnie od numeracji wydań.</p>
+<!doctype html><html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07121f"><meta name="description" content="WiRR: instrukcje laboratoryjne XR, instalacja pakietu Unity, raportowanie, WebSim oraz kwestionariusz SSQ dla studentów PRz."><link rel="canonical" href="https://kia-students.github.io/wirr/"><title>WiRR · Laboratorium XR</title><link rel="stylesheet" href="styles.css"><script type="module" src="app.mjs"></script></head><body><a class="skip" href="#content">Przejdź do treści</a><main><header><div class="eyebrow">Katedra Informatyki i Automatyki · PRz</div><h1>Wirtualna i Rozszerzona Rzeczywistość</h1><p>Instrukcje laboratoryjne, pakiet WiRR i narzędzia dla studentów</p></header><nav aria-label="Zakładki WiRR"><a href="#unity" aria-current="page">01 · Import do Unity</a><a href="#websim">02 · WebSim / Gazebo</a><a href="#ssq">03 · Kwestionariusz SSQ</a></nav><div id="content"><article id="unity"><div class="eyebrow">Zacznij tutaj · Unity Package Manager · WiRR · bieżąca wersja</div>
+<h2 class="page-title">Jak rozpocząć laboratoria WiRR</h2>
+<p>Laboratoria wykonujesz <strong>samodzielnie</strong>. Każdy student prowadzi własny projekt Unity, wykonuje własne pomiary i wysyła własny raport. Wszystkie materiały przeznaczone dla studentów są publikowane w repozytorium <a href="https://github.com/KIA-students/wirr"><strong>KIA-students/wirr</strong></a>.</p>
+<p>Pakiet WiRR przygotowuje środowisko, instaluje wymagane zależności, udostępnia materiały startowe, pomaga zweryfikować konfigurację i obsługuje raportowanie. Nie wykonuje ocenianych zadań za studenta.</p>
+<p class="notice"><strong>Konfiguracja kursu:</strong> Unity <strong>6000.6.x</strong>. Pakiet instaluj z gałęzi <strong>main</strong>, dzięki czemu instrukcja nie zależy od numeru konkretnego wydania.</p>
 
-<section><h3>1. Przygotuj środowisko przed zajęciami</h3><ol class="steps">
+<section><h3>1. Przygotowanie przed pierwszym laboratorium</h3><ol class="steps">
 <li>Zainstaluj <strong>Unity Hub</strong> oraz wskazaną wersję Unity 6000.6.x. Dla projektu wybierz szablon <strong>Universal 3D (URP)</strong>.</li>
 <li>Zainstaluj <strong>Git</strong> i sprawdź w terminalu <code>git --version</code>. Po instalacji Git uruchom ponownie Unity Hub.</li>
-<li>Zaloguj się do GitHub i upewnij się, że masz dostęp do repozytorium kursu <code>KIA-students/wirr</code>. Do wysłania raportu wymagane jest lokalne uwierzytelnienie Git, np. przez Git Credential Manager albo SSH.</li>
+<li>Zaloguj się do GitHub. Repozytorium kursu dla studentów to <a href="https://github.com/KIA-students/wirr"><code>KIA-students/wirr</code></a>. Do wysłania raportu wymagane jest lokalne uwierzytelnienie Git, np. przez Git Credential Manager albo SSH.</li>
 <li>Opcjonalnie zainstaluj i zaloguj <strong>GitHub CLI</strong>. Polecenie <code>gh auth status</code> powinno potwierdzić logowanie. Dzięki temu pakiet może automatycznie utworzyć Pull Request po wysłaniu raportu.</li>
 </ol><pre><code>git --version
 gh --version
 gh auth status</code></pre></section>
 
-<section><h3>2. Dodaj WiRR przez Package Manager</h3><ol class="steps">
+<section><h3>2. Instalacja najnowszej wersji pakietu WiRR</h3><ol class="steps">
 <li>W Unity otwórz <strong>Window → Package Manager</strong> (w niektórych układach: Window → Package Management → Package Manager).</li>
 <li>Kliknij <strong>+</strong>, następnie <strong>Install package from git URL…</strong> / <strong>Add package from git URL…</strong>.</li>
 <li>Aby zainstalować bieżącą wersję pakietu, wklej poniższy adres i wybierz <strong>Install</strong> / <strong>Add</strong>.</li>
 </ol><pre><code>https://github.com/KIA-students/wirr.git#main</code></pre>
-<p>Standardowo używaj <code>#main</code>. Repozytorium pakietu: <a href="https://github.com/KIA-students/wirr">github.com/KIA-students/wirr</a>. Pakiet UPM znajduje się w katalogu głównym repozytorium, dlatego nie dodawaj <code>?path=Project~</code>.</p>
+<p>Używaj dokładnie adresu z <code>#main</code>. Wskazuje on bieżącą wersję pakietu publikowaną dla studentów w <a href="https://github.com/KIA-students/wirr">KIA-students/wirr</a>. Nie dopisuj numeru wersji ani <code>?path=Project~</code>.</p>
 <p>Po instalacji powinny być widoczne <strong>WiRR Course Toolkit</strong> w Package Manager oraz menu <strong>WiRR</strong> w edytorze.</p></section>
 
-<section><h3>3. Standardowy przebieg każdego laboratorium</h3><ol class="steps">
+<section><h3>3. Schemat pracy na każdym laboratorium</h3><ol class="steps">
 <li>Otwórz <strong>WiRR → Narzędzia kursu</strong> i wybierz właściwe laboratorium.</li>
 <li>Uruchom <strong>Zainstaluj / napraw zależności laboratorium</strong>. Zaczekaj na zakończenie instalacji i kompilacji.</li>
 <li>Zaimportuj <strong>oficjalne próbki Unity</strong>, jeżeli są wymagane, oraz <strong>próbkę WiRR</strong>. Pakiet utworzy przestrzeń roboczą <code>Assets/WiRR/LabXX</code>.</li>
 <li>Użyj <strong>Utwórz / napraw aktywną scenę</strong>, zapisz scenę i uruchom <strong>Sprawdź konfigurację laboratorium</strong>.</li>
 <li>W sekcji <strong>Zadania laboratoryjne</strong> wykonuj czynności w kolejności. Nie traktuj generatorów prefabów, przykładów XR/MR/AR ani materiałów demonstracyjnych jako gotowego rozwiązania ocenianego zadania.</li>
 <li>Dla każdego punktu kontrolnego wykonaj wymagany pomiar lub test i od razu zapisz wynik w formularzu raportu. Nie odkładaj odtwarzania danych pomiarowych na koniec zajęć.</li>
-<li>Po zakończeniu pracy zapisz projekt, sprawdź raport i dopiero wtedy wyślij zgłoszenie.</li>
+<li>Po zakończeniu pracy zapisz projekt, uzupełnij własny raport, wybierz <strong>Sprawdź raport</strong>, a następnie <strong>Wyślij raport</strong>.</li>
 </ol></section>
 
 <section><h3>4. Punkty kontrolne i zakres wykonania</h3>
@@ -38,7 +39,7 @@ gh auth status</code></pre></section>
 </div>
 <p class="notice">Samo uruchomienie sceny lub uzyskanie poprawnego efektu wizualnego nie zastępuje pomiaru. W raporcie powinny znaleźć się rzeczywiste wyniki, warunki eksperymentu i krótki wniosek wynikający z obserwacji.</p></section>
 
-<section><h3>5. Raport laboratoryjny WiRR</h3><ol class="steps">
+<section><h3>5. Raport indywidualny</h3><ol class="steps">
 <li>Otwórz <strong>WiRR → Raporty → Formularz raportu laboratoryjnego</strong>.</li>
 <li>Wybierz numer laboratorium. Praca jest indywidualna. Podaj identyfikator studenta oraz dokładnie jeden numer indeksu. <strong>Nie wpisuj imienia ani nazwiska.</strong></li>
 <li>Uzupełniaj tabele danych surowych i pola opisowe na podstawie rzeczywistych pomiarów. Wartości jednoznacznie wynikające z danych, np. wybrane mediany, sumy, <code>R=P×S</code> lub statystyki RTT, są obliczane automatycznie.</li>
@@ -46,11 +47,11 @@ gh auth status</code></pre></section>
 <li>Użyj <strong>Sprawdź kompletność raportu</strong>. Popraw wszystkie braki etapu, który chcesz zakończyć.</li>
 <li>Użyj <strong>Wyślij raport</strong>. Finalny raport ma format JSON zgodny ze schematem <code>wirr-report/1.0</code>.</li>
 </ol>
-<p>Standardowa ścieżka raportowania: <code>Raport → Sprawdź → Wyślij → GitHub → walidacja CI → prowadzący</code>.</p>
+<p><strong>Ścieżka oddania:</strong> <code>Raport → Sprawdź → Wyślij → GitHub → walidacja CI → prowadzący</code>. Raport nie jest wysyłany e-mailem, przez Teams ani Moodle, chyba że prowadzący wyraźnie wskaże inaczej.</p>
 <p class="notice"><strong>Prywatność:</strong> aktualna wersja WiRR Reports wysyła treść raportu i dane identyfikujące zgłoszenie. Nie dołącza historii pracy w Unity, danych o systemie lub GPU, listy modyfikowanych plików ani telemetryki aktywności.</p></section>
 
-<section><h3>6. Co dzieje się po kliknięciu „Wyślij raport”</h3><ol class="steps">
-<li>Pakiet zapisuje raport w <code>students/reports/&lt;student&gt;/lab-XX/&lt;submissionId&gt;.json</code>.</li>
+<section><h3>6. Gdzie trafia raport</h3><ol class="steps">
+<li>Raport trafia do repozytorium <a href="https://github.com/KIA-students/wirr"><code>KIA-students/wirr</code></a> jako plik <code>students/reports/&lt;student&gt;/lab-XX/&lt;submissionId&gt;.json</code>.</li>
 <li>Tworzona jest osobna gałąź w postaci <code>report/&lt;student&gt;/labXX-&lt;timestamp&gt;</code> i wykonywany jest push do repozytorium kursu.</li>
 <li>Jeżeli dostępny jest zalogowany <code>gh</code>, Pull Request może zostać utworzony automatycznie. Bez <code>gh</code> gałąź nadal jest wysyłana, a Pull Request należy utworzyć ręcznie.</li>
 <li>CI wykonuje kontrolę techniczną raportu, np. sprawdza schemat, numer laboratorium, identyfikator studenta i poprawność numeru indeksu. <strong>CI nie wystawia oceny merytorycznej.</strong></li>
@@ -173,4 +174,4 @@ docker compose up --build</code></pre>
 <section><h3>Jak liczymy wynik?</h3><p>Każda podskala jest sumą wskazanych odpowiedzi pomnożoną przez wagę. Numeracja odpowiada kolejności pytań powyżej.</p>
 <ul><li><strong>N: nudności:</strong> (1 + 6 + 7 + 8 + 9 + 15 + 16) × 9,54.</li><li><strong>O: objawy okulomotoryczne:</strong> (1 + 2 + 3 + 4 + 5 + 9 + 11) × 7,58.</li><li><strong>D: dezorientacja:</strong> (5 + 8 + 10 + 11 + 12 + 13 + 14) × 13,92.</li><li><strong>TS: wynik całkowity:</strong> suma wszystkich 16 odpowiedzi, każdej liczonej raz, × 3,74.</li></ul>
 <p>TS nie jest sumą ważonych podskal. Wyniki nie są procentami; większa wartość oznacza większe zgłoszone nasilenie. Nie stosujemy uniwersalnych progów diagnostycznych ani automatycznej klasyfikacji „bezpiecznie/niebezpiecznie”. Różnica Δ = po − przed może być ujemna; interpretuj ją razem z oboma pomiarami i warunkami ekspozycji.</p>
-<p>Źródło: Kennedy, Lane, Berbaum i Lilienthal (1993), <a href="https://doi.org/10.1207/s15327108ijap0303_3">Simulator Sickness Questionnaire: An Enhanced Method for Quantifying Simulator Sickness</a>, 3(3), 203–220.</p></section></article></div><footer>WiRR · Wirtualna i Rozszerzona Rzeczywistość · <a href="https://kia-students.github.io/wirr/">Kod i dokumentacja</a></footer></main></body></html>
+<p>Źródło: Kennedy, Lane, Berbaum i Lilienthal (1993), <a href="https://doi.org/10.1207/s15327108ijap0303_3">Simulator Sickness Questionnaire: An Enhanced Method for Quantifying Simulator Sickness</a>, 3(3), 203–220.</p></section></article></div><footer>WiRR · Wirtualna i Rozszerzona Rzeczywistość · <a href="https://github.com/KIA-students/wirr">repozytorium dla studentów</a></footer></main></body></html>
