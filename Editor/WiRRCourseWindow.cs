@@ -75,6 +75,7 @@ namespace KIA.WiRR.Editor
             openWindow = this;
             selectedLab = Mathf.Clamp(EditorPrefs.GetInt(LabPrefKey, 1), 1, 7);
             titleContent = WiRRBranding.Title("WiRR Course Toolkit");
+            WiRRActivityLogger.Record("course_toolkit_opened", selectedLab, "ok");
         }
 
         private void OnDisable()
@@ -219,6 +220,7 @@ namespace KIA.WiRR.Editor
 
                 selectedLab = newIndex + 1;
                 EditorPrefs.SetInt(LabPrefKey, selectedLab);
+                WiRRActivityLogger.Record("lab_selected", selectedLab, "ok");
                 validationResults = null;
                 GUI.FocusControl(null);
             }
@@ -853,7 +855,13 @@ namespace KIA.WiRR.Editor
                         taskStepStyle);
 
                     if (next != current)
+                    {
                         EditorPrefs.SetBool(key, next);
+                        WiRRActivityLogger.Record(
+                            "task_step_changed",
+                            labNumber,
+                            $"checkpoint={task.Checkpoint};state={(next ? "completed" : "reopened")}");
+                    }
                 }
 
                 EditorGUILayout.Space(3);
@@ -951,6 +959,9 @@ namespace KIA.WiRR.Editor
                 EditorGUILayout.HelpBox(
                     "Etapy od 3.5 do 5.0 są opcjonalne. Formularz automatycznie oblicza wartości pochodne, jeśli wynikają jednoznacznie z danych pomiarowych.",
                     MessageType.Info);
+                EditorGUILayout.HelpBox(
+                    "Pakiet rejestruje zdarzenia wysokiego poziomu związane z wykonywaniem laboratorium i ich czas. Zapis jest dołączany do raportu; nie obejmuje treści kodu ani aktywności poza Unity.",
+                    MessageType.None);
 
                 if (PrimaryButton("Otwórz formularz raportu WiRR", ReportAccent, 34f))
                     WiRRReportWindow.Open();
