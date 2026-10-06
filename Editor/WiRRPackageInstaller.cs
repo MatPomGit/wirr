@@ -161,6 +161,18 @@ namespace KIA.WiRR.Editor
             Debug.LogError($"[WiRR] Nie udało się zainstalować {identifier}: {error}");
         }
 
+        internal static System.Collections.Generic.IReadOnlyList<string> GetMissingPackagesForLab(int labNumber)
+        {
+            var definition = WiRRLabCatalog.Get(labNumber);
+            var missing = new System.Collections.Generic.List<string>();
+            foreach (var identifier in definition.Packages)
+                if (!IsAlreadyInstalled(identifier))
+                    missing.Add(identifier);
+            return missing;
+        }
+
+        internal static bool IsPackageInstalled(string identifier) => IsAlreadyInstalled(identifier);
+
         private static bool IsAlreadyInstalled(string identifier)
         {
             if (identifier.Contains("ROS-TCP-Connector", StringComparison.OrdinalIgnoreCase))
