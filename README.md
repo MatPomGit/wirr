@@ -279,7 +279,7 @@ Standardowa ścieżka:
 Przycisk **Wyślij raport** zapisuje finalny JSON w strukturze:
 
 ```text
-students/reports/<team>/lab-XX/<submissionId>.json
+students/reports/<student>/lab-XX/<submissionId>.json
 ```
 
 i przygotowuje dedykowaną gałąź raportową. Pakiet korzysta z lokalnej konfiguracji `git`; nie przechowuje tokenu GitHub. Jeśli dostępny jest zalogowany GitHub CLI (`gh`), może utworzyć Pull Request automatycznie. W przeciwnym razie student tworzy PR z wypchniętej gałęzi. Wysyłka wymaga konta GitHub z prawem zapisu do repozytorium kursu.
