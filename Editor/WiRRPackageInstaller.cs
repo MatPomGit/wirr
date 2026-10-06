@@ -13,6 +13,7 @@ namespace KIA.WiRR.Editor
         private const string PendingKey = "KIA.WiRR.PendingPackages";
         private const string CurrentKey = "KIA.WiRR.CurrentPackage";
         private const string StatusKey = "KIA.WiRR.InstallStatus";
+        private const string LabKey = "KIA.WiRR.InstallLab";
         private static AddRequest activeRequest;
 
         static WiRRPackageInstaller()
@@ -36,6 +37,8 @@ namespace KIA.WiRR.Editor
             }
 
             var definition = WiRRLabCatalog.Get(labNumber);
+            SessionState.SetInt(LabKey, labNumber);
+            WiRRActivityLogger.Record("dependency_install_started", labNumber, $"packages={definition.Packages.Count}");
             SessionState.SetString(PendingKey, string.Join("\n", definition.Packages));
             SessionState.SetString(CurrentKey, string.Empty);
             SetStatus(definition.Packages.Count == 0
@@ -50,6 +53,8 @@ namespace KIA.WiRR.Editor
             EditorApplication.update -= PollActiveRequest;
             SessionState.EraseString(PendingKey);
             SessionState.EraseString(CurrentKey);
+            var labNumber = SessionState.GetInt(LabKey, 1);
+            WiRRActivityLogger.Record("dependency_install_finished", labNumber, "cancelled");
             SetStatus("Instalacja została anulowana. Aktywna operacja UPM może dokończyć się w tle.");
         }
 
@@ -80,6 +85,8 @@ namespace KIA.WiRR.Editor
             if (items.Length == 0)
             {
                 SessionState.EraseString(PendingKey);
+                var labNumber = SessionState.GetInt(LabKey, 1);
+                WiRRActivityLogger.Record("dependency_install_finished", labNumber, "success");
                 SetStatus("Instalacja zależności zakończona.");
                 return;
             }
@@ -148,6 +155,8 @@ namespace KIA.WiRR.Editor
             SessionState.EraseString(PendingKey);
             SessionState.EraseString(CurrentKey);
             activeRequest = null;
+            var labNumber = SessionState.GetInt(LabKey, 1);
+            WiRRActivityLogger.Record("dependency_install_finished", labNumber, "failed");
             SetStatus($"Błąd instalacji {identifier}: {error}");
             Debug.LogError($"[WiRR] Nie udało się zainstalować {identifier}: {error}");
         }
