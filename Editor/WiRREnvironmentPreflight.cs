@@ -33,7 +33,7 @@ namespace KIA.WiRR.Editor
 
     internal static class WiRREnvironmentPreflight
     {
-        private static readonly TimeSpan CacheDuration = TimeSpan.FromSeconds(5);
+        private static readonly TimeSpan CacheDuration = TimeSpan.FromSeconds(30);
         private static DateTime lastRefreshUtc = DateTime.MinValue;
         private static int cachedLab;
         private static List<WiRREnvironmentItem> cachedItems = new List<WiRREnvironmentItem>();
@@ -77,12 +77,19 @@ namespace KIA.WiRR.Editor
             var items = new List<WiRREnvironmentItem>();
 
             var windows = Application.platform == RuntimePlatform.WindowsEditor;
+            var linux = Application.platform == RuntimePlatform.LinuxEditor;
+            var osText = SystemInfo.operatingSystem ?? string.Empty;
+            var supportedUbuntu = linux &&
+                                  (osText.IndexOf("Ubuntu 22.04", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                   osText.IndexOf("Ubuntu 24.04", StringComparison.OrdinalIgnoreCase) >= 0);
             items.Add(new WiRREnvironmentItem(
                 "System operacyjny",
-                windows ? WiRREnvironmentState.Ready : WiRREnvironmentState.Warning,
+                windows || supportedUbuntu ? WiRREnvironmentState.Ready : WiRREnvironmentState.Warning,
                 windows
-                    ? $"Windows · {SystemInfo.operatingSystem}"
-                    : $"{SystemInfo.operatingSystem}. Środowisko referencyjne kursu: Windows 11 64-bit."));
+                    ? $"Windows · {osText}. System referencyjny kursu: Windows 11 64-bit."
+                    : supportedUbuntu
+                        ? $"{osText} · obsługiwany wariant Ubuntu LTS."
+                        : $"{osText}. Zalecany Windows 11 64-bit; alternatywnie Ubuntu 22.04 lub 24.04 LTS 64-bit."));
 
             var unityReference = Application.unityVersion.StartsWith("6000.6.", StringComparison.Ordinal);
             items.Add(new WiRREnvironmentItem(
