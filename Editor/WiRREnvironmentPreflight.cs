@@ -91,13 +91,13 @@ namespace KIA.WiRR.Editor
                         ? $"{osText} · obsługiwany wariant Ubuntu LTS."
                         : $"{osText}. Zalecany Windows 11 64-bit; alternatywnie Ubuntu 22.04 lub 24.04 LTS 64-bit."));
 
-            var unityReference = Application.unityVersion.StartsWith("6000.6.", StringComparison.Ordinal);
+            var unity6 = Application.unityVersion.StartsWith("6000.", StringComparison.Ordinal);
             items.Add(new WiRREnvironmentItem(
                 "Unity",
-                unityReference ? WiRREnvironmentState.Ready : WiRREnvironmentState.Warning,
-                unityReference
-                    ? $"{Application.unityVersion} · zgodne z wersją referencyjną 6000.6.x"
-                    : $"{Application.unityVersion} · kurs referencyjnie używa 6000.6.x"));
+                unity6 ? WiRREnvironmentState.Ready : WiRREnvironmentState.Warning,
+                unity6
+                    ? $"{Application.unityVersion} · obsługiwana linia Unity 6; wersja zweryfikowana kursowo: 6000.6.4f1."
+                    : $"{Application.unityVersion} · pakiet jest projektowany dla Unity 6 (6000.x). Nowsza główna generacja wymaga ponownej walidacji kompatybilności."));
 
             var missingPackages = WiRRPackageInstaller.GetMissingPackagesForLab(labNumber);
             items.Add(new WiRREnvironmentItem(
