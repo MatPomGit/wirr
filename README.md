@@ -266,7 +266,7 @@ Formularz zawiera pola opisowe oraz tabele wyników wymagane przez dane ćwiczen
 
 Każdy student pracuje samodzielnie. Student podaje identyfikator studenta i dokładnie jeden numer indeksu. Warianty zadania są wyliczane automatycznie z tego numeru. Do wysłania raportu wymagany jest kompletny etap 3.0. Etapy 3.5–5.0 są opcjonalne; student może zakończyć raport na dowolnym kompletnym etapie, a wyższy etap wymaga ukończenia poprzednich. Wartości jednoznacznie wynikające z danych surowych: m.in. mediany, wybrane sumy, R=P×S i statystyki RTT: formularz oblicza automatycznie i pokazuje jako pola tylko do odczytu.
 
-Finalny raport ma schemat `wirr-report/1.0`. Zawiera wyłącznie dane raportu: identyfikację zgłoszenia, laboratorium, identyfikator studenta, numer indeksu, daty oraz odpowiedzi i wyniki. Pakiet nie dołącza telemetryki pracy studenta, danych o systemie, GPU, historii plików ani innych dodatkowych metadanych środowiska.
+Finalny raport ma schemat `wirr-report/1.0`. Zawiera identyfikację zgłoszenia, laboratorium, identyfikator studenta, numer indeksu, daty, odpowiedzi i wyniki oraz automatyczny log zdarzeń wysokiego poziomu związanych z realizacją laboratorium. Timeline zapisuje m.in. uruchomienie narzędzi WiRR, wybór laboratorium, instalację zależności, import materiałów, przygotowanie sceny, walidację, zmiany checklisty, wejścia do Play Mode i operacje raportu wraz z czasem UTC. Nie zapisuje treści kodu, naciśnięć klawiszy, zrzutów ekranu ani aktywności poza Unity.
 
 Markdown `report-template.md` w materiałach laboratoryjnych pozostaje formatem referencyjnym i awaryjnym.
 
@@ -307,9 +307,9 @@ Walidator uruchamiany w Pull Request jest pobierany z zaufanej gałęzi bazowej,
 
 `icon.png` jest podstawowym logo pakietu i jest używany w dokumentacji oraz w oknach Unity **WiRR Course Toolkit** i **WiRR Raport**. `.icon.png` jest ikoną wyświetlaną przez Unity Package Manager. `icon.ico` pozostaje zasobem ikony aplikacyjnej dla środowisk wymagających formatu ICO. Zestaw faviconów jest przechowywany jako `favicon_io.zip`.
 
-## Prywatność
+## Log aktywności i prywatność
 
-WiRR Reports służy do przekazania sprawozdania, a nie do monitorowania aktywności studenta. Do repozytorium trafia raport, nie historia pracy w Unity.
+WiRR automatycznie prowadzi lokalny log zdarzeń wysokiego poziomu związanych z realizacją laboratorium i dołącza go do wysyłanego raportu. Log zawiera nazwy technicznych zdarzeń, ich czas UTC, numer laboratorium, ogólny wynik operacji oraz wybrane czasy trwania, np. sesji Play Mode. Nie obejmuje treści kodu, naciśnięć klawiszy, zrzutów ekranu, zawartości innych aplikacji ani aktywności poza Unity. Pole `activitySummary.elapsedSeconds` oznacza odstęp czasu pomiędzy pierwszym i ostatnim zapisanym zdarzeniem, a nie ciągły czas aktywnej pracy.
 
 ## Licencja
 
