@@ -221,6 +221,20 @@ Przykładowe zastosowania:
 
 Do oświetlenia używane są pliki `*_HDR.exr`; odpowiadające im pliki `*_TONEMAPPED.jpg` służą głównie jako podgląd LDR. Ręczna procedura znajduje się w `Textures/HDRI/README.md`: materiał `Skybox/Panoramic` → EXR → `Window → Rendering → Lighting` → `Environment → Skybox Material`.
 
+## VITURE XR: Full SBS i Immersive 3D
+
+WiRR 1.0.4 dodaje obsługę okularów VITURE XR jako stereoskopowego wyświetlacza Full SBS.
+
+W Unity dostępne są:
+- `WiRR → VITURE XR → Utwórz przykład Full SBS 3840x1080`;
+- `WiRR → VITURE XR → Instrukcja VITURE XR`;
+- sample `VITURE XR: Full SBS i Immersive 3D` w Package Managerze;
+- komponent runtime `WiRRVitureSbsRig`.
+
+Przykład tworzy dwie równoległe kamery i dzieli framebuffer na lewą oraz prawą połowę. Dla pełnej jakości VITURE użyj 3840×1080, czyli 1920×1080 na oko. Dokumentacja rozdziela natywne stereo SBS od funkcji Immersive 3D, która programowo konwertuje zwykłą treść 2D do obrazu stereoskopowego.
+
+Pełna instrukcja: `Documentation~/Reference/VITURE_XR.md`.
+
 ## Budowanie aplikacji na PC, Android i Quest 3
 
 W Unity dostępne jest okno **WiRR → Pomoc → Budowanie i instalacja**, a skrócony przycisk znajduje się także w sekcji **Scena i pomiary**. Instrukcja rozdziela trzy przypadki:
