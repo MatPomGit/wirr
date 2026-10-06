@@ -2,14 +2,14 @@
 <h2 class="page-title">Jak rozpocząć laboratoria WiRR</h2>
 <p>Laboratoria wykonujesz <strong>samodzielnie</strong>. Każdy student prowadzi własny projekt Unity, wykonuje własne pomiary i wysyła własny raport. Wszystkie materiały przeznaczone dla studentów są publikowane w repozytorium <a href="https://github.com/KIA-students/wirr"><strong>KIA-students/wirr</strong></a>.</p>
 <p>Pakiet WiRR przygotowuje środowisko, instaluje wymagane zależności, udostępnia materiały startowe, pomaga zweryfikować konfigurację i obsługuje raportowanie. Nie wykonuje ocenianych zadań za studenta.</p>
-<p class="notice"><strong>Konfiguracja kursu:</strong> zalecany system to <strong>Windows 11 64-bit</strong>, a wersja referencyjna edytora to Unity <strong>6000.6.x</strong>. Pakiet instaluj z gałęzi <strong>main</strong>, dzięki czemu instrukcja nie zależy od numeru konkretnego wydania.</p>
+<p class="notice"><strong>Konfiguracja kursu:</strong> zalecany system to <strong>Windows 11 64-bit</strong>, a obsługiwana linia edytora to <strong>Unity 6 (6000.x)</strong>; wersja aktualnie zweryfikowana kursowo to <strong>6000.6.4f1</strong>. Pakiet instaluj z gałęzi <strong>main</strong>, dzięki czemu instrukcja nie zależy od numeru konkretnego wydania.</p>
 
 <section><h3>1. Przygotowanie przed pierwszym laboratorium</h3>
 <p><strong>System referencyjny:</strong> Windows 11 64-bit. Obsługiwanym wariantem alternatywnym jest <strong>Ubuntu 22.04 lub 24.04 LTS 64-bit</strong>. Unity 6 wspiera oba te wydania Ubuntu; na Linuxie zalecane są sterowniki producenta GPU lub aktualne Mesa zgodnie z wymaganiami Unity.</p>
 
 <h4>Wymagane składniki</h4>
 <ul>
-<li>Unity Hub oraz Unity <strong>6000.6.x</strong>;</li>
+<li>Unity Hub oraz Unity <strong>6 (6000.x)</strong>;</li>
 <li>moduły Unity: <strong>Android Build Support</strong>, <strong>Android SDK &amp; NDK Tools</strong>, <strong>OpenJDK</strong>;</li>
 <li><strong>Git</strong>;</li>
 <li>IDE C# z integracją Unity: Visual Studio 2022 na Windows albo Rider / VS Code z rozszerzeniem Unity na Ubuntu;</li>
@@ -20,7 +20,7 @@
 
 <h4>Windows 11</h4>
 <ol class="steps">
-<li>Zainstaluj Unity Hub i Unity 6000.6.x. W <strong>Add modules</strong> zaznacz Android Build Support, Android SDK &amp; NDK Tools oraz OpenJDK.</li>
+<li>Zainstaluj Unity Hub i Unity 6 (6000.x). W <strong>Add modules</strong> zaznacz Android Build Support, Android SDK &amp; NDK Tools oraz OpenJDK.</li>
 <li>Zainstaluj Git. Zalecane: Visual Studio 2022 Community z workloadem <strong>Game development with Unity</strong>.</li>
 <li>Opcjonalnie zainstaluj GitHub CLI i Android Studio.</li>
 <li>Przed Lab 06 zainstaluj Docker Desktop i sprawdź <code>docker compose version</code>.</li>
@@ -28,7 +28,7 @@
 
 <h4>Ubuntu 22.04 / 24.04 LTS</h4>
 <ol class="steps">
-<li>Zainstaluj Unity Hub i Unity 6000.6.x. W <strong>Add modules</strong> doinstaluj Android Build Support, Android SDK &amp; NDK Tools oraz OpenJDK. Unity zaleca używanie wersji SDK/NDK/JDK dostarczonych z Hubem.</li>
+<li>Zainstaluj Unity Hub i Unity 6 (6000.x). W <strong>Add modules</strong> doinstaluj Android Build Support, Android SDK &amp; NDK Tools oraz OpenJDK. Unity zaleca używanie wersji SDK/NDK/JDK dostarczonych z Hubem.</li>
 <li>Zainstaluj podstawowe narzędzia:
 <pre><code>sudo apt update
 sudo apt install git curl ca-certificates</code></pre></li>
@@ -40,9 +40,9 @@ docker --version
 docker compose version</code></pre></li>
 </ol>
 
-<p class="notice"><strong>C#:</strong> nie twórz dodatkowego projektu <code>dotnet new</code>, pliku <code>.csproj</code> ani katalogów <code>bin/</code> lub <code>obj/</code> wewnątrz <code>Assets</code>. Unity 6000.6.x używa dla skryptów projektu języka C# 9 w typowej konfiguracji. Pliki generowane przez zwykły projekt .NET, np. <code>obj/.../*.GlobalUsings.g.cs</code>, mogą zawierać konstrukcję <code>global using</code> wymagającą C# 10 i powodować błąd CS8773. Nie naprawiaj tego przez wymuszanie C# 10 w <code>csc.rsp</code>.</p>
+<p class="notice"><strong>C#:</strong> nie twórz dodatkowego projektu <code>dotnet new</code>, pliku <code>.csproj</code> ani katalogów <code>bin/</code> lub <code>obj/</code> wewnątrz <code>Assets</code>. Unity 6 (6000.x) używa dla skryptów projektu języka C# 9 w typowej konfiguracji. Pliki generowane przez zwykły projekt .NET, np. <code>obj/.../*.GlobalUsings.g.cs</code>, mogą zawierać konstrukcję <code>global using</code> wymagającą C# 10 i powodować błąd CS8773. Nie naprawiaj tego przez wymuszanie C# 10 w <code>csc.rsp</code>.</p>
 <ol class="steps">
-<li>Zainstaluj <strong>Unity Hub</strong> oraz wskazaną wersję <strong>Unity 6000.6.x</strong>. Podczas instalacji edytora wybierz <strong>Add modules</strong> i zaznacz:
+<li>Zainstaluj <strong>Unity Hub</strong> oraz najnowszą dostępną wersję <strong>Unity 6 (6000.x)</strong>. Podczas instalacji edytora wybierz <strong>Add modules</strong> i zaznacz:
 <ul>
 <li><strong>Android Build Support</strong>,</li>
 <li><strong>Android SDK &amp; NDK Tools</strong>,</li>
