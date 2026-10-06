@@ -2,14 +2,27 @@
 <h2 class="page-title">Jak rozpocząć laboratoria WiRR</h2>
 <p>Laboratoria wykonujesz <strong>samodzielnie</strong>. Każdy student prowadzi własny projekt Unity, wykonuje własne pomiary i wysyła własny raport. Wszystkie materiały przeznaczone dla studentów są publikowane w repozytorium <a href="https://github.com/KIA-students/wirr"><strong>KIA-students/wirr</strong></a>.</p>
 <p>Pakiet WiRR przygotowuje środowisko, instaluje wymagane zależności, udostępnia materiały startowe, pomaga zweryfikować konfigurację i obsługuje raportowanie. Nie wykonuje ocenianych zadań za studenta.</p>
-<p class="notice"><strong>Konfiguracja kursu:</strong> Unity <strong>6000.6.x</strong>. Pakiet instaluj z gałęzi <strong>main</strong>, dzięki czemu instrukcja nie zależy od numeru konkretnego wydania.</p>
+<p class="notice"><strong>Konfiguracja kursu:</strong> zalecany system to <strong>Windows 11 64-bit</strong>, a wersja referencyjna edytora to Unity <strong>6000.6.x</strong>. Pakiet instaluj z gałęzi <strong>main</strong>, dzięki czemu instrukcja nie zależy od numeru konkretnego wydania.</p>
 
-<section><h3>1. Przygotowanie przed pierwszym laboratorium</h3><ol class="steps">
-<li>Zainstaluj <strong>Unity Hub</strong> oraz wskazaną wersję Unity 6000.6.x. Dla projektu wybierz szablon <strong>Universal 3D (URP)</strong>.</li>
+<section><h3>1. Przygotowanie przed pierwszym laboratorium</h3>
+<p><strong>Zalecane środowisko:</strong> Windows 11 64-bit. Inne systemy mogą działać, ale instrukcje kursu, diagnostyka oraz ścieżki Android/Quest są przygotowane przede wszystkim dla tego środowiska.</p>
+<ol class="steps">
+<li>Zainstaluj <strong>Unity Hub</strong> oraz wskazaną wersję <strong>Unity 6000.6.x</strong>. Podczas instalacji edytora wybierz <strong>Add modules</strong> i zaznacz:
+<ul>
+<li><strong>Android Build Support</strong>,</li>
+<li><strong>Android SDK &amp; NDK Tools</strong>,</li>
+<li><strong>OpenJDK</strong>.</li>
+</ul>
+Te trzy składniki są wymagane do budowania i instalowania aplikacji na smartfonach z Androidem oraz Meta Quest 3.</li>
+<li>Zainstaluj środowisko do edycji C#, najlepiej <strong>Visual Studio 2022 Community</strong> z workloadem <strong>Game development with Unity</strong> albo inne IDE poprawnie skonfigurowane z Unity.</li>
+<li><strong>Android Studio</strong> jest zalecane. Nie jest wymagane do samego buildu Unity, jeśli używasz SDK/NDK/JDK dostarczonych przez Unity Hub, ale ułatwia diagnostykę Androida, ADB, SDK Manager i analizę logów.</li>
 <li>Zainstaluj <strong>Git</strong> i sprawdź w terminalu <code>git --version</code>. Po instalacji Git uruchom ponownie Unity Hub.</li>
 <li>Zaloguj się do GitHub. Repozytorium kursu dla studentów to <a href="https://github.com/KIA-students/wirr"><code>KIA-students/wirr</code></a>. Do wysłania raportu wymagane jest lokalne uwierzytelnienie Git, np. przez Git Credential Manager albo SSH.</li>
 <li>Opcjonalnie zainstaluj i zaloguj <strong>GitHub CLI</strong>. Polecenie <code>gh auth status</code> powinno potwierdzić logowanie. Dzięki temu pakiet może automatycznie utworzyć Pull Request po wysłaniu raportu.</li>
-</ol><pre><code>git --version
+<li>Przed Laboratorium 06 zainstaluj <strong>Docker Desktop</strong> na Windows. WebSim korzysta z Dockera; ROS 2 i Gazebo nie muszą być instalowane lokalnie do wariantu WebSim.</li>
+</ol>
+<p>Po instalacji Unity utwórz projekt z szablonu <strong>Universal 3D (URP)</strong>.</p>
+<pre><code>git --version
 gh --version
 gh auth status</code></pre></section>
 
