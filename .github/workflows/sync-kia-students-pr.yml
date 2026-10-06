@@ -96,7 +96,7 @@ jobs:
             exit 1
           fi
 
-          python3 - <<'PY' "${stage}"
+          python3 - "${stage}" <<'PY'
           import json
           import sys
           from pathlib import Path
