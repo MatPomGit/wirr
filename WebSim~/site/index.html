@@ -48,7 +48,7 @@ gh auth status</code></pre></section>
 <li>Użyj <strong>Wyślij raport</strong>. Finalny raport ma format JSON zgodny ze schematem <code>wirr-report/1.0</code>.</li>
 </ol>
 <p><strong>Ścieżka oddania:</strong> <code>Raport → Sprawdź → Wyślij → GitHub → walidacja CI → prowadzący</code>. Raport nie jest wysyłany e-mailem, przez Teams ani Moodle, chyba że prowadzący wyraźnie wskaże inaczej.</p>
-<p class="notice"><strong>Prywatność:</strong> aktualna wersja WiRR Reports wysyła treść raportu i dane identyfikujące zgłoszenie. Nie dołącza historii pracy w Unity, danych o systemie lub GPU, listy modyfikowanych plików ani telemetryki aktywności.</p></section>
+<p class="notice"><strong>Log aktywności:</strong> WiRR automatycznie zapisuje zdarzenia wysokiego poziomu związane z wykonywaniem laboratorium wraz z czasem UTC i dołącza ten timeline do raportu. Rejestrowane są m.in. uruchomienia narzędzi WiRR, instalacja zależności, import materiałów, przygotowanie sceny, walidacja, Play Mode, postęp checklisty i operacje raportu. Log nie obejmuje treści kodu, klawiatury, zrzutów ekranu ani aktywności poza Unity.</p></section>
 
 <section><h3>6. Gdzie trafia raport</h3><ol class="steps">
 <li>Raport trafia do repozytorium <a href="https://github.com/KIA-students/wirr"><code>KIA-students/wirr</code></a> jako plik <code>students/reports/&lt;student&gt;/lab-XX/&lt;submissionId&gt;.json</code>.</li>
