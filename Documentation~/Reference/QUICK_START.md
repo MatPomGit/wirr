@@ -57,13 +57,19 @@ Wszystkie pliki znajdują się w: `/starter-files/`
 ### Dla Studentów (1. dzień)
 
 1. **Przygotowanie techniki:**
-   ```bash
-   # Pobierz LAB1_STARTER_README.md
-   # Przeczytaj checklist:
-   - [ ] Unity 6000.6.x zainstalowany
-   - [ ] Projekt otwarty
-   - [ ] Pakiety zainstalowane
-   ```
+   - [ ] Zalecany system: **Windows 11 64-bit**
+   - [ ] Unity Hub zainstalowany
+   - [ ] Unity **6000.6.x** zainstalowany
+   - [ ] Moduł **Android Build Support**
+   - [ ] **Android SDK & NDK Tools**
+   - [ ] **OpenJDK**
+   - [ ] Visual Studio 2022 Community z workloadem **Game development with Unity** albo równoważne IDE
+   - [ ] Git
+   - [ ] Android Studio, zalecane do diagnostyki Android/ADB, ale niewymagane do samego buildu Unity
+   - [ ] Docker Desktop przed Laboratorium 06
+   - [ ] Projekt **Universal 3D (URP)** otwarty
+
+   W Unity Hub moduły Androida można doinstalować także później przez **Installs → ustawienia danej wersji Unity → Add modules**.
 
 2. **Konfiguracja Gita:**
    ```bash
