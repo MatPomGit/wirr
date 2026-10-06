@@ -48,11 +48,11 @@ Repozytorium studenckie:
 https://github.com/KIA-students/wirr.git#main
 ```
 
-Pakiet znajduje się w katalogu głównym repozytorium. Adres z `#main` wskazuje bieżącą wersję z głównej gałęzi repozytorium, niezależnie od numeracji wydań. Repozytorium pakietu: [KIA-students/wirr](https://github.com/KIA-students/wirr). Po pierwszej instalacji w projekcie panel **WiRR Course Toolkit** otworzy się automatycznie jeden raz i wskaże kolejny krok. Później można go otworzyć ręcznie przez **WiRR → Narzędzia kursu**. Wymagana wersja to Unity **6000.6.x** lub nowsza zgodna wersja 6000.6.
+Pakiet znajduje się w katalogu głównym repozytorium. Adres z `#main` wskazuje bieżącą wersję z głównej gałęzi repozytorium, niezależnie od numeracji wydań. Repozytorium pakietu: [KIA-students/wirr](https://github.com/KIA-students/wirr). Po pierwszej instalacji w projekcie panel **WiRR Course Toolkit** otworzy się automatycznie jeden raz i wskaże kolejny krok. Później można go otworzyć ręcznie przez **WiRR → Narzędzia kursu**. Wymagana wersja to najnowszą dostępną wersję **Unity 6 (6000.x)** lub nowsza zgodna wersja 6000.6.
 
 ### Zalecane środowisko przed pierwszym laboratorium
 
-Środowisko referencyjne kursu to **Windows 11 64-bit**. W Unity Hub dla Unity **6000.6.x** należy doinstalować:
+Środowisko referencyjne kursu to **Windows 11 64-bit**. W Unity Hub dla najnowszą dostępną wersję **Unity 6 (6000.x)** należy doinstalować:
 - **Android Build Support**;
 - **Android SDK & NDK Tools**;
 - **OpenJDK**.
