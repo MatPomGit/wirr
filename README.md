@@ -286,7 +286,7 @@ i przygotowuje dedykowaną gałąź raportową. Pakiet korzysta z lokalnej konfi
 
 ## Walidacja CI
 
-Proces CI `.github/workflows/wirr-report-grade.yml` wykonuje wyłącznie kontrolę techniczną raportu. Sprawdza m.in. wersję schematu, numer laboratorium, identyfikator raportu, identyfikator studenta oraz dokładnie jeden poprawny numer indeksu.
+Proces CI `.github/workflows/wirr-report-grade.yml` wykonuje wyłącznie kontrolę techniczną raportu. Sprawdza m.in. wersję schematu, numer laboratorium, identyfikator raportu, identyfikator studenta, dokładnie jeden poprawny numer indeksu oraz obecność i podstawową spójność automatycznego timeline'u aktywności.
 
 CI nie wystawia oceny merytorycznej i nie analizuje sposobu pracy studenta. Ocenę raportu wykonuje prowadzący.
 
