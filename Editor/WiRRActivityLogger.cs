@@ -15,9 +15,8 @@ namespace KIA.WiRR.Editor
         private const string LabPrefKey = "KIA.WiRR.SelectedLab";
         private const int MaxStoredEvents = 2000;
         private const int MaxAttachedEvents = 500;
-        private static readonly string Root = Path.GetFullPath(Path.Combine(Application.dataPath, "../Library/WiRRReports"));
-        private static readonly string LogPath = Path.Combine(Root, "activity-log.json");
         private static DateTime? playModeStartedUtc;
+        private static bool initialized;
 
         [Serializable]
         private sealed class LogFile
@@ -27,7 +26,18 @@ namespace KIA.WiRR.Editor
 
         static WiRRActivityLogger()
         {
+            EditorApplication.delayCall += InitializeOnMainThread;
+        }
+
+        private static void InitializeOnMainThread()
+        {
+            if (initialized)
+                return;
+
+            initialized = true;
+            EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+            EditorApplication.quitting -= OnEditorQuitting;
             EditorApplication.quitting += OnEditorQuitting;
             Record("unity_editor_context_loaded", CurrentLab(), "ok");
         }
@@ -41,7 +51,7 @@ namespace KIA.WiRR.Editor
             log.events.Add(new WiRRActivityEvent
             {
                 eventName = eventName.Trim(),
-                labNumber = Mathf.Clamp(labNumber, 1, 7),
+                labNumber = Math.Max(1, Math.Min(7, labNumber)),
                 timestampUtc = DateTime.UtcNow.ToString("O"),
                 result = result ?? string.Empty,
                 durationSeconds = 0d
@@ -58,7 +68,7 @@ namespace KIA.WiRR.Editor
             log.events.Add(new WiRRActivityEvent
             {
                 eventName = eventName,
-                labNumber = Mathf.Clamp(labNumber, 1, 7),
+                labNumber = Math.Max(1, Math.Min(7, labNumber)),
                 timestampUtc = DateTime.UtcNow.ToString("O"),
                 result = result ?? string.Empty,
                 durationSeconds = Math.Round(seconds, 3)
@@ -131,17 +141,25 @@ namespace KIA.WiRR.Editor
             Record("unity_editor_quitting", CurrentLab(), "ok");
         }
 
-        private static int CurrentLab() => Mathf.Clamp(EditorPrefs.GetInt(LabPrefKey, 1), 1, 7);
+        private static int CurrentLab() => Math.Max(1, Math.Min(7, EditorPrefs.GetInt(LabPrefKey, 1)));
+
+        private static string RootPath() =>
+            Path.GetFullPath(Path.Combine(Application.dataPath, "../Library/WiRRReports"));
+
+        private static string LogPath() =>
+            Path.Combine(RootPath(), "activity-log.json");
 
         private static LogFile Load()
         {
-            Directory.CreateDirectory(Root);
-            if (!File.Exists(LogPath))
+            var root = RootPath();
+            var logPath = LogPath();
+            Directory.CreateDirectory(root);
+            if (!File.Exists(logPath))
                 return new LogFile();
 
             try
             {
-                var parsed = JsonUtility.FromJson<LogFile>(File.ReadAllText(LogPath));
+                var parsed = JsonUtility.FromJson<LogFile>(File.ReadAllText(logPath));
                 if (parsed != null)
                 {
                     parsed.events = parsed.events ?? new List<WiRRActivityEvent>();
@@ -158,8 +176,10 @@ namespace KIA.WiRR.Editor
 
         private static void Save(LogFile log)
         {
-            Directory.CreateDirectory(Root);
-            File.WriteAllText(LogPath, JsonUtility.ToJson(log, true));
+            var root = RootPath();
+            var logPath = LogPath();
+            Directory.CreateDirectory(root);
+            File.WriteAllText(logPath, JsonUtility.ToJson(log, true));
         }
 
         private static void Trim(LogFile log)
