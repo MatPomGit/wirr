@@ -35,7 +35,16 @@ jobs:
             done
             ros2 topic list | grep -qx /wirr/status
             ros2 topic pub --once /wirr/control std_msgs/msg/String "{data: \"{\\\"session\\\":\\\"TEAMCI\\\",\\\"robot\\\":\\\"rrbot\\\",\\\"action\\\":\\\"create\\\"}\"}"
-            timeout 10 ros2 topic echo --once /wirr/TEAMCI/joint_states sensor_msgs/msg/JointState | grep -q "joint1"
+
+            for attempt in {1..20}; do
+              ros2 topic list | grep -qx /wirr/TEAMCI/joint_states && break
+              sleep 1
+            done
+            ros2 topic list | grep -qx /wirr/TEAMCI/joint_states
+
+            joint_state="$(timeout 10 ros2 topic echo --once /wirr/TEAMCI/joint_states sensor_msgs/msg/JointState)"
+            grep -q "joint1" <<< "$joint_state"
+            grep -q "joint2" <<< "$joint_state"
           '
 
       - name: Show logs on failure
