@@ -57,19 +57,23 @@ Wszystkie pliki znajdują się w: `/starter-files/`
 ### Dla Studentów (1. dzień)
 
 1. **Przygotowanie techniki:**
-   - [ ] Zalecany system: **Windows 11 64-bit**
+   - [ ] System: **Windows 11 64-bit** albo **Ubuntu 22.04 / 24.04 LTS 64-bit**
    - [ ] Unity Hub zainstalowany
    - [ ] Unity **6000.6.x** zainstalowany
    - [ ] Moduł **Android Build Support**
    - [ ] **Android SDK & NDK Tools**
    - [ ] **OpenJDK**
-   - [ ] Visual Studio 2022 Community z workloadem **Game development with Unity** albo równoważne IDE
+   - [ ] IDE C#: Visual Studio 2022 Community z workloadem **Game development with Unity** na Windows albo Rider / VS Code z integracją Unity na Ubuntu
    - [ ] Git
    - [ ] Android Studio, zalecane do diagnostyki Android/ADB, ale niewymagane do samego buildu Unity
-   - [ ] Docker Desktop przed Laboratorium 06
+   - [ ] Docker Desktop na Windows albo Docker Engine + Compose plugin na Ubuntu przed Laboratorium 06
    - [ ] Projekt **Universal 3D (URP)** otwarty
 
    W Unity Hub moduły Androida można doinstalować także później przez **Installs → ustawienia danej wersji Unity → Add modules**.
+
+   Pełna procedura dla Windows i Ubuntu: **ENVIRONMENT_SETUP.md**.
+
+   **Nie uruchamiaj `dotnet new` wewnątrz katalogu `Assets`.** Jeśli Console zgłasza błąd CS8773 dotyczący `global using` i C# 10, sprawdź, czy ścieżka prowadzi do `Assets/.../obj/...GlobalUsings.g.cs`. Usuń taki dodatkowy projekt .NET lub jego katalogi `bin/obj`; nie wymuszaj C# 10 przez `csc.rsp`.
 
 2. **Konfiguracja Gita:**
    ```bash
