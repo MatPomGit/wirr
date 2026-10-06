@@ -5,7 +5,7 @@ Instrukcja referencyjna dla laboratoriów WiRR. Zalecanym systemem jest **Window
 ## Wymagane składniki
 
 - Unity Hub;
-- Unity **6000.6.x**;
+- najnowsza dostępna wersja **Unity 6 (6000.x)**;
 - Android Build Support;
 - Android SDK & NDK Tools;
 - OpenJDK;
@@ -20,7 +20,7 @@ Do Androida i Meta Quest 3 używaj SDK, NDK i OpenJDK zainstalowanych przez Unit
 ## Windows 11 64-bit
 
 1. Zainstaluj Unity Hub.
-2. W Unity Hub zainstaluj Unity 6000.6.x.
+2. W Unity Hub zainstaluj Unity 6 (6000.x).
 3. Podczas instalacji albo później przez **Installs → ustawienia wersji → Add modules** zaznacz:
    - Android Build Support;
    - Android SDK & NDK Tools;
@@ -42,7 +42,7 @@ Brak `gh` nie blokuje laboratoriów. Brak Dockera blokuje tylko wariant WebSim w
 
 ## Ubuntu 22.04 / 24.04 LTS 64-bit
 
-1. Zainstaluj Unity Hub i Unity 6000.6.x.
+1. Zainstaluj Unity Hub i Unity 6 (6000.x).
 2. W **Add modules** doinstaluj:
    - Android Build Support;
    - Android SDK & NDK Tools;
@@ -72,7 +72,7 @@ docker compose version
 
 ## Ważne: C# 9 a komunikat o C# 10
 
-Unity 6000.6.x w typowej konfiguracji kompiluje skrypty projektu jako C# 9. Komunikat:
+Unity 6 (6000.x) w typowej konfiguracji kompiluje skrypty projektu jako C# 9. Komunikat:
 
 ```text
 Feature 'global using directive' is not available in C# 9.0.
