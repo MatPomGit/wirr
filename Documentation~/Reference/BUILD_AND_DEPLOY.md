@@ -1,6 +1,6 @@
 # Budowanie i instalacja aplikacji WiRR
 
-Ta instrukcja dotyczy Unity 6000.6.x i projektu URP używanego na kursie WiRR. W Unity dostępne jest także okno `WiRR → Pomoc → Budowanie i instalacja`, które prowadzi przez te same kroki.
+Ta instrukcja dotyczy Unity 6 (6000.x) i projektu URP używanego na kursie WiRR. W Unity dostępne jest także okno `WiRR → Pomoc → Budowanie i instalacja`, które prowadzi przez te same kroki.
 
 ## Środowisko referencyjne
 
