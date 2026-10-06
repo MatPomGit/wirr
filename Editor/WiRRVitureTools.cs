@@ -42,8 +42,8 @@ namespace KIA.WiRR.Editor
             {
                 left.CopyFrom(source);
                 right.CopyFrom(source);
-                source.enabled = false;
                 Undo.RecordObject(source, "Wyłącz kamerę bazową dla Full SBS");
+                source.enabled = false;
             }
 
             left.tag = "MainCamera";
