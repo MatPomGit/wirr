@@ -100,7 +100,7 @@ xr-lab/
 │   ├── packages-lock.json    # NIE ZMIENIAJ!
 │   └── manifest.json
 ├── ProjectSettings/
-│   ├── ProjectVersion.txt    # Zawsze Unity 2022 LTS
+│   ├── ProjectVersion.txt    # Wersja kursowa Unity 6000.6.5f1 lub zgodna z linii 6000.6.x
 │   └── ...
 ├── evidence/                  # Twoje raporty
 │   ├── lab01.md
