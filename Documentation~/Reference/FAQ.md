@@ -63,13 +63,13 @@
 **Odpowiedź:** Sprawdź:
 ```bash
 # 1. Czy jesteś na gałęzi, nie na main?
-git branch  # → powinieneś być na team-NR/lab0X-...
+git branch  # → powinieneś być na lab01-work
 
 # 2. Czy masz dostęp do repozytorium?
 git remote -v  # → pokaż URL
 
 # 3. Spróbuj:
-git push --set-upstream origin team-NR/lab0X-...
+git push --set-upstream origin lab01-work
 ```
 
 ### P13: Wgrałem Library/ — co teraz?
