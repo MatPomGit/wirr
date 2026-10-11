@@ -331,6 +331,9 @@ namespace KIA.WiRR.Editor
  
         private static IReadOnlyList<WiRRReportTable> Lab08(string cp) => cp switch
         {
+            "3.0" => Array.Empty<WiRRReportTable>(),
+            "3.5" => Array.Empty<WiRRReportTable>(),
+            "5.0" => Array.Empty<WiRRReportTable>(),
             "4.0" => new[] { T("lab08_trials", "Sześć prób A/B (z pliku JSON)",
                         new[]{"Próba 1", "Próba 2", "Próba 3", "Próba 4", "Próba 5", "Próba 6"},
                         new[]{"Czas [s]", "Sukces", "Tryb danych", "Wariant"},

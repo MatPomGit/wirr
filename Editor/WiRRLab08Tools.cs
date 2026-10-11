@@ -134,7 +134,8 @@ namespace KIA.WiRR.Editor
             }
 
             SetMedian(report, "cp35.median_s", baseline);
-            if (baseline.Length > 0) WiRRReportStore.SetValue(report, "cp35.source", results.deviceMode + " (zgłoszony przez program)");
+            WiRRReportStore.SetValue(report, "cp35.source",
+                string.IsNullOrWhiteSpace(results.deviceMode) ? string.Empty : results.deviceMode + " (zgłoszony przez program)");
             SetMedian(report, "cp45.before_s", baseline);
             SetMedian(report, "cp45.after_s", improved);
             var compare = WiRRReportTableCatalog.Get(8, "4.5").First();

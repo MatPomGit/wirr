@@ -1,6 +1,13 @@
 name: Wydanie WiRR
 
 on:
+  pull_request:
+    paths:
+      - 'package.json'
+      - 'Editor/WiRRLab*Catalog.cs'
+      - 'Editor/WiRRReport*Catalog.cs'
+      - 'Samples~/Lab*/README.md'
+      - '.github/workflows/release.yml'
   push:
     branches: [main]
     paths:
@@ -447,7 +454,7 @@ jobs:
           node --check WebSim~/site/app.mjs
 
       - name: Przygotuj informacje o wydaniu
-        if: ${{ steps.metadata.outputs.stable == 'true' }}
+        if: ${{ github.event_name != 'pull_request' && steps.metadata.outputs.stable == 'true' }}
         shell: bash
         env:
           VERSION: ${{ steps.metadata.outputs.version }}
@@ -515,7 +522,7 @@ jobs:
           PY
 
       - name: Zbuduj archiwa wydania
-        if: ${{ steps.metadata.outputs.stable == 'true' }}
+        if: ${{ github.event_name != 'pull_request' && steps.metadata.outputs.stable == 'true' }}
         shell: bash
         env:
           VERSION: ${{ steps.metadata.outputs.version }}
@@ -566,7 +573,7 @@ jobs:
           sha256sum "$DIST/wirr-$VERSION.tgz" "$DIST/wirr-$VERSION.zip" > "$DIST/SHA256SUMS.txt"
 
       - name: Zachowaj artefakty CI
-        if: ${{ steps.metadata.outputs.stable == 'true' }}
+        if: ${{ github.event_name != 'pull_request' && steps.metadata.outputs.stable == 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: wirr-${{ steps.metadata.outputs.version }}
@@ -578,7 +585,7 @@ jobs:
           if-no-files-found: error
 
       - name: Opublikuj GitHub Release
-        if: ${{ steps.metadata.outputs.stable == 'true' }}
+        if: ${{ github.event_name != 'pull_request' && steps.metadata.outputs.stable == 'true' }}
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
