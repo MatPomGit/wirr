@@ -13,14 +13,19 @@ namespace KIA.WiRR.Editor
             "KIA.WiRR.Student." + Hash128.Compute(Application.dataPath) + "." + suffix;
         public static bool IsRegistered => !string.IsNullOrEmpty(EditorPrefs.GetString(Key("Index"), ""));
         public static string Index => EditorPrefs.GetString(Key("Index"), "");
-        public static int Group => EditorPrefs.GetInt(Key("Group"), 0);
+        private static string GlobalGroupKey(string index) => "KIA.WiRR.Enrollment." + Hash(index) + ".Group";
+        private static string Hash(string value)
+        {
+            using (var sha = SHA256.Create())
+                return BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(value))).Replace("-", "").ToLowerInvariant();
+        }
+        public static int Group => IsRegistered ? EditorPrefs.GetInt(GlobalGroupKey(Index), EditorPrefs.GetInt(Key("Group"), 0)) : 0;
         public static string GroupLabel => Group == 1 ? "G1" : Group == 2 ? "G2" : "Nieprzypisana";
         public static string Identifier
         {
             get
             {
-                var bytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(Index));
-                return BitConverter.ToString(bytes).Replace("-", "").Substring(0, 16).ToLowerInvariant();
+                return Hash(Index).Substring(0, 16);
             }
         }
 
@@ -37,11 +42,18 @@ namespace KIA.WiRR.Editor
                 error = "Wybierz grupę G1 albo G2.";
                 return false;
             }
+            var existing = EditorPrefs.GetInt(GlobalGroupKey(index), 0);
+            if (existing != 0 && existing != group)
+            {
+                error = "Ten indeks ma już przypisaną inną grupę na tym stanowisku.";
+                return false;
+            }
             if (IsRegistered)
             {
                 error = "Profil jest już przypisany. Zmiana grupy wymaga prowadzącego.";
                 return false;
             }
+            EditorPrefs.SetInt(GlobalGroupKey(index), group);
             EditorPrefs.SetString(Key("Index"), index);
             EditorPrefs.SetInt(Key("Group"), group);
             EditorPrefs.SetInt("KIA.WiRR.MissionGroup", group);
