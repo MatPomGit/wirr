@@ -75,8 +75,9 @@ namespace KIA.WiRR.Editor
                 Must("git", "-C " + Quote(temp) + " config user.email " + Quote("wirr+" + identity + "@users.noreply.github.com"));
                 Must("git", "-C " + Quote(temp) + " remote add origin https://github.com/" + login + "/wirr.git");
             }
-            // A dedicated single-file branch, never checkout or rewrite the course main.
-            Must("git", "-C " + Quote(temp) + " checkout --orphan " + branch);
+            // Each submission branches from the public main: valid PR ancestry.
+            Must("git", "-C " + Quote(temp) + " fetch --depth=1 https://github.com/" + Repo + ".git main");
+            Must("git", "-C " + Quote(temp) + " checkout -B " + branch + " FETCH_HEAD");
             var dest = Path.Combine(temp, "students", "progress", identity + ".json");
             Directory.CreateDirectory(Path.GetDirectoryName(dest));
             File.Copy(source, dest, true);
