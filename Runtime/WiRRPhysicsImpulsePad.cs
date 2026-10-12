@@ -60,7 +60,7 @@ namespace KIA.WiRR
                 return;
 
             #if UNITY_6000_3_OR_NEWER
-            var id = (int)body.GetEntityId();
+            var id = body.GetEntityId().GetHashCode();
 #else
             var id = body.GetInstanceID();
 #endif
