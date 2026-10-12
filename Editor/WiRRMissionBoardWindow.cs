@@ -47,20 +47,6 @@ namespace KIA.WiRR.Editor
 
         private static readonly string[] GroupLabels = { "Nie wybrano", "G1: grupa 1", "G2: grupa 2" };
 
-        private static readonly string[] NamePrefixes =
-        {
-            "Kwantowe", "Pikselowe", "Cybernetyczne", "Wirtualne", "Rekurencyjne",
-            "Neonowe", "Nadprzewodzące", "Binarne", "Mechaniczne", "Zrobotyzowane",
-            "Algorytmiczne", "Holograficzne", "Laserowe", "Bezkablowe", "Rozbrykane"
-        };
-        private static readonly string[] NameSubjects =
-        {
-            "Kapibary", "Pierogi", "Dziobaki", "Wombaty", "Roboty", "Bajty",
-            "Drony", "Pingwiny", "Kaktusy", "Wektory", "Żółwie", "Śrubokręty",
-            "Serwomechanizmy", "Jeże", "Transformatory", "Czipy"
-        };
-        private static readonly System.Random NamesRandom = new System.Random();
-
         private bool showAdvanced;
         private int blockIndex;
         private int selectedGroup;
