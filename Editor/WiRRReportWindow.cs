@@ -116,14 +116,24 @@ namespace KIA.WiRR.Editor
                     MessageType.None);
 
                 EditorGUI.BeginChangeCheck();
-                document.teamId = EditorGUILayout.TextField(
-                    new GUIContent("Identyfikator studenta", "Krótki identyfikator używany w nazwie zgłoszenia, np. S123456."),
-                    document.teamId ?? string.Empty);
+                if (WiRRStudentProfile.IsRegistered)
+                    EditorGUILayout.LabelField("Identyfikator raportu", document.teamId ?? "");
+                else
+                    document.teamId = EditorGUILayout.TextField("Identyfikator studenta", document.teamId ?? string.Empty);
 
                 while (document.studentIndices.Count < 1)
                     document.studentIndices.Add(string.Empty);
 
-                document.studentIndices[0] = EditorGUILayout.TextField("Numer indeksu", document.studentIndices[0]);
+                if (WiRRStudentProfile.IsRegistered)
+                {
+                    document.studentIndices[0] = WiRRStudentProfile.Index;
+                    if (string.IsNullOrWhiteSpace(document.teamId))
+                        document.teamId = "S" + WiRRStudentProfile.Identifier;
+                    EditorGUILayout.LabelField("Numer indeksu", WiRRStudentProfile.Index);
+                    EditorGUILayout.LabelField("Grupa", WiRRStudentProfile.GroupLabel);
+                }
+                else
+                    document.studentIndices[0] = EditorGUILayout.TextField("Numer indeksu", document.studentIndices[0]);
                 while (document.studentIndices.Count > 1)
                     document.studentIndices.RemoveAt(document.studentIndices.Count - 1);
 
