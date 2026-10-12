@@ -82,11 +82,13 @@ namespace KIA.WiRR.Editor
             Directory.CreateDirectory(Path.GetDirectoryName(dest));
             File.Copy(source, dest, true);
             Must("git", "-C " + Quote(temp) + " add students/progress/" + identity + ".json");
-            Must("git", "-C " + Quote(temp) + " commit -m " + Quote("WiRR: progress snapshot " + identity));
+            if (!Run("git", "-C " + Quote(temp) + " diff --cached --quiet", out _))
+                Must("git", "-C " + Quote(temp) + " commit -m " + Quote("WiRR: progress snapshot " + identity));
             Must("gh", "auth setup-git");
-            Must("git", "-C " + Quote(temp) + " push -u origin HEAD:refs/heads/" + branch + " --force");
-            if (!Run("gh", "pr list --repo " + Repo + " --head " + login + ":" + branch + " --state open --json number --jq length", out var count)
-                || count.Trim() != "0") return;
+            Must("git", "-C " + Quote(temp) + " push -u origin HEAD:refs/heads/" + branch + " --force-with-lease");
+            if (!Run("gh", "pr list --repo " + Repo + " --head " + login + ":" + branch + " --state open --json number --jq length", out var count))
+                throw new IOException("Nie można odczytać stanu istniejącego PR.");
+            if (count.Trim() != "0") return;
             Must("gh", "pr create --repo " + Repo + " --base main --head " + login + ":" + branch +
                 " --title " + Quote("WiRR: postęp " + identity) +
                 " --body " + Quote("Automatyczne zgłoszenie stanu technicznego. Dane nie są oceną i wymagają kontroli."));
