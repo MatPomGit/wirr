@@ -56,6 +56,19 @@ namespace KIA.WiRR.Editor
             var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
             if (texture == null)
             {
+                var filename = System.IO.Path.GetFileNameWithoutExtension(definition.RelativePath);
+                foreach (var guid in AssetDatabase.FindAssets(filename + " t:Texture2D", new[] { "Assets/Samples" }))
+                {
+                    var candidate = AssetDatabase.GUIDToAssetPath(guid);
+                    if (candidate.EndsWith("/" + definition.RelativePath, StringComparison.Ordinal))
+                    {
+                        texture = AssetDatabase.LoadAssetAtPath<Texture2D>(candidate);
+                        break;
+                    }
+                }
+            }
+            if (texture == null)
+            {
                 Debug.LogWarning($"[WiRR] Opcjonalne HDRI nie jest zainstalowane. W Unity Package Manager dodaj https://github.com/KIA-students/wirr.git#assets (brak: {texturePath}).");
                 return false;
             }
