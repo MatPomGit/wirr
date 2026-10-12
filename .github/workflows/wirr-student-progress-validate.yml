@@ -12,6 +12,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 0
       - name: Validate changed paths and progress schemas
         env:
           BASE: ${{ github.event.pull_request.base.sha }}
@@ -19,7 +20,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git fetch --no-tags --depth=1 origin "$HEAD"
+          git fetch --no-tags origin "$HEAD"
           mapfile -t paths < <(git diff --name-only "$BASE" "$HEAD")
           test "${#paths[@]}" -eq 1
           [[ "${paths[0]}" =~ ^students/progress/[0-9a-f]{32}\.json$ ]]
