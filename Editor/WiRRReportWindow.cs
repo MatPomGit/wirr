@@ -111,10 +111,13 @@ namespace KIA.WiRR.Editor
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
                 EditorGUILayout.LabelField("Dane studenta", EditorStyles.boldLabel);
-                EditorGUILayout.HelpBox(
-                    "Praca jest indywidualna. Podaj identyfikator studenta i jeden numer indeksu. Nie wpisuj imienia ani nazwiska. Na podstawie numeru indeksu system automatycznie obliczy warianty v1–v5.",
-                    MessageType.None);
+                EditorGUILayout.LabelField("Indeks pochodzi z profilu WiRR, a warianty obliczają się automatycznie.", EditorStyles.wordWrappedMiniLabel);
 
+                if (WiRRStudentProfile.IsRegistered)
+                {
+                    document.teamId = "S" + WiRRStudentProfile.Identifier;
+                    if (document.studentIndices == null) document.studentIndices = new System.Collections.Generic.List<string>();
+                }
                 EditorGUI.BeginChangeCheck();
                 if (WiRRStudentProfile.IsRegistered)
                     EditorGUILayout.LabelField("Identyfikator raportu", document.teamId ?? "");
