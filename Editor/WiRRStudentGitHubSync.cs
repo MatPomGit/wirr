@@ -82,6 +82,7 @@ namespace KIA.WiRR.Editor
             Directory.CreateDirectory(Path.GetDirectoryName(dest));
             File.Copy(source, dest, true);
             Must("git", "-C " + Quote(temp) + " add students/progress/" + identity + ".json");
+            if (Run("git", "-C " + Quote(temp) + " diff --cached --quiet", out _)) return;
             if (!Run("git", "-C " + Quote(temp) + " diff --cached --quiet", out _))
                 Must("git", "-C " + Quote(temp) + " commit -m " + Quote("WiRR: progress snapshot " + identity));
             Must("gh", "auth setup-git");
