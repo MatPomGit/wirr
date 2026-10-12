@@ -356,9 +356,14 @@ jobs:
           set -euo pipefail
 
           inherited=false
-          for path in             ".github/workflows/sync-kia-students-pr.yml"             ".github/workflows/sync-from-kia-students.yml"             ".github/workflows/branch-hygiene.yml" \
+          private_checks=(
+            ".github/workflows/sync-kia-students-pr.yml"
+            ".github/workflows/sync-from-kia-students.yml"
+            ".github/workflows/branch-hygiene.yml"
             ".github/workflows/finalize-student-pr40.yml"
-            ".github/workflows/cleanup-course-league.yml"; do
+            ".github/workflows/cleanup-course-league.yml"
+          )
+          for path in "${private_checks[@]}"; do
             if gh api "repos/${UPSTREAM_REPOSITORY}/contents/${path}" >/dev/null 2>&1; then
               inherited=true
               break
