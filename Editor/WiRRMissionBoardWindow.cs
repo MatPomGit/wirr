@@ -93,6 +93,7 @@ namespace KIA.WiRR.Editor
             }
 
             EditorGUILayout.Space(8);
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.LabelField("1. Przygotuj scenę", EditorStyles.boldLabel);
             using (new EditorGUI.DisabledScope(EditorApplication.isCompiling || EditorApplication.isPlaying))
             {
@@ -104,7 +105,9 @@ namespace KIA.WiRR.Editor
                         WiRRSceneTools.OpenLabScene(Blocks[blockIndex][1]);
                 }
             }
+            EditorGUILayout.EndVertical();
             EditorGUILayout.Space(12);
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.LabelField("2. Sprawdź postęp", EditorStyles.boldLabel);
             // Comfort stations belong to the testing/comfort block only.
             if (blockIndex == 3 && GUILayout.Button("Lab 07: stanowiska komfortu XR i watchdog"))
@@ -139,17 +142,21 @@ namespace KIA.WiRR.Editor
                 EditorGUILayout.LabelField($"Lab {lab:00}: {status}", EditorStyles.wordWrappedLabel);
             }
 
+            EditorGUILayout.EndVertical();
             EditorGUILayout.Space(8);
             if (blockIndex == 3 && GUILayout.Button("Lab 08: dodaj gotowy demonstrator inspekcji"))
                 WiRRLab08Tools.AddDemonstrator();
             if (blockIndex == 3 && GUILayout.Button("Lab 08: importuj prawdziwe wyniki JSON"))
                 WiRRLab08Tools.ImportResults();
             EditorGUILayout.Space(12);
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.LabelField("3. Przygotuj raport", EditorStyles.boldLabel);
             if (GUILayout.Button("Otwórz raport aktualnego laboratorium"))
                 WiRRReportWindow.OpenForLab(Blocks[blockIndex][0]);
 
+            EditorGUILayout.EndVertical();
             EditorGUILayout.Space(12);
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.LabelField("4. Podsumuj blok", EditorStyles.boldLabel);
 
             // Identity is edited in a dedicated panel, never duplicated per block.
@@ -169,6 +176,7 @@ namespace KIA.WiRR.Editor
             }
 
             EditorGUILayout.LabelField("Postęp zapisuje się lokalnie. Synchronizacja z repozytorium wymaga bezpiecznej usługi uczelnianej.", EditorStyles.wordWrappedMiniLabel);
+            EditorGUILayout.EndVertical();
             EditorGUILayout.EndScrollView();
         }
 
