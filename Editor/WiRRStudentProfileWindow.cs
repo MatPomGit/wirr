@@ -25,7 +25,15 @@ namespace KIA.WiRR.Editor
         {
             get
             {
-                return Hash(Index).Substring(0, 16);
+                if (!IsRegistered) return "";
+                var key = "KIA.WiRR.Enrollment." + Hash(Index) + ".Id";
+                var id = EditorPrefs.GetString(key, "");
+                if (string.IsNullOrEmpty(id))
+                {
+                    id = Guid.NewGuid().ToString("N");
+                    EditorPrefs.SetString(key, id);
+                }
+                return id;
             }
         }
 
