@@ -37,8 +37,8 @@ jobs:
             echo "::error::PR #40 has unexpected target. Stop."
             exit 1
           fi
-          changed="$(gh api "repos/$repo/pulls/$pr/files?per_page=100" --jq '[.[].filename] | sort | join("\\n")')"
-          expected="$(printf '%s\\n' Documentation~/Reference/FOUR_BLOCK_MISSIONS.md Documentation~/Reference/UNITY_COURSE_JOURNEY.md README.md WebSim~/site/index.html | sort)"
+          changed="$(gh api "repos/$repo/pulls/$pr/files?per_page=100" --jq '[.[].filename] | sort | join(",")')"
+          expected='Documentation~/Reference/FOUR_BLOCK_MISSIONS.md,Documentation~/Reference/UNITY_COURSE_JOURNEY.md,README.md,WebSim~/site/index.html'
           if [[ "$changed" != "$expected" ]]; then
             echo "::error::Unexpected public files in PR #40; refusing merge"
             printf "%s\\n" "$changed"
