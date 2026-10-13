@@ -38,7 +38,7 @@ public static class WiRRPublicReportSubmission
             Guid parsed;
             if (!Guid.TryParse(submissionId, out parsed)) throw new IOException("Niepoprawny identyfikator zgłoszenia.");
             if (!File.Exists(idPath)) File.WriteAllText(idPath, submissionId, Encoding.UTF8);
-            var payload = "{\\\"submission_id\\\":\\\"" + submissionId + "\\",\\\"lab_no\\\":" + lab + ",\\\"report\\\":" + report + "}";
+            var payload = "{\"submission_id\":\"" + submissionId + "\",\"lab_no\":" + lab + ",\"report\":" + report + "}";
             using (var request = new HttpRequestMessage(HttpMethod.Post, WiRRCourseSubmissionConfig.SubmissionEndpoint))
             {
                 request.Headers.Add("X-WiRR-Course-Key", WiRRCourseSubmissionConfig.PublicCourseKey);
@@ -46,11 +46,11 @@ public static class WiRRPublicReportSubmission
                 using (var response = await Client.SendAsync(request))
                 {
                     var body = await response.Content.ReadAsStringAsync();
-                    if (!response.IsSuccessStatusCode || !body.Contains("\\"accepted\\":true"))
+                    if (!response.IsSuccessStatusCode || !body.Contains("\"accepted\":true"))
                         throw new IOException("Brak potwierdzenia odbioru. HTTP " + (int)response.StatusCode + ". " + body);
                     EditorUtility.DisplayDialog("WiRR: raport przyjęty",
                         "Serwer KIA potwierdził odbiór raportu. Identyfikator: " + submissionId +
-                        "\\nRaport oczekuje w prywatnej kolejce. Publikacja na GitHub jest odrębnym procesem.", "OK");
+                        "\nRaport oczekuje w prywatnej kolejce. Publikacja na GitHub jest odrębnym procesem.", "OK");
                 }
             }
         }
@@ -58,7 +58,7 @@ public static class WiRRPublicReportSubmission
         {
             Debug.LogWarning("WiRR: przesłanie raportu nie powiodło się: " + ex.Message);
             EditorUtility.DisplayDialog("WiRR: raport nadal lokalnie",
-                "Nie uzyskano potwierdzenia odbioru. Zachowano plik. Możesz ponowić przesłanie.\\n" + ex.Message, "OK");
+                "Nie uzyskano potwierdzenia odbioru. Zachowano plik. Możesz ponowić przesłanie.\n" + ex.Message, "OK");
         }
     }
 
