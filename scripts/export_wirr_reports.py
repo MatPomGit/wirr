@@ -38,7 +38,7 @@ def main():
         if group not in ("G1", "G2") or not isinstance(lab, int) or not 1 <= lab <= 8:
             print("Invalid group or laboratory:", submission_id, file=sys.stderr)
             continue
-        path = f"student-work/{group}/lab{lab:02d}/{submission_id}.json"
+        path = f"student-work/{group}/lab{lab:02d}-{submission_id}.json"
         # Single source of truth: never publish if the group/lab differs from the validated path.
         if row["github_path"] != path:
             print("Path mismatch:", submission_id, file=sys.stderr)
