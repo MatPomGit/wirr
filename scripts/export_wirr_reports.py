@@ -45,15 +45,39 @@ def main():
             continue
         raw = (json.dumps(row["report"], ensure_ascii=False, indent=2) + "\n").encode("utf-8")
         destination = API + "/repos/" + TARGET + "/contents/" + urllib.parse.quote(path, safe="/")
-        body = {"message":f"student-work: receive WiRR {group} Lab {lab:02d} report", "content":base64.b64encode(raw).decode(), "branch":"main"}
+        name = "wirr-report/" + submission_id
         try:
-            response = request("PUT", destination, auth_github(), body)
-            sha = response.get("commit",{}).get("sha")
-            if not sha: raise RuntimeError("GitHub did not return a commit SHA")
-            receipt = {"status":"exported", "github_path":path, "github_commit_sha":sha, "last_error":None}
+            # Create a separate branch and a reviewable PR, never commit student reports to main directly.
+            base = request("GET", API + "/repos/" + TARGET + "/git/ref/heads/main", auth_github())
+            try:
+                request("POST", API + "/repos/" + TARGET + "/git/refs", auth_github(),
+                        {"ref":"refs/heads/" + name, "sha":base["object"]["sha"]})
+            except urllib.error.HTTPError as branch_error:
+                if branch_error.code != 422: raise
+            try:
+                old = request("GET", destination + "?ref=" + urllib.parse.quote(name), auth_github())
+                existing_sha = old.get("sha")
+            except urllib.error.HTTPError as missing:
+                if missing.code != 404: raise
+                existing_sha = None
+            body = {"message":f"student-work: WiRR {group} Lab {lab:02d} report", "content":base64.b64encode(raw).decode(), "branch":name}
+            if existing_sha: body["sha"] = existing_sha
+            commit = request("PUT", destination, auth_github(), body)
+            sha = commit.get("commit",{}).get("sha")
+            if not sha: raise RuntimeError("GitHub did not confirm report commit")
+            existing_prs = request("GET", API + "/repos/" + TARGET + "/pulls?head=KIA-students:" + urllib.parse.quote(name) + "&state=open", auth_github())
+            if existing_prs:
+                pr = existing_prs[0]
+            else:
+                pr = request("POST",API + "/repos/" + TARGET + "/pulls",auth_github(),{
+                    "title":f"WiRR {group} Lab {lab:02d}: zgłoszenie raportu",
+                    "head":name,"base":"main",
+                    "body":"Automatyczne zgłoszenie z Unity. Sprawdź zawartość i uprawnienie do jej publikacji przed scaleniem."
+                })
+            receipt = {"status":"reviewed", "github_path":path, "github_commit_sha":sha, "github_pr_url":pr["html_url"], "last_error":None}
             request("PATCH",BASE+"/rest/v1/wirr_public_intake?submission_id=eq."+submission_id,
                     {**auth_supabase(),"Prefer":"return=minimal"},receipt)
-            print(f"GitHub confirmed {path} at {sha}")
+            print(f"GitHub PR confirmed: {pr['html_url']}")
         except Exception as exc:
             print(f"Failed to publish {submission_id}: {exc}", file=sys.stderr)
             # Preserve pending for safe retry; never imply delivery without GitHub SHA.
