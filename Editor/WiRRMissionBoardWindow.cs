@@ -181,9 +181,8 @@ namespace KIA.WiRR.Editor
             EditorGUILayout.HelpBox(
                 "Formularz oferuje krótki raport z obserwacją i wnioskiem. " +
                 "Nie wpisuj liczb zastępczych, jeśli pomiarów nie wykonano. " +
-                "Zachowaj obserwacje i uzgodnij przekazanie wyniku z prowadzącym. " +
-                "Eksport uproszczonego raportu wymaga aktualizacji walidatora.",
-                MessageType.Warning);
+                "Wyeksportuj raport i sprawdź osobne potwierdzenie przyjęcia przez serwer.",
+                MessageType.Info);
             foreach (var lab in Blocks[blockIndex])
                 if (GUILayout.Button("Otwórz raport: Lab " + lab.ToString("00")))
                     WiRRReportWindow.OpenForLab(lab);
