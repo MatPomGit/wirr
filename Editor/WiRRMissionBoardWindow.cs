@@ -179,8 +179,8 @@ namespace KIA.WiRR.Editor
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.LabelField("3. Przygotuj raport", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox(
-                "Formularz nadal wymaga kompletu danych dawnego etapu 3.0. " +
-                "Jeżeli krótki eksperyment nie dostarcza tych pomiarów, nie wpisuj liczb zastępczych. " +
+                "Formularz oferuje krótki raport z obserwacją i wnioskiem. " +
+                "Nie wpisuj liczb zastępczych, jeśli pomiarów nie wykonano. " +
                 "Zachowaj obserwacje i uzgodnij przekazanie wyniku z prowadzącym. " +
                 "Eksport uproszczonego raportu wymaga aktualizacji walidatora.",
                 MessageType.Warning);
