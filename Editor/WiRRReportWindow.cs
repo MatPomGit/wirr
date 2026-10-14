@@ -183,7 +183,12 @@ namespace KIA.WiRR.Editor
         private bool IsBasicMode()
         {
             var mode = WiRRReportStore.GetValue(document, "basic.mode");
-            return mode == "true" || string.IsNullOrEmpty(mode);
+            if (mode == "true") return true;
+            if (mode == "false") return false;
+            // Historical reports have measurement keys and remain in advanced mode.
+            return document.answers == null || !document.answers.Any(a =>
+                a.key != null && a.key.StartsWith("cp", StringComparison.Ordinal) &&
+                !string.IsNullOrWhiteSpace(a.value));
         }
 
         private void DrawReportMode()
