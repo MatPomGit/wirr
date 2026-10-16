@@ -14,8 +14,10 @@ zgłoszenie. Nie edytuj ręcznie pliku, dla którego zapisano już potwierdzenie
 
 Eksporter po awarii korzysta z istniejącego pliku i PR, jeśli treść jest identyczna.
 Inna treść pod tym samym identyfikatorem zatrzymuje przetwarzanie; nie nadpisuje
-wcześniejszej pracy. Status kolejki jest potwierdzany dopiero po zgodności SHA
-commita z nagłówkiem PR. To potwierdzenie przekazania, nie ocena pracy.
+wcześniejszej pracy. Dla otwartego PR status kolejki jest potwierdzany dopiero po zgodności SHA
+commita z nagłówkiem PR. Po scaleniu sprawdzana jest treść pliku w commicie
+scalenia, także po usunięciu gałęzi. Zamknięcie bez scalenia wymaga wyjaśnienia
+przez prowadzącego; automat nie tworzy ponownie zamkniętego zgłoszenia. To potwierdzenie przekazania, nie ocena pracy.
 
 ## Techniczny postęp a raport
 
