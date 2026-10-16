@@ -33,6 +33,23 @@ def report_blob_sha(raw):
     """Git blob identity includes the object header, not just the file bytes."""
     return hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()
 
+def find_report_pr(name):
+    # Include closed history before any write: a retry must respect a reviewer's decision.
+    url = API + "/repos/" + TARGET + "/pulls?" + urllib.parse.urlencode({
+        "head": TARGET.split("/")[0] + ":" + name, "base": "main",
+        "state": "all", "per_page": 100})
+    prs = request("GET", url, auth_github())
+    if len(prs) > 1:
+        raise RuntimeError("Multiple report pull requests; operator reconciliation required")
+    return prs[0] if prs else None
+
+def acknowledge_report(submission_id, path, sha, pr):
+    receipt = {"status":"reviewed", "github_path":path, "github_commit_sha":sha,
+               "github_pr_url":pr["html_url"], "last_error":None}
+    request("PATCH", BASE + "/rest/v1/wirr_public_intake?submission_id=eq." + submission_id,
+            {**auth_supabase(), "Prefer":"return=minimal"}, receipt)
+    print(f"GitHub PR confirmed: {pr['html_url']}")
+
 def main():
     if not SUPABASE_KEY or not GITHUB_KEY:
         print("Required WIRR_SUPABASE_SERVICE_ROLE_KEY and KIA_STUDENTS_SYNC_TOKEN secrets are missing.", file=sys.stderr)
@@ -61,6 +78,19 @@ def main():
         destination = API + "/repos/" + TARGET + "/contents/" + urllib.parse.quote(path, safe="/")
         name = "wirr-report/" + submission_id
         try:
+            previous_pr = find_report_pr(name)
+            if previous_pr and previous_pr.get("state") == "closed":
+                if not previous_pr.get("merged_at"):
+                    raise RuntimeError("Report PR was closed without merging; operator review required")
+                # Verify immutable merged content even when the source branch was deleted.
+                sha = previous_pr.get("merge_commit_sha")
+                if not sha:
+                    raise RuntimeError("Merged PR has no confirmed merge commit")
+                merged_file = request("GET", destination + "?ref=" + urllib.parse.quote(sha), auth_github())
+                if merged_file.get("sha") != report_blob_sha(raw):
+                    raise RuntimeError("Merged report content does not match the queued submission")
+                acknowledge_report(submission_id, path, sha, previous_pr)
+                continue
             # Create a separate branch and a reviewable PR, never commit student reports to main directly.
             base = request("GET", API + "/repos/" + TARGET + "/git/ref/heads/main", auth_github())
             try:
@@ -88,10 +118,11 @@ def main():
                 commit = request("PUT", destination, auth_github(), body)
                 sha = commit.get("commit",{}).get("sha")
             if not sha: raise RuntimeError("GitHub did not confirm report commit")
-            existing_prs = request("GET", API + "/repos/" + TARGET + "/pulls?head=KIA-students:" + urllib.parse.quote(name) + "&state=open", auth_github())
-            if existing_prs:
-                pr = existing_prs[0]
-            else:
+            # Re-read after the write to catch a PR closed/merged during this attempt.
+            pr = find_report_pr(name)
+            if pr and pr.get("state") != "open":
+                raise RuntimeError("Report PR changed state; retry to reconcile its final content")
+            if not pr:
                 pr = request("POST",API + "/repos/" + TARGET + "/pulls",auth_github(),{
                     "title":f"WiRR {group} Lab {lab:02d}: zgłoszenie raportu",
                     "head":name,"base":"main",
@@ -99,10 +130,7 @@ def main():
                 })
             if pr.get("head", {}).get("sha") != sha:
                 raise RuntimeError("GitHub pull request head does not match the confirmed report commit")
-            receipt = {"status":"reviewed", "github_path":path, "github_commit_sha":sha, "github_pr_url":pr["html_url"], "last_error":None}
-            request("PATCH",BASE+"/rest/v1/wirr_public_intake?submission_id=eq."+submission_id,
-                    {**auth_supabase(),"Prefer":"return=minimal"},receipt)
-            print(f"GitHub PR confirmed: {pr['html_url']}")
+            acknowledge_report(submission_id, path, sha, pr)
         except Exception as exc:
             print(f"Failed to publish {submission_id}: {exc}", file=sys.stderr)
             # Preserve pending for safe retry; never imply delivery without GitHub SHA.
