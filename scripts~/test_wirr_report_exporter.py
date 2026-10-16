@@ -10,6 +10,7 @@ from pathlib import Path
 import unittest
 from unittest.mock import patch
 from urllib.error import HTTPError
+from urllib.parse import parse_qs, urlsplit
 
 SOURCE = Path(__file__).resolve().parents[1] / 'scripts' / 'export_wirr_reports.py'
 SPEC = importlib.util.spec_from_file_location('wirr_exporter', SOURCE)
@@ -39,6 +40,9 @@ class Services:
         self.lose_pr_response = False
         self.wrong_pr_head = False
         self.missing_commit = False
+        self.merged_blob = None
+        self.extra_pr = None
+        self.close_on_file_read = False
 
     def request(self, method, url, headers, data=None):
         self.calls.append((method, url, copy.deepcopy(data)))
@@ -60,14 +64,19 @@ class Services:
             self.branch = True
             return {}
         if '/git/ref/heads/wirr-report/' in url:
+            if not self.branch:
+                raise HTTPError(url, 404, 'branch deleted', {}, None)
             return {'object': {'sha': self.branch_sha}}
         if '/contents/' in url:
             if method == 'GET':
-                if self.blob is None:
+                blob = self.merged_blob if parse_qs(urlsplit(url).query).get('ref') == ['merge-commit'] else self.blob
+                if blob is None:
                     raise HTTPError(url, 404, 'not found', {}, None)
+                if self.close_on_file_read:
+                    self.pr['state'] = 'closed'
                 # Use git itself as the independent blob-identity oracle in the test.
                 import subprocess
-                sha = subprocess.run(['git', 'hash-object', '--stdin'], input=self.blob,
+                sha = subprocess.run(['git', 'hash-object', '--stdin'], input=blob,
                                      capture_output=True, check=True).stdout.decode().strip()
                 return {'sha': sha}
             if method == 'PUT':
@@ -76,12 +85,15 @@ class Services:
                 return {} if self.missing_commit else {'commit': {'sha': self.branch_sha}}
         if '/pulls' in url:
             if method == 'GET':
-                return [copy.deepcopy(self.pr)] if self.pr else []
+                state = parse_qs(urlsplit(url).query).get('state', ['open'])[0]
+                return [copy.deepcopy(pr) for pr in (self.pr, self.extra_pr)
+                        if pr and (state == 'all' or pr['state'] == state)]
             if method == 'POST':
                 if self.fail_pr:
                     self.fail_pr = False
                     raise HTTPError(url, 503, 'PR temporarily unavailable', {}, None)
                 self.pr = {'html_url': 'https://github.com/KIA-students/wirr/pull/999999',
+                           'state': 'open', 'merged_at': None, 'merge_commit_sha': None,
                            'head': {'sha': 'unrelated' if self.wrong_pr_head else self.branch_sha}}
                 if self.lose_pr_response:
                     self.lose_pr_response = False
@@ -184,6 +196,83 @@ class TestWiRRReportExporter(unittest.TestCase):
     def test_git_blob_identity_matches_known_git_object(self):
         self.assertEqual(exporter.report_blob_sha(b'hello\n'), 'ce013625030ba8dba906f756967f9e9ca394464a')
         self.assertNotEqual(exporter.report_blob_sha(b'hello\n'), hashlib.sha1(b'hello\n').hexdigest())
+
+    def pending_after_lost_ack(self):
+        services = Services()
+        services.fail_ack = True
+        self.assertEqual(self.run_export(services), 1)
+        services.calls.clear()
+        return services
+
+    def assert_no_github_writes(self, services):
+        self.assertEqual([(method, url) for method, url, _ in services.calls
+                          if exporter.API in url and method != 'GET'], [])
+
+    def test_closed_unmerged_pr_is_not_recreated_or_acknowledged(self):
+        services = self.pending_after_lost_ack()
+        services.pr['state'] = 'closed'
+        for deleted in (False, True):
+            with self.subTest(branch_deleted=deleted):
+                services.branch = not deleted
+                self.assertEqual(self.run_export(services), 1)
+                self.assert_no_github_writes(services)
+                self.assertIsNone(services.receipt)
+
+    def test_merged_pr_recovers_after_branch_deletion_without_github_writes(self):
+        services = self.pending_after_lost_ack()
+        services.pr.update(state='closed', merged_at='2026-10-16T10:00:00Z',
+                           merge_commit_sha='merge-commit')
+        services.merged_blob = services.blob
+        services.blob = None
+        services.branch = False
+        self.assertEqual(self.run_export(services), 0)
+        self.assert_no_github_writes(services)
+        self.assertEqual(services.receipt['github_commit_sha'], 'merge-commit')
+        self.assertEqual(services.receipt['github_pr_url'], services.pr['html_url'])
+
+    def test_merged_pr_with_missing_or_changed_content_stays_pending(self):
+        for blob in (None, b'{"changed": true}'):
+            with self.subTest(blob=blob):
+                services = self.pending_after_lost_ack()
+                services.pr.update(state='closed', merged_at='2026-10-16T10:00:00Z',
+                                   merge_commit_sha='merge-commit')
+                services.merged_blob = blob
+                self.assertEqual(self.run_export(services), 1)
+                self.assert_no_github_writes(services)
+                self.assertIsNone(services.receipt)
+
+    def test_merged_pr_without_commit_is_not_acknowledged(self):
+        services = self.pending_after_lost_ack()
+        services.pr.update(state='closed', merged_at='2026-10-16T10:00:00Z')
+        self.assertEqual(self.run_export(services), 1)
+        self.assert_no_github_writes(services)
+        self.assertIsNone(services.receipt)
+
+    def test_multiple_historical_prs_require_operator_reconciliation(self):
+        services = self.pending_after_lost_ack()
+        services.extra_pr = copy.deepcopy(services.pr)
+        services.extra_pr.update(state='closed', html_url='https://github.com/KIA-students/wirr/pull/999998')
+        self.assertEqual(self.run_export(services), 1)
+        self.assert_no_github_writes(services)
+        self.assertIsNone(services.receipt)
+
+    def test_pr_closed_during_retry_is_not_acknowledged(self):
+        services = self.pending_after_lost_ack()
+        services.close_on_file_read = True
+        self.assertEqual(self.run_export(services), 1)
+        self.assertIsNone(services.receipt)
+        self.assertEqual(services.count('POST', '/pulls'), 0)
+
+    def test_merged_recovery_can_retry_lost_queue_acknowledgement(self):
+        services = self.pending_after_lost_ack()
+        services.pr.update(state='closed', merged_at='2026-10-16T10:00:00Z',
+                           merge_commit_sha='merge-commit')
+        services.merged_blob = services.blob
+        services.fail_ack = True
+        self.assertEqual(self.run_export(services), 1)
+        self.assertEqual(self.run_export(services), 0)
+        self.assert_no_github_writes(services)
+        self.assertEqual(services.receipt['github_commit_sha'], 'merge-commit')
 
 
 if __name__ == '__main__':
