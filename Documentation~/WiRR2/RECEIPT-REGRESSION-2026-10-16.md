@@ -35,3 +35,42 @@ nie jest dowodem przekazania do GitHub ani zatwierdzenia oceny.
 
 Nie zamykać odbioru WiRR 2.0 na podstawie tej poprawki. Nie wykonano wysyłki
 testowej na serwer ani publikacji raportów studentów.
+
+## Kontynuacja: wersje plików i ponawianie po awarii
+
+`WiRRReportStore.ExportFinal` nadpisywał plik o stałej nazwie, pozostawiając
+stary `.submission-id` i `.receipt.json`. Poprawiony raport mógł odziedziczyć
+identyfikator transportowy oraz potwierdzenie wcześniejszej treści. Eksport
+zapisuje teraz osobny plik z nowym identyfikatorem w nazwie, używając
+`FileMode.CreateNew`. Identyfikator dokumentu w JSON pozostaje identyfikatorem
+pracy; identyfikator transportowy jest przypisany do konkretnego eksportu.
+Ponowienie tego samego pliku nadal korzysta z jego `.submission-id`.
+
+Eksporter GitHub nie wykonuje ponownie zapisu pliku, gdy istniejąca treść jest
+identyczna. Tożsamość treści sprawdza przez Git blob SHA, odczytując plik dla
+konkretnego SHA gałęzi. Po utracie odpowiedzi utworzenia PR lub potwierdzenia
+statusu kolejki znajduje istniejący PR. Przed potwierdzeniem statusu wymaga
+zgodności SHA z PR. Inna treść pod tym samym identyfikatorem jest błędem,
+a nie zgodą na nadpisanie pracy. Nie zmieniano schematu bazy ani uprawnień.
+
+Aktualna walidacja lokalna:
+
+- **24 testy Python PASS**, w tym 10 nowych testów eksportera, z kontrolowanymi
+  awariami PR i potwierdzenia kolejki. Wszystkie wywołania HTTP zastępuje lokalny
+  model usług. Nie korzystają z rzeczywistej kolejki ani danych studentów.
+- Trzy testy regresji uruchomione na poprzedniej wersji eksportera zakończyły
+  się oczekiwanym FAIL: ponowny zapis pliku, nadpisanie zmienionej treści i
+  potwierdzenie niezgodnego SHA. Te same testy przechodzą po poprawce.
+- Dodano 3 przypadki EditMode dotyczące zachowania poprzedniego pliku,
+  rozdzielenia potwierdzeń i UTF-8. Łącznie **15 przypadków Unity pozostaje
+  nieuruchomionych** z powodu braku Unity w tym środowisku.
+- Istniejący ręczny workflow walidacji uruchamia teraz wszystkie `test_wirr*.py`.
+  Nadal obowiązuje tylko `workflow_dispatch` na `main`; workflow nie był uruchamiany.
+
+Odbiór produkcyjny pozostaje otwarty: Unity EditMode i test pełnego przepływu.
+Ręczna zmiana wcześniej wysłanego pliku nie jest wspieranym sposobem korekty;
+należy użyć formularza i nowego eksportu. Odzyskanie zgłoszenia po ręcznym
+zamknięciu lub scaleniu jego PR nie jest objęte nowymi testami.
+
+Dokumentacja formatu blobów: https://git-scm.com/book/en/v2/Git-Internals-Git-Objects
+oraz API treści GitHub: https://docs.github.com/en/rest/repos/contents.

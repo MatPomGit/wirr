@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Export accepted WiRR reports from private Supabase queue to course GitHub repository."""
 import base64
+import hashlib
 import json
 import os
 import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+import uuid
 
 BASE = "https://ndebunrsdtulflzpemwd.supabase.co"
 TARGET = "KIA-students/wirr"
@@ -27,6 +29,10 @@ def auth_supabase():
 def auth_github():
     return {"Authorization": "Bearer " + GITHUB_KEY, "Accept": "application/vnd.github+json", "Content-Type": "application/json", "X-GitHub-Api-Version": "2022-11-28"}
 
+def report_blob_sha(raw):
+    """Git blob identity includes the object header, not just the file bytes."""
+    return hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()
+
 def main():
     if not SUPABASE_KEY or not GITHUB_KEY:
         print("Required WIRR_SUPABASE_SERVICE_ROLE_KEY and KIA_STUDENTS_SYNC_TOKEN secrets are missing.", file=sys.stderr)
@@ -35,14 +41,22 @@ def main():
     rows = request("GET", url, auth_supabase())
     for row in rows:
         submission_id, group, lab = row["submission_id"], row["group_code"], row["lab_no"]
-        if group not in ("G1", "G2") or not isinstance(lab, int) or not 1 <= lab <= 8:
+        if group not in ("G1", "G2") or type(lab) is not int or not 1 <= lab <= 8:
             print("Invalid group or laboratory:", submission_id, file=sys.stderr)
-            continue
+            return 1
+        try:
+            uuid.UUID(submission_id)
+        except (ValueError, TypeError, AttributeError):
+            print("Invalid submission identifier", file=sys.stderr)
+            return 1
         path = f"student-work/{group}/lab{lab:02d}-{submission_id}.json"
         # Single source of truth: never publish if the group/lab differs from the validated path.
         if row["github_path"] != path:
             print("Path mismatch:", submission_id, file=sys.stderr)
-            continue
+            return 1
+        if not isinstance(row["report"], dict) or type(row["report"].get("labNumber")) is not int or row["report"]["labNumber"] != lab:
+            print("Report laboratory mismatch:", submission_id, file=sys.stderr)
+            return 1
         raw = (json.dumps(row["report"], ensure_ascii=False, indent=2) + "\n").encode("utf-8")
         destination = API + "/repos/" + TARGET + "/contents/" + urllib.parse.quote(path, safe="/")
         name = "wirr-report/" + submission_id
@@ -54,16 +68,25 @@ def main():
                         {"ref":"refs/heads/" + name, "sha":base["object"]["sha"]})
             except urllib.error.HTTPError as branch_error:
                 if branch_error.code != 422: raise
+            head = request("GET", API + "/repos/" + TARGET + "/git/ref/heads/" + urllib.parse.quote(name, safe="/"), auth_github())
+            head_sha = head.get("object", {}).get("sha")
+            if not head_sha:
+                raise RuntimeError("GitHub did not confirm the report branch head")
             try:
-                old = request("GET", destination + "?ref=" + urllib.parse.quote(name), auth_github())
+                old = request("GET", destination + "?ref=" + urllib.parse.quote(head_sha), auth_github())
                 existing_sha = old.get("sha")
             except urllib.error.HTTPError as missing:
                 if missing.code != 404: raise
                 existing_sha = None
-            body = {"message":f"student-work: WiRR {group} Lab {lab:02d} report", "content":base64.b64encode(raw).decode(), "branch":name}
-            if existing_sha: body["sha"] = existing_sha
-            commit = request("PUT", destination, auth_github(), body)
-            sha = commit.get("commit",{}).get("sha")
+            if existing_sha:
+                if existing_sha != report_blob_sha(raw):
+                    raise RuntimeError("Submission content changed; preserve the existing report and use a new submission identifier")
+                # Recover after a lost queue acknowledgement without another file write.
+                sha = head_sha
+            else:
+                body = {"message":f"student-work: WiRR {group} Lab {lab:02d} report", "content":base64.b64encode(raw).decode(), "branch":name}
+                commit = request("PUT", destination, auth_github(), body)
+                sha = commit.get("commit",{}).get("sha")
             if not sha: raise RuntimeError("GitHub did not confirm report commit")
             existing_prs = request("GET", API + "/repos/" + TARGET + "/pulls?head=KIA-students:" + urllib.parse.quote(name) + "&state=open", auth_github())
             if existing_prs:
@@ -74,6 +97,8 @@ def main():
                     "head":name,"base":"main",
                     "body":"Automatyczne zgłoszenie z Unity. Sprawdź zawartość i uprawnienie do jej publikacji przed scaleniem."
                 })
+            if pr.get("head", {}).get("sha") != sha:
+                raise RuntimeError("GitHub pull request head does not match the confirmed report commit")
             receipt = {"status":"reviewed", "github_path":path, "github_commit_sha":sha, "github_pr_url":pr["html_url"], "last_error":None}
             request("PATCH",BASE+"/rest/v1/wirr_public_intake?submission_id=eq."+submission_id,
                     {**auth_supabase(),"Prefer":"return=minimal"},receipt)
@@ -87,3 +112,4 @@ def main():
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
