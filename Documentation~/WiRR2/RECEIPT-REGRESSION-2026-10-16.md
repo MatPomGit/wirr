@@ -69,8 +69,36 @@ Aktualna walidacja lokalna:
 
 Odbiór produkcyjny pozostaje otwarty: Unity EditMode i test pełnego przepływu.
 Ręczna zmiana wcześniej wysłanego pliku nie jest wspieranym sposobem korekty;
-należy użyć formularza i nowego eksportu. Odzyskanie zgłoszenia po ręcznym
-zamknięciu lub scaleniu jego PR nie jest objęte nowymi testami.
+należy użyć formularza i nowego eksportu. Testy tego etapu nie obejmowały
+jeszcze ręcznego zamknięcia lub scalenia PR; uzupełnienie opisano poniżej.
 
 Dokumentacja formatu blobów: https://git-scm.com/book/en/v2/Git-Internals-Git-Objects
 oraz API treści GitHub: https://docs.github.com/en/rest/repos/contents.
+
+## Kontynuacja: zamknięte i scalone PR
+
+Eksporter odczytuje historię PR (`state=all`, docelowa gałąź `main`) przed
+utworzeniem gałęzi. Zamknięty PR bez scalenia wymaga interwencji operatora;
+ponowienie nie tworzy kolejnego PR i nie potwierdza przyjęcia. Więcej niż jeden
+PR dla identyfikatora również zatrzymuje automatyczne rozstrzygnięcie.
+
+Po scaleniu eksporter odczytuje plik dla `merge_commit_sha` i porównuje Git blob
+SHA z treścią kolejki. Przy zgodności zapisuje potwierdzenie z SHA scalenia oraz
+adresem istniejącego PR, bez zapisów do GitHub. Działa także po usunięciu gałęzi.
+Brak pliku, inna treść lub brak SHA nie potwierdzają dostarczenia. Status
+`reviewed` zachowuje dotychczasowe znaczenie transportowe; nie nadaje oceny.
+Ponowne sprawdzenie stanu PR po zapisie wykrywa zamknięcie w trakcie próby;
+nie stanowi transakcji między GitHub i kolejką.
+
+Walidacja: **31 testów Python PASS**, w tym 7 nowych metod testowych. Wszystkie
+7 wykrywają regresje na eksporterze z commita `68abe57` (9 niepowodzeń wraz
+z podprzypadkami, bez błędów wykonania); po poprawce przechodzą. Kontrolowane
+awarie obejmują także utratę potwierdzenia kolejki po scaleniu, niezgodność
+scalonej treści, wiele PR i zamknięcie w trakcie próby. Model HTTP uwzględnia
+filtrowanie stanu PR oraz odrębny plik w commicie scalenia.
+
+Nie zmieniano API, schematu ani uprawnień Supabase. Nie wykonywano połączeń
+z kolejką, zapisów danych studentów ani uruchomień Actions. Nadal wymagane:
+15 przypadków Unity EditMode i rzeczywisty E2E dwóch raportów przed wydaniem.
+
+Źródło parametrów API: https://docs.github.com/en/rest/pulls/pulls#list-pull-requests.
