@@ -10,7 +10,8 @@ from pathlib import Path
 import unittest
 from unittest.mock import patch
 from urllib.error import HTTPError
-from urllib.parse import parse_qs, urlsplit
+from urllib.parse import parse_qs, urlsplit, unquote
+import uuid
 
 SOURCE = Path(__file__).resolve().parents[1] / 'scripts' / 'export_wirr_reports.py'
 SPEC = importlib.util.spec_from_file_location('wirr_exporter', SOURCE)
@@ -273,6 +274,136 @@ class TestWiRRReportExporter(unittest.TestCase):
         self.assertEqual(self.run_export(services), 0)
         self.assert_no_github_writes(services)
         self.assertEqual(services.receipt['github_commit_sha'], 'merge-commit')
+
+
+class BatchServices:
+    """Independent durable submissions with queue filtering applied on every fetch."""
+    def __init__(self, count):
+        self.items = []
+        self.queue_calls = []
+        self.active = None
+        self.fail_fetch = False
+        self.ignore_cursor = False
+        for n in range(1, count + 1):
+            item = Services()
+            identifier = str(uuid.UUID(int=n))
+            item.row.update(submission_id=identifier,
+                            github_path=f'student-work/G1/lab01-{identifier}.json')
+            self.items.append(item)
+
+    def request(self, method, url, headers, data=None):
+        query = parse_qs(urlsplit(url).query)
+        if '/rest/v1/' in url and method == 'GET':
+            self.queue_calls.append(query)
+            if self.fail_fetch:
+                raise HTTPError(url, 503, 'queue unavailable', {}, None)
+            rows = [copy.deepcopy(item.row) for item in self.items if item.row['status'] == 'pending']
+            rows.sort(key=lambda row: uuid.UUID(row['submission_id']).int)
+            if 'submission_id' in query and not self.ignore_cursor:
+                cursor = uuid.UUID(query['submission_id'][0].removeprefix('gt.')).int
+                rows = [row for row in rows if uuid.UUID(row['submission_id']).int > cursor]
+            return rows[:int(query.get('limit', ['30'])[0])]
+        decoded_url = unquote(url)
+        for item in self.items:
+            if item.row['submission_id'] in decoded_url:
+                self.active = item
+                break
+        if self.active is None:
+            raise AssertionError(f'No submission selected: {method} {url}')
+        return self.active.request(method, url, headers, data)
+
+    def count(self, method, path):
+        return sum(item.count(method, path) for item in self.items)
+
+
+class TestWiRRBatchExporter(unittest.TestCase):
+    run_export = TestWiRRReportExporter.run_export
+
+    def test_invalid_first_report_does_not_block_the_next_student(self):
+        for changes in ({'group_code': 'G3'}, {'report': None}, {'report': {'labNumber': 2}}):
+            with self.subTest(changes=changes):
+                batch = BatchServices(2)
+                batch.items[0].row.update(changes)
+                self.assertEqual(self.run_export(batch), 1)
+                self.assertEqual(batch.items[0].row['status'], 'pending')
+                self.assertIsNone(batch.items[0].receipt)
+                self.assertEqual(batch.items[1].row['status'], 'reviewed')
+                self.assertEqual(batch.items[0].count('POST', '/git/refs'), 0)
+
+    def test_missing_field_does_not_abort_remaining_reports(self):
+        batch = BatchServices(2)
+        del batch.items[0].row['report']
+        self.assertEqual(self.run_export(batch), 1)
+        self.assertIsNone(batch.items[0].receipt)
+        self.assertIsNotNone(batch.items[1].receipt)
+
+    def test_failed_pr_does_not_block_next_report_and_retry_is_idempotent(self):
+        batch = BatchServices(2)
+        batch.items[0].fail_pr = True
+        self.assertEqual(self.run_export(batch), 1)
+        self.assertIsNone(batch.items[0].receipt)
+        self.assertIsNotNone(batch.items[1].receipt)
+        self.assertEqual(self.run_export(batch), 0)
+        self.assertEqual(batch.count('PUT', '/contents/'), 2)
+        self.assertEqual(batch.items[1].count('POST', '/pulls'), 1)
+
+    def test_lost_ack_does_not_block_other_report_or_duplicate_retry(self):
+        batch = BatchServices(2)
+        batch.items[0].fail_ack = True
+        self.assertEqual(self.run_export(batch), 1)
+        self.assertIsNotNone(batch.items[1].receipt)
+        self.assertEqual(self.run_export(batch), 0)
+        self.assertEqual(batch.count('PUT', '/contents/'), 2)
+        self.assertEqual(batch.count('POST', '/pulls'), 2)
+
+    def test_full_page_of_invalid_reports_does_not_starve_later_student(self):
+        batch = BatchServices(31)
+        for item in batch.items[:30]:
+            item.row['group_code'] = 'G3'
+        self.assertEqual(self.run_export(batch), 1)
+        self.assertTrue(all(item.receipt is None for item in batch.items[:30]))
+        self.assertIsNotNone(batch.items[30].receipt)
+        self.assertEqual(batch.queue_calls[1]['submission_id'],
+                         ['gt.' + batch.items[29].row['submission_id']])
+
+    def test_acknowledgements_do_not_shift_pages_and_skip_students(self):
+        batch = BatchServices(31)
+        self.assertEqual(self.run_export(batch), 0)
+        self.assertTrue(all(item.receipt is not None for item in batch.items))
+        self.assertEqual(batch.count('PUT', '/contents/'), 31)
+        self.assertEqual(len(batch.queue_calls), 2)
+
+    def test_global_auth_or_rate_failure_stops_further_github_requests(self):
+        for code in (401, 403, 429):
+            with self.subTest(code=code):
+                batch = BatchServices(2)
+                original = batch.request
+                github_attempts = []
+                def request(method, url, headers, data=None):
+                    if exporter.API in url:
+                        github_attempts.append(url)
+                        raise HTTPError(url, code, 'global access failure', {}, None)
+                    return original(method, url, headers, data)
+                with patch.object(batch, 'request', request):
+                    self.assertEqual(self.run_export(batch), 1)
+                self.assertTrue(all(item.receipt is None for item in batch.items))
+                self.assertEqual(batch.count('POST', '/git/refs'), 0)
+                self.assertEqual(len(github_attempts), 1)
+
+    def test_unavailable_queue_returns_failure_without_github_writes(self):
+        batch = BatchServices(2)
+        batch.fail_fetch = True
+        self.assertEqual(self.run_export(batch), 1)
+        self.assertEqual(batch.count('POST', '/git/refs'), 0)
+
+    def test_nonadvancing_queue_cursor_stops_instead_of_looping(self):
+        batch = BatchServices(2)
+        batch.ignore_cursor = True
+        for item in batch.items:
+            item.row['group_code'] = 'G3'
+        with patch.object(exporter, 'PAGE_SIZE', 2, create=True):
+            self.assertEqual(self.run_export(batch), 1)
+        self.assertEqual(len(batch.queue_calls), 2)
 
 
 if __name__ == '__main__':
