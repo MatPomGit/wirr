@@ -141,3 +141,58 @@ Actions. Nadal wymagane: 15 przypadków Unity EditMode i pełny E2E dwóch rapor
 
 Dokumentacja filtra `gt` i porządku zapytań:
 https://docs.postgrest.org/en/stable/references/api/tables_views.html.
+
+## Kontynuacja: projekt odbiorowy i uruchamianie Unity
+
+Wykryto błąd konfiguracji `Project~/Packages/manifest.json`: zależność
+`pl.prz.kia.wirr` miała wartość `file:..`. Unity rozwiązuje ją względem katalogu
+`Packages`, zatem wskazywała `Project~`, a nie katalog pakietu z `package.json`.
+Poprawiono na `file:../..`. Zależności i pliku packages-lock.json nie regenerowano
+ręcznie; ich faktyczne rozwiązanie musi wykonać Unity. Projekt wskazuje obecnie
+edytor **6000.6.5f1**, odczytany z `ProjectSettings/ProjectVersion.txt`.
+
+Dodano `scripts~/run_wirr_editmode.py`. Narzędzie wymaga Python 3.10+ oraz
+zainstalowanego i działającego lokalnego edytora z dotychczasową licencją.
+Nie instaluje edytora, nie aktywuje licencji i nie uruchamia Actions.
+Przed testem zamknij ten projekt w edytorze, aby uniknąć blokady projektu.
+Z katalogu repozytorium uruchom w PowerShell:
+
+```powershell
+py ".\scripts~\run_wirr_editmode.py"
+```
+
+Launcher szuka wersji z ProjectVersion.txt w standardowym katalogu Unity Hub.
+Jeśli edytor jest zainstalowany w innym miejscu, podaj jego ścieżkę:
+
+```powershell
+py ".\scripts~\run_wirr_editmode.py" --unity "D:\Unity\6000.6.5f1\Editor\Unity.exe"
+```
+
+Linux/macOS: `python3 scripts~/run_wirr_editmode.py`, opcjonalnie `--unity`.
+`--check-only` sprawdza konfigurację bez uruchamiania Unity i jawnie informuje,
+że testów nie wykonano. Nie jest dowodem odbioru EditMode.
+
+Rzeczywisty przebieg uruchamia tylko assembly `KIA.WiRR.Editor.Tests` w EditMode,
+bez `-quit`, którego Test Framework nie obsługuje podczas wykonywania testów.
+Wyniki trafiają do nowego katalogu `Project~/Logs/wirr-editmode-*`:
+`editor.log`, `results.xml` oraz `summary.json`. Podsumowanie zapisuje polecenie,
+czas UTC, SHA repozytorium i informację o lokalnych zmianach (jeśli Git jest
+dostępny), kod procesu oraz wynik walidacji. Katalog Logs jest już ignorowany
+przez Git; po rzeczywistym odbiorze dowody należy dołączyć do PR lub issue.
+
+Kod 0 wymaga jednocześnie powodzenia procesu oraz wszystkich 15 wymaganych
+przypadków w XML: 4 akceptacji, 8 odrzucenia i 3 wersji eksportu. Pusty XML,
+niekompletne zestawy, pominięcia, powtórzone nazwy, błąd procesu i timeout
+nie zaliczają odbioru. Każdy przebieg otrzymuje osobny katalog, więc stary XML
+nie może potwierdzić nowego testu. Narzędzie nie wykonuje testu wysyłki do serwera.
+
+Walidacja wykonana tutaj: **48 testów Python PASS**, w tym 8 testów launchera
+oraz parsera dowodów NUnit. Kontrola `--check-only` przechodzi z poprawionym
+manifestem; test z poprzednią ścieżką `file:..` odrzuca konfigurację. Testy
+launchera wykorzystują syntetyczny XML i zastępują proces Unity; nie są testami
+C#. Nadal nie wykonano 15 przypadków Unity ani rzeczywistego E2E dwóch raportów.
+Brak Unity pozostaje ograniczeniem środowiska; PR pozostaje draft.
+
+Źródła:
+- https://docs.unity.com/en-us/engine/6000.7/manual/packages-list/dependencies-lp/upm-localpath
+- https://docs.unity.com/en-us/engine/6000.6/manual/programming-environment/test-framework-introduction/reference-command-line
