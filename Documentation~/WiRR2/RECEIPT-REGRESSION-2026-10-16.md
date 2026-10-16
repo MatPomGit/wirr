@@ -102,3 +102,42 @@ z kolejką, zapisów danych studentów ani uruchomień Actions. Nadal wymagane:
 15 przypadków Unity EditMode i rzeczywisty E2E dwóch raportów przed wydaniem.
 
 Źródło parametrów API: https://docs.github.com/en/rest/pulls/pulls#list-pull-requests.
+
+## Kontynuacja: niezależne raporty i kolejne strony kolejki
+
+Poprzedni eksporter przerywał po pierwszym błędnym raporcie, brakującym polu
+lub awarii publikacji. Pobierał też wyłącznie pierwsze 30 rekordów pending.
+W efekcie problem jednej pracy mógł zatrzymać wysyłkę kolejnych studentów.
+
+Walidację i transport pojedynczej pracy wydzielono do `export_report`.
+Błąd pozostawia tę pracę w pending, jest logowany i nie zatrzymuje niezależnych
+raportów. Po zakończeniu dowolny błąd daje kod wyjścia 1, więc częściowy sukces
+nie jest przedstawiany jako pełny sukces. Brak kluczy daje nadal kod 2.
+Błędy autoryzacji/limitu HTTP 401, 403 i 429 oraz niedostępność odczytu kolejki
+przerywają przebieg, aby nie zużywać żądań dla kolejnych zgłoszeń.
+
+Kolejkę odczytuje się stronami po 30 rekordów, rosnąco po `submission_id`,
+z filtrem `submission_id=gt.<ostatni UUID>`. Nie stosuje się offsetu, którego
+znaczenie zmieniałoby się po potwierdzeniu wcześniejszych prac. Pełna strona
+błędnych rekordów nie blokuje następnej strony. Brak postępu kursora zatrzymuje
+przebieg. Kolejność UUID zastępuje kolejność czasu wpłynięcia i nie jest FIFO.
+Nowy raport z UUID przed aktualnym kursorem będzie obsłużony w kolejnym przebiegu.
+
+Walidacja lokalna: **40 testów Python PASS**, w tym 9 nowych metod testowych
+obsługi wielu raportów. Model usług utrzymuje osobny stan każdego zgłoszenia,
+filtruje aktualny status i UUID przy każdym pobraniu strony. Sprawdzono błędne
+pola, brakujące pole, awarię tworzenia PR, utratę potwierdzenia kolejki,
+31 poprawnych raportów, 30 błędnych przed poprawnym, globalne HTTP 401/403/429,
+awarię odczytu kolejki oraz nieruchomy kursor. Na kodzie `d4308fb` nowe testy
+wykazały 8 niepowodzeń asercji wraz z podprzypadkami i 2 nieobsłużone wyjątki
+(brak pola oraz HTTP 503 podczas odczytu kolejki). Po poprawce wszystkie przechodzą.
+
+Wykonano wyłącznie odczyt metadanych `information_schema.columns` projektu KIA:
+`public.wirr_public_intake.submission_id` ma typ `uuid`, a `status` typ `text`.
+Nie odczytywano raportów studentów, nie zapisywano do kolejki i nie zmieniano
+schematu ani uprawnień. Nowe zapytanie REST nadal wymaga potwierdzenia w E2E;
+wyniki modelu HTTP nie stanowią walidacji usługi produkcyjnej. Nie uruchamiano
+Actions. Nadal wymagane: 15 przypadków Unity EditMode i pełny E2E dwóch raportów.
+
+Dokumentacja filtra `gt` i porządku zapytań:
+https://docs.postgrest.org/en/stable/references/api/tables_views.html.
