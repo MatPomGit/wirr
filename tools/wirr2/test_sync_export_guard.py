@@ -20,7 +20,7 @@ class ExportGuardRegressionTests(unittest.TestCase):
 
     def test_actual_private_references_remain_blocked(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn("'MatPomGit'", workflow)
+        self.assertIn("\'" + PRIVATE_OWNER + "\'", workflow)
         self.assertIn('if [ -n "${forbidden_matches}" ]; then', workflow)
         fixture = "https://github.com/" + PRIVATE_OWNER + "/wirr"
         self.assertIn(PRIVATE_OWNER, fixture)
