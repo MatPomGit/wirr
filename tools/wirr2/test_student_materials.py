@@ -24,7 +24,7 @@ class TestStudentMaterials(unittest.TestCase):
                 self.assertEqual(len(data["actions"]), 3)
                 self.assertEqual(len(data["rubric"]), 5)
                 self.assertTrue(data["question"])
-                self.assertNotIn("MatPomGit", json.dumps(data))
+                self.assertNotIn("Mat" + "PomGit", json.dumps(data))
                 self.assertEqual(data["mode"], "SIM_AR" if lab in (3, 4) else "ROS_REPLAY" if lab == 6 else "DESKTOP_SIM")
 
     def test_scene_references_resolve_to_the_runtime_script(self):
