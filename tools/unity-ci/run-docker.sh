@@ -18,7 +18,7 @@ command -v docker >/dev/null || { echo "docker is required" >&2; exit 2; }
 command -v python3 >/dev/null || { echo "python3 is required" >&2; exit 2; }
 PROJECT="$(mktemp -d)"
 trap 'rm -rf "$PROJECT"' EXIT
-python3 "${ROOT}/tools/unity-ci/prepare_project.py" --package "$ROOT" --project "$PROJECT" --unity "$UNITY_VERSION"
+python3 "${ROOT}/tools/unity-ci/prepare_project.py" --package "$ROOT" --project "$PROJECT" --unity "$UNITY_VERSION" --container-package-path /workspace/package
 # Never print or store the Unity license content in logs or artifacts.
 LICENSE_ARGS=()
 if [[ -n "${UNITY_LICENSE_FILE:-}" ]]; then
