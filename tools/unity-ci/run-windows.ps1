@@ -37,18 +37,29 @@ try {
     $quotedArgs = @("-batchmode","-nographics","-projectPath",('"' + $project + '"'),
       "-runTests","-testPlatform",$mode,"-testResults",('"' + $xml + '"'),
       "-logFile",('"' + $log + '"'))
-    $process = Start-Process -FilePath $Editor -ArgumentList $quotedArgs -PassThru -NoNewWindow -ErrorAction Stop
-    $finished = $process.WaitForExit($TimeoutMinutes * 60000)
-    if (-not $finished) {
-      Write-Warning "Unity $mode timed out after $TimeoutMinutes minutes"
-      Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
-      $exitCode = -1
-    } else {
-      $process.WaitForExit()
-      $process.Refresh()
-      $exitCode = $process.ExitCode
-      if ($null -eq $exitCode) { $exitCode = -2; Write-Warning "Unity process exit code unavailable for $mode" }
+    # Process.Start with UseShellExecute=false provides a stable ExitCode after WaitForExit.
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = $Editor
+    $psi.Arguments = ($quotedArgs -join " ")
+    $psi.UseShellExecute = $false
+    $psi.CreateNoWindow = $true
+    $process = New-Object System.Diagnostics.Process
+    $process.StartInfo = $psi
+    if (-not $process.Start()) { throw "Unity did not start for $mode" }
+    try {
+      $finished = $process.WaitForExit($TimeoutMinutes * 60000)
+      if (-not $finished) {
+        Write-Warning "Unity $mode timed out after $TimeoutMinutes minutes (PID $($process.Id))"
+        try { $process.Kill(); $process.WaitForExit() } catch { Write-Warning $_ }
+        $exitCode = -1
+      } else {
+        $process.WaitForExit()
+        $exitCode = [int]$process.ExitCode
+      }
+    } finally {
+      $process.Dispose()
     }
+    Write-Host "Unity $mode process exit code: $exitCode"
     $total = 0
     $failed = -1
     $result = "Missing"
