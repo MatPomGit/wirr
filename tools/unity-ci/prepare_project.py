@@ -35,7 +35,7 @@ def prepare(root: Path, output: Path, editor_version: str, container_package_pat
         # The manifest is resolved inside the container, not on the host.
         if container_package_path != "/workspace/package":
             raise ValueError("Unexpected Docker package mount")
-        local_package = "../package"
+        local_package = "../../package"
     # Built-in modules must be explicit in a project generated from scratch.
     # WebCamTexture is also forwarded through UnityEngine.AudioModule in Unity 6.
     builtins = (
