@@ -8,7 +8,14 @@ from pathlib import Path
 def prepare(root: Path, output: Path, editor_version: str) -> None:
     root = root.resolve()
     output = output.resolve()
-    package = json.loads((root / "package.json").read_text(encoding="utf-8"))
+    package_path = root / "package.json"
+    package_text = package_path.read_text(encoding="utf-8-sig")
+    if not package_text.strip():
+        raise ValueError(f"Empty Unity package manifest: {package_path}")
+    try:
+        package = json.loads(package_text)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Invalid Unity package manifest {package_path}: {exc}") from exc
     if package["name"] != "pl.prz.kia.wirr":
         raise ValueError("Unexpected package identity")
     if output == root or root in output.parents:
