@@ -55,3 +55,5 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\unity-ci\run-win
 ```
 
 The runner uses `D:\Unity\UnityEditors\6000.6.0f1\Editor\Unity.exe`, creates an isolated temporary UPM project and runs EditMode then PlayMode. Output: `artifacts/unity-native/{EditMode.xml,PlayMode.xml,EditMode.log,PlayMode.log,summary.json}`. The package is read through a local `file:` dependency without changing the existing project `D:\Unity\UnityProjects\WiRR`. No extra license purchase or secret copying. The Docker backend remains optional. **This Windows runner is implemented but has not yet been executed on Andromeda.**
+
+Native Windows test projects are created exclusively in `D:\\Unity\\cli`. Failed projects are retained for diagnosis; successful projects are removed unless `-KeepProject` is supplied. Do not delete projects while Unity is running. Run this from the development checkout `C:\\Users\\matpo\\repo\\wirr-matpom`, not the student checkout `C:\\Users\\matpo\\repo\\wirr`.
