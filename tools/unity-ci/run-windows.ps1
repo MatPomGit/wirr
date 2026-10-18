@@ -33,20 +33,21 @@ try {
     $log = Join-Path $results "$mode.log"
     Remove-Item -LiteralPath $xml,$log -ErrorAction SilentlyContinue
     Write-Host "Unity native $mode..."
-    $arguments = @("-batchmode","-nographics","-projectPath",$project,"-runTests","-testPlatform",$mode,"-testResults",$xml,"-logFile",$log)
     # Quote path-valued arguments explicitly: Start-Process joins ArgumentList into a command line.
     $quotedArgs = @("-batchmode","-nographics","-projectPath",('"' + $project + '"'),
       "-runTests","-testPlatform",$mode,"-testResults",('"' + $xml + '"'),
       "-logFile",('"' + $log + '"'))
-    $process = Start-Process -FilePath $Editor -ArgumentList $quotedArgs -PassThru -NoNewWindow
+    $process = Start-Process -FilePath $Editor -ArgumentList $quotedArgs -PassThru -NoNewWindow -ErrorAction Stop
     $finished = $process.WaitForExit($TimeoutMinutes * 60000)
     if (-not $finished) {
       Write-Warning "Unity $mode timed out after $TimeoutMinutes minutes"
       Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
       $exitCode = -1
     } else {
+      $process.WaitForExit()
       $process.Refresh()
       $exitCode = $process.ExitCode
+      if ($null -eq $exitCode) { $exitCode = -2; Write-Warning "Unity process exit code unavailable for $mode" }
     }
     $total = 0
     $failed = -1
@@ -59,8 +60,13 @@ try {
         $result = $doc.DocumentElement.GetAttribute("result")
       } catch { Write-Warning "Invalid NUnit XML for $mode" }
     }
+    if (-not (Test-Path $xml)) {
+      Write-Warning "Missing NUnit results for $mode. Unity log: $log"
+      if (Test-Path $log) { Get-Content -LiteralPath $log -Tail 60 }
+    }
     $passed = ($exitCode -eq 0 -and $total -gt 0 -and $failed -eq 0 -and $result -notin @("Failed","Inconclusive","Missing"))
     $summary += [pscustomobject]@{ Mode=$mode; ExitCode=$exitCode; Total=$total; Failed=$failed; Result=$result; Pass=$passed }
+    if (-not $passed) { Write-Warning "$mode failed; skipping remaining suites to preserve primary error"; break }
   }
   $summary | Format-Table -AutoSize
   [pscustomobject]@{ Unity=$version; Commit=$commit; Project=$project; Suites=$summary } | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $results "summary.json") -Encoding UTF8
