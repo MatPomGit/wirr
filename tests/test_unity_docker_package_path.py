@@ -23,7 +23,7 @@ class DockerPackagePathTests(unittest.TestCase):
             module.prepare(root, project, "6000.3.24f1", "/workspace/package")
             manifest = json.loads((project / "Packages" / "manifest.json").read_text())
             value = manifest["dependencies"]["pl.prz.kia.wirr"]
-            self.assertEqual(value, "file:../package")
+            self.assertEqual(value, "file:../../package")
             resolved = (Path("/workspace/project/Packages") / value[5:]).resolve()
             self.assertEqual(resolved, Path("/workspace/package"))
 
