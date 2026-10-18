@@ -32,7 +32,7 @@ $project = Join-Path $env:TEMP ("wirr-unity-ci-" + [Guid]::NewGuid().ToString("N
 $results = Join-Path $repo "artifacts\unity-ci"
 New-Item -ItemType Directory -Force -Path $project,$results | Out-Null
 try {
-  & py -3 (Join-Path $repo "tools/unity-ci/prepare_project.py") --package $repo --project $project --unity $UnityVersion
+  & py -3 (Join-Path $repo "tools/unity-ci/prepare_project.py") --package $repo --project $project --unity $UnityVersion --container-package-path /workspace/package
   if ($LASTEXITCODE -ne 0) { throw "Could not generate Unity test project" }
   $failed = $false
   foreach ($mode in @("EditMode", "PlayMode")) {
