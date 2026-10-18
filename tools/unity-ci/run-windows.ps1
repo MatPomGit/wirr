@@ -24,6 +24,12 @@ $results = Join-Path $repo "artifacts\unity-native"
 New-Item -ItemType Directory -Force -Path $results,$project | Out-Null
 # Never leave a stale PASS/FAIL summary from a previous package or revision.
 Remove-Item -LiteralPath (Join-Path $results "summary.json") -ErrorAction SilentlyContinue
+# Clear results from both suites up front; PlayMode may be skipped after EditMode failure.
+foreach ($suiteName in @("EditMode", "PlayMode")) {
+  foreach ($extension in @("xml", "log")) {
+    Remove-Item -LiteralPath (Join-Path $results "$suiteName.$extension") -ErrorAction SilentlyContinue
+  }
+}
 try {
   & py -3 (Join-Path $repo "tools/unity-ci/prepare_project.py") --package $PackageRoot --project $project --unity $version
   if ($LASTEXITCODE -ne 0) { throw "Unity project preparation failed" }
