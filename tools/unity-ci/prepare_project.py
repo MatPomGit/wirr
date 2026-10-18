@@ -18,10 +18,14 @@ def prepare(root: Path, output: Path, editor_version: str) -> None:
     (output / "Assets").mkdir(parents=True, exist_ok=True)
     packages.mkdir(parents=True, exist_ok=True)
     settings.mkdir(parents=True, exist_ok=True)
-    # Compute the path relative to Packages for Docker and native Windows alike.
+    # Local UPM file dependencies may use absolute paths across Windows drives.
+    try:
+        local_package = os.path.relpath(root, packages).replace(chr(92), "/")
+    except ValueError:
+        local_package = root.as_posix()
     manifest = {
         "dependencies": {
-            "pl.prz.kia.wirr": "file:" + os.path.relpath(root, packages).replace(chr(92), "/"),
+            "pl.prz.kia.wirr": "file:" + local_package,
             "com.unity.test-framework": "1.5.1",
             "com.unity.render-pipelines.universal": "17.0.3",
             "com.unity.inputsystem": package["dependencies"].get("com.unity.inputsystem", "1.20.0"),
