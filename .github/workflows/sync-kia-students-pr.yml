@@ -157,9 +157,9 @@ jobs:
           {
             echo "## Lekka dystrybucja UPM"
             echo
-            echo "- gałąź: `${GITHUB_REPOSITORY}#upm`"
+            echo "- gałąź: \`${GITHUB_REPOSITORY}#upm\`"
             echo "- rozmiar snapshotu roboczego: ${size_mb} MB"
-            echo "- pominięto: `Project~`, `Textures/HDRI`, `Textures/Surfaces`"
+            echo "- pominięto: \`Project~\`, \`Textures/HDRI\`, \`Textures/Surfaces\`"
           } >> "${GITHUB_STEP_SUMMARY}"
 
       - name: Zamknij bezpośrednie PR-y z gałęzi main
@@ -526,7 +526,7 @@ jobs:
               {
                 echo "## PR gotowy do scalenia"
                 echo
-                echo "Kontrole PR #${pr_number} przeszły, ale token synchronizacji nie ma uprawnienia `mergePullRequest`."
+                echo "Kontrole PR #${pr_number} przeszły, ale token synchronizacji nie ma uprawnienia \`mergePullRequest\`."
               } >> "${GITHUB_STEP_SUMMARY}"
               exit 0
             fi
