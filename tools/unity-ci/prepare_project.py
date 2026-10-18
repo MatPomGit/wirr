@@ -5,7 +5,7 @@ import json
 import os
 from pathlib import Path
 
-def prepare(root: Path, output: Path, editor_version: str) -> None:
+def prepare(root: Path, output: Path, editor_version: str, container_package_path: str | None = None) -> None:
     root = root.resolve()
     output = output.resolve()
     package_path = root / "package.json"
@@ -30,6 +30,12 @@ def prepare(root: Path, output: Path, editor_version: str) -> None:
         local_package = os.path.relpath(root, packages).replace(chr(92), "/")
     except ValueError:
         local_package = root.as_posix()
+    if container_package_path is not None:
+        # Docker mounts project at /workspace/project and package at /workspace/package.
+        # The manifest is resolved inside the container, not on the host.
+        if container_package_path != "/workspace/package":
+            raise ValueError("Unexpected Docker package mount")
+        local_package = "../package"
     # Built-in modules must be explicit in a project generated from scratch.
     # WebCamTexture is also forwarded through UnityEngine.AudioModule in Unity 6.
     builtins = (
@@ -62,5 +68,6 @@ if __name__ == "__main__":
     parser.add_argument("--package", type=Path, required=True)
     parser.add_argument("--project", type=Path, required=True)
     parser.add_argument("--unity", required=True)
+    parser.add_argument("--container-package-path", choices=["/workspace/package"])
     args = parser.parse_args()
-    prepare(args.package, args.project, args.unity)
+    prepare(args.package, args.project, args.unity, args.container_package_path)
