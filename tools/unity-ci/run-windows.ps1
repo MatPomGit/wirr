@@ -2,6 +2,7 @@ param(
   [string]$Editor = "D:\Unity\UnityEditors\6000.6.0f1\Editor\Unity.exe",
   [switch]$PreflightOnly,
   [switch]$KeepProject,
+  [switch]$NoGraphics,
   [int]$TimeoutMinutes = 45,
   [string]$PackageRoot = ""
 )
@@ -34,9 +35,10 @@ try {
     Remove-Item -LiteralPath $xml,$log -ErrorAction SilentlyContinue
     Write-Host "Unity native $mode..."
     # Quote path-valued arguments explicitly: Start-Process joins ArgumentList into a command line.
-    $quotedArgs = @("-batchmode","-nographics","-projectPath",('"' + $project + '"'),
+    $quotedArgs = @("-batchmode","-projectPath",('"' + $project + '"'),
       "-runTests","-testPlatform",$mode,"-testResults",('"' + $xml + '"'),
       "-logFile",('"' + $log + '"'))
+    if ($NoGraphics) { $quotedArgs += "-nographics" }
     # Process.Start with UseShellExecute=false provides a stable ExitCode after WaitForExit.
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = $Editor
