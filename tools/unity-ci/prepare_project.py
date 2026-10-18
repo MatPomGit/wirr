@@ -27,8 +27,8 @@ def prepare(root: Path, output: Path, editor_version: str) -> None:
     # WebCamTexture is also forwarded through UnityEngine.AudioModule in Unity 6.
     builtins = (
         "audio", "imageconversion", "physics", "physics2d", "animation",
-        "jsonserialize", "ui", "uimodule", "textcoretextengine",
-        "textcorefontengine", "xr", "video", "terrain", "terrainphysics",
+        "jsonserialize", "ui",
+        "xr", "video", "terrain", "terrainphysics",
         "particlesystem", "tilemap", "assetbundle", "director",
         "wind", "cloth", "vehicles", "accessibility",
     )
