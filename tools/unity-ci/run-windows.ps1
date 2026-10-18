@@ -1,6 +1,7 @@
 param(
   [string]$Editor = "D:\Unity\UnityEditors\6000.6.0f1\Editor\Unity.exe",
-  [switch]$PreflightOnly
+  [switch]$PreflightOnly,
+  [switch]$KeepProject
 )
 $ErrorActionPreference = "Stop"
 $repo = (Resolve-Path (Join-Path $PSScriptRoot "../..")).Path
@@ -19,6 +20,8 @@ try {
   & py -3 (Join-Path $repo "tools/unity-ci/prepare_project.py") --package $repo --project $project --unity $version
   if ($LASTEXITCODE -ne 0) { throw "Unity project preparation failed" }
   $summary = @()
+  $passedAll = $false
+  Write-Host "Project for diagnostics: $project"
   foreach ($mode in @("EditMode","PlayMode")) {
     $xml = Join-Path $results "$mode.xml"
     $log = Join-Path $results "$mode.log"
@@ -43,7 +46,12 @@ try {
   $summary | Format-Table -AutoSize
   $summary | ConvertTo-Json | Set-Content (Join-Path $results "summary.json") -Encoding UTF8
   if ($summary | Where-Object { -not $_.Pass }) { throw "Unity tests failed. Inspect $results" }
+  $passedAll = $true
   Write-Host "PASS: Unity EditMode + PlayMode"
 } finally {
-  Remove-Item -LiteralPath $project -Recurse -Force -ErrorAction SilentlyContinue
+  if ($passedAll -and -not $KeepProject) {
+    Remove-Item -LiteralPath $project -Recurse -Force -ErrorAction SilentlyContinue
+  } else {
+    Write-Host "Project retained for diagnostics: $project"
+  }
 }
