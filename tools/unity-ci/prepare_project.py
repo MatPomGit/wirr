@@ -23,12 +23,11 @@ def prepare(root: Path, output: Path, editor_version: str) -> None:
         local_package = os.path.relpath(root, packages).replace(chr(92), "/")
     except ValueError:
         local_package = root.as_posix()
-    manifest = {
-        "dependencies": {
+    # Built-in modules must be explicit in a project generated from scratch.\n    # WebCamTexture is also forwarded through UnityEngine.AudioModule in Unity 6.\n    builtins = (\n        "audio", "imageconversion", "physics", "physics2d", "animation",\n        "jsonserialize", "ui", "uimodule", "textcoretextengine",\n        "textcorefontengine", "xr", "video", "terrain", "terrainphysics",\n        "particlesystem", "tilemap", "assetbundle", "director",\n        "wind", "cloth", "vehicles", "accessibility",\n    )\n    manifest = {\n        "dependencies": {
             "pl.prz.kia.wirr": "file:" + local_package,
             "com.unity.test-framework": "1.5.1",
             "com.unity.render-pipelines.universal": "17.0.3",
-            "com.unity.inputsystem": package["dependencies"].get("com.unity.inputsystem", "1.20.0"),
+            "com.unity.inputsystem": package["dependencies"].get("com.unity.inputsystem", "1.20.0"),\n            **{"com.unity.modules." + name: "1.0.0" for name in builtins},
         },
         "testables": ["pl.prz.kia.wirr"],
     }
