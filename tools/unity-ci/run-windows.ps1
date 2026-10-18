@@ -2,27 +2,30 @@ param(
   [string]$Editor = "D:\Unity\UnityEditors\6000.6.0f1\Editor\Unity.exe",
   [switch]$PreflightOnly,
   [switch]$KeepProject,
-  [int]$TimeoutMinutes = 45
+  [int]$TimeoutMinutes = 45,
+  [string]$PackageRoot = ""
 )
 $ErrorActionPreference = "Stop"
 $repo = (Resolve-Path (Join-Path $PSScriptRoot "../..")).Path
 if (-not (Test-Path $Editor -PathType Leaf)) { throw "Unity editor not found: $Editor" }
-if (-not (Test-Path (Join-Path $repo "package.json"))) { throw "Missing WiRR package.json" }
+if (-not $PackageRoot) { $PackageRoot = $repo }
+$PackageRoot = (Resolve-Path $PackageRoot).Path
+if (-not (Test-Path (Join-Path $PackageRoot "package.json"))) { throw "Missing WiRR package.json: $PackageRoot" }
 if (-not (Get-Command py -ErrorAction SilentlyContinue)) { throw "Python launcher py is required" }
 if ($TimeoutMinutes -lt 1) { throw "TimeoutMinutes must be positive" }
 $matchVersion = [regex]::Match($Editor,'6000\.\d+\.\d+f\d+')
 if (-not $matchVersion.Success) { throw "Editor version not found in path" }
 $version = $matchVersion.Value
-Write-Host "Unity Windows: $Editor; version: $version"
+Write-Host "Unity Windows: $Editor; version: $version; package: $PackageRoot"
 if ($PreflightOnly) { Write-Host "Preflight PASS; no tests executed."; exit 0 }
 $project = Join-Path "D:\Unity\cli" ("wirr-native-" + [guid]::NewGuid().ToString("N"))
 $results = Join-Path $repo "artifacts\unity-native"
 New-Item -ItemType Directory -Force -Path $results,$project | Out-Null
 try {
-  & py -3 (Join-Path $repo "tools/unity-ci/prepare_project.py") --package $repo --project $project --unity $version
+  & py -3 (Join-Path $repo "tools/unity-ci/prepare_project.py") --package $PackageRoot --project $project --unity $version
   if ($LASTEXITCODE -ne 0) { throw "Unity project preparation failed" }
   $summary = @()
-  $commit = (& git -C $repo rev-parse HEAD 2>$null | Out-String).Trim()
+  $commit = (& git -C $PackageRoot rev-parse HEAD 2>$null | Out-String).Trim()
   $passedAll = $false
   Write-Host "Project for diagnostics: $project"
   foreach ($mode in @("EditMode","PlayMode")) {
