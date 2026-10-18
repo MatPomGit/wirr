@@ -60,6 +60,10 @@ try {
       $process.Dispose()
     }
     Write-Host "Unity $mode process exit code: $exitCode"
+    if ($exitCode -eq -1073741819) {
+      Write-Warning "Unity terminated with 0xC0000005 (access violation). This is a native process crash, not an NUnit failure."
+      Write-Host "Inspect Windows Application Event Log for Unity.exe faulting module and Windows Error Reporting details."
+    }
     $total = 0
     $failed = -1
     $result = "Missing"
