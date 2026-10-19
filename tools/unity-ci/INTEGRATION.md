@@ -45,3 +45,13 @@ Jeżeli edytor nie jest w standardowym katalogu, dodaj do wywołania runnera `-E
 Testy offline: scripts~ 48, tools/wirr2 12, tests 9, competition 5 oraz WebSim 12: PASS. Nawigacja 36 instrukcji: PASS. Składnia wszystkich plików C# w Editor/Runtime/Tests i YAML workflow: PASS. Unikalność GUID oraz zgodność bezpośrednich zależności manifest/lockfile: PASS. Są to kontrole offline. Nie wykonano Unity EditMode/PlayMode, Windows/Ubuntu smoke ani rzeczywistego E2E Supabase.
 
 Dotychczasowe awarie ILPP/Burst i wyniki ze starszego Unity 6000.6.0f1 nie potwierdzają odbioru tej wersji. Nie usuwaj ani nie regeneruj istniejących GUID, aby ukryć problem instalacji edytora. Jeśli nowy przebieg ulegnie awarii natywnej, zachowaj aktualne logi, XML, SHA i dziennik błędów hosta; nie wykorzystuj starych wyników PlayMode.
+
+## Aktualizacja odbioru na homeserverze (2026-10-19)
+
+Na Raspberry Pi 5 wykonano dla SHA `5fc69dc94858dc27d8230bea0cced954bdf170bd` 74 testy Python (48 + 12 + 9 + 5) PASS. Dodatkowo 271 GUID bez duplikatów; kompilacja warunkowa pliku PhysicsLoadGenerator.cs po preprocessingu: Editor i Runtime PASS w analizie składni Tree-sitter. Dwa scenariusze po 60 raportów z rzeczywistym kodem eksportera i atrapami usług: wszystkie potwierdzenia PASS, bez powielonych zapisów lub utworzonych PR; raporty `~/wirr-validation/` na homeserverze. Wcześniejsza deklaracja 86 testów obejmowała inne kontrole WebSim, które nie zostały ponownie wykonane w tym przebiegu.
+
+**Ważne:** testy są offline, bez Unity, XR i prawdziwego Supabase. Nie stanowią zgody na wydanie. Scenariusze stresowe mają ograniczenie 150 raportów i działają bez połączeń sieciowych. Narzędzia: `tools/unity-ci/run-homeserver-offline.sh` i `tools/unity-ci/stress-report-exporter.py`.
+
+### Historia gałęzi
+
+Główna gałąź otrzymała PR #100 (poprawki PackageInfo i asmdef), a gałąź integracyjna PR #101 (dwa narzędzia walidacyjne). Git może pokazywać rozbieżne historie, mimo że cztery pliki zmienione w PR #100 są identyczne w obu gałęziach. Przed scaleniem porównać zawartość i bezpiecznie uzgodnić rodziców Git; nie wykonywać `reset --hard`, force-push ani scalania z pominięciem testów. Każda zmiana SHA wymaga nowej walidacji offline i aktualizacji źródłowego SHA eksportu publicznego.
