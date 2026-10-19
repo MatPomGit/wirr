@@ -53,6 +53,9 @@ namespace KIA.WiRR.Editor
 
                 var document = WiRRReportStore.LoadOrCreate(labNo);
                 var existing = WiRRReportStore.GetValue(document, "basic.observation");
+                if (!string.IsNullOrWhiteSpace(document.teamId) && document.studentIndices != null &&
+                    document.studentIndices.Any(x => !string.IsNullOrWhiteSpace(x) && !session.studentIndices.Contains(x)))
+                    throw new ArgumentException("W formularzu istnieje raport innych studentów. Nie nadpisano go.");
                 if (!string.IsNullOrWhiteSpace(existing) &&
                     !EditorUtility.DisplayDialog("WiRR: istniejąca treść",
                         "Formularz zawiera wcześniejsze obserwacje. Import zastąpi pola krótkiego raportu. " +
