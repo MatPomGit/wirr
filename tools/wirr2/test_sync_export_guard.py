@@ -26,6 +26,25 @@ class ExportGuardRegressionTests(unittest.TestCase):
         self.assertIn(PRIVATE_OWNER, fixture)
         self.assertNotIn(PRIVATE_OWNER, "https://github.com/KIA-students/wirr")
 
+    def test_course_data_are_restored_from_public_main(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        for directory in ("competition", "student-work"):
+            self.assertIn(f'git checkout "upstream/${{UPSTREAM_BRANCH}}" -- {directory}', workflow)
+            self.assertIn(f'git rm -r -f --ignore-unmatch -- {directory}', workflow)
+
+    def test_internal_tools_are_excluded_without_disabling_public_scan(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        for internal_path in (
+            "tools/unity-ci",
+            "scripts/export_wirr_reports.py",
+            "scripts~/test_wirr_report_exporter.py",
+            ".github/workflows/sync-kia-students-pr.yml",
+            ".github/workflows/unity-docker-manual.yml",
+        ):
+            self.assertIn(f'"{internal_path}"', workflow)
+        self.assertIn('git rm -r -f --ignore-unmatch -- "${path}"', workflow)
+        self.assertIn("forbidden_matches", workflow)
+
     def test_echo_lines_do_not_execute_markdown_backticks(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
         quoted_echoes = [line.strip() for line in workflow.splitlines()
