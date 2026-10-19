@@ -203,6 +203,8 @@ jobs:
             "wirr-modified-files.txt"
             "scripts~/test_wirr_report_exporter.py"
             "tools/wirr2/test_sync_export_guard.py"
+            "tools/unity-ci/run-homeserver-offline.sh"
+            "tools/unity-ci/stress-report-exporter.py"
             ".github/workflows/sync-kia-students-pr.yml"
             ".github/workflows/wirr-reports-to-github.yml"
             ".github/workflows/wirr-report-contract-tests.yml"
