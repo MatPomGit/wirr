@@ -1,5 +1,17 @@
 # Laboratorium 03. Ocena dokładności i stabilności kotwic w symulowanej rzeczywistości rozszerzonej
 
+## Spis treści
+
+- [Od pobrania materiałów do pierwszego uruchomienia](#od-pobrania-materiałów-do-pierwszego-uruchomienia)
+- [Cel i przedmiot doświadczenia](#cel-i-przedmiot-doświadczenia)
+- [Przygotowanie stanowiska, około 10 minut](#przygotowanie-stanowiska-około-10-minut)
+- [Ćwiczenie wstępne: zrozumienie obrazu, około 10 minut](#ćwiczenie-wstępne-zrozumienie-obrazu-około-10-minut)
+- [Doświadczenie 1. Umieszczenie i odczyt błędu, około 15 minut](#doświadczenie-1-umieszczenie-i-odczyt-błędu-około-15-minut)
+- [Doświadczenie 2. Porównanie dwóch warunków, około 20 minut](#doświadczenie-2-porównanie-dwóch-warunków-około-20-minut)
+- [Doświadczenie 3. Utrata śledzenia i ponowna lokalizacja, około 20 minut](#doświadczenie-3-utrata-śledzenia-i-ponowna-lokalizacja-około-20-minut)
+- [Opracowanie wyników i zakończenie, około 15 minut](#opracowanie-wyników-i-zakończenie-około-15-minut)
+- [Przekazanie raportów: formularz WiRR i potwierdzenie serwera](#przekazanie-raportów-formularz-wirr-i-potwierdzenie-serwera)
+
 **WiRR 2.0, blok 02, część 1. Czas: 90 minut. Środowisko: Unity 6, gotowa scena `Lab03_AnchorGallery`, tryb SIM_AR.**
 
 ## Od pobrania materiałów do pierwszego uruchomienia
@@ -79,7 +91,7 @@ Przed zapisaniem odpowiedzi upewnij się, że potrafisz rozróżnić dokładnoś
 
 ## Przekazanie raportów: formularz WiRR i potwierdzenie serwera
 
-Po zakończeniu doświadczenia i wpisaniu wniosku zakończ tryb Play. W edytorze wybierz `WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu`, wskaż zapisaną sesję bloku 02 i wybierz bieżące laboratorium. Ta opcja jest dodawana przez [integrację WiRR2 z istniejącym formularzem](https://github.com/MatPomGit/wirr/pull/98); do czasu jej wdrożenia wyniki należy przenieść do formularza ręcznie, bez przypisywania brakującym danym fikcyjnych wartości. Następnie uruchom w edytorze Unity **WiRR → Raporty → Formularz raportu laboratoryjnego**. Uzupełnij dane, wybierz numer aktualnego laboratorium i sprawdź kompletność. Kliknij **Zapisz raport lokalnie (bez logowania)**. Ten przycisk zapisuje raport i uruchamia jego automatyczną wysyłkę do usługi odbiorczej KIA. Poczekaj na odrębne okno **WiRR: raport przyjęty** z identyfikatorem zgłoszenia; dopiero takie potwierdzenie oznacza przyjęcie przez serwer, nie wystawienie oceny.
+Po zakończeniu doświadczenia i wpisaniu wniosku zakończ tryb Play. W edytorze wybierz `WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu`, wskaż zapisaną sesję bloku 02 i wybierz bieżące laboratorium. Szczegółowy opis importu i potwierdzenia odbioru zawiera [procedura raportowania](SUPABASE-REPORT-BRIDGE.md). Następnie uruchom w edytorze Unity **WiRR → Raporty → Formularz raportu laboratoryjnego**. Uzupełnij dane, wybierz numer aktualnego laboratorium i sprawdź kompletność. Kliknij **Zapisz raport lokalnie (bez logowania)**. Ten przycisk zapisuje raport i uruchamia jego automatyczną wysyłkę do usługi odbiorczej KIA. Poczekaj na odrębne okno **WiRR: raport przyjęty** z identyfikatorem zgłoszenia; dopiero takie potwierdzenie oznacza przyjęcie przez serwer, nie wystawienie oceny.
 
 Powtórz tę procedurę oddzielnie dla laboratorium 03 i 04. Na końcu upewnij się, że **oba** raporty mają potwierdzenie serwera. Nie potrzebujesz konta GitHub, własnego forka ani Git CLI. Przyjęte raporty trafiają do prywatnej kolejki; dalsze przekazanie do GitHub jest odrębnym etapem systemu.
 

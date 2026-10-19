@@ -42,6 +42,6 @@ Jeżeli edytor nie jest w standardowym katalogu, dodaj do wywołania runnera `-E
 
 ## Wykonane kontrole w tej sesji
 
-Testy offline: scripts~ 48, tools/wirr2 12, tests 9, competition 5 oraz WebSim 12: PASS. Nawigacja 33 instrukcji: PASS. Składnia wszystkich plików C# w Editor/Runtime/Tests i YAML workflow: PASS. Unikalność GUID oraz zgodność bezpośrednich zależności manifest/lockfile: PASS. Są to kontrole offline. Nie wykonano Unity EditMode/PlayMode, Windows/Ubuntu smoke ani rzeczywistego E2E Supabase.
+Testy offline: scripts~ 48, tools/wirr2 12, tests 9, competition 5 oraz WebSim 12: PASS. Nawigacja 36 instrukcji: PASS. Składnia wszystkich plików C# w Editor/Runtime/Tests i YAML workflow: PASS. Unikalność GUID oraz zgodność bezpośrednich zależności manifest/lockfile: PASS. Są to kontrole offline. Nie wykonano Unity EditMode/PlayMode, Windows/Ubuntu smoke ani rzeczywistego E2E Supabase.
 
 Dotychczasowe awarie ILPP/Burst i wyniki ze starszego Unity 6000.6.0f1 nie potwierdzają odbioru tej wersji. Nie usuwaj ani nie regeneruj istniejących GUID, aby ukryć problem instalacji edytora. Jeśli nowy przebieg ulegnie awarii natywnej, zachowaj aktualne logi, XML, SHA i dziennik błędów hosta; nie wykorzystuj starych wyników PlayMode.

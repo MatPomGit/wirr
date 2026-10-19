@@ -1,5 +1,11 @@
 # Laboratoria 03 i 04. Przekazanie wyników przez istniejący formularz WiRR
 
+## Spis treści
+
+- [Procedura dla studenta](#procedura-dla-studenta)
+- [Założenia i ograniczenia adaptera](#założenia-i-ograniczenia-adaptera)
+- [Walidacja przed udostępnieniem studentom](#walidacja-przed-udostępnieniem-studentom)
+
 Nowe sceny SIM_AR zapisują próby w lokalnej sesji `wirr-block-session/2.0-draft.1`. Dotychczasowy formularz laboratoryjny i usługa Supabase wymagają raportu `wirr-report/1.0`. Nie przesyłaj eksportów `wirr-report/2.0-draft.1` jako gotowych raportów w starym formacie.
 
 ## Procedura dla studenta
