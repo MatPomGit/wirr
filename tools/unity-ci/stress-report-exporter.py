@@ -56,11 +56,15 @@ def verify(label, count, faults):
     assert second == 0, (label, "retry status", second)
     assert confirmed == count, (label, "confirmed", confirmed)
     assert writes == count, (label, "duplicate file writes", writes)
-    assert prs == count, (label, "duplicate PR creations", prs)
+    successful_prs = sum(item.pr is not None for item in batch.items)
+    expected_failed_attempts = sum(1 for i in range(count) if faults and i % 7 != 0 and i % 11 == 0)
+    assert successful_prs == count, (label, "missing created PRs", successful_prs)
+    assert prs == count + expected_failed_attempts, (label, "unexpected POST attempts", prs)
+    assert all(item.count("POST", "/pulls") <= (2 if faults else 1) for item in batch.items), (label, "extra PR retries")
     assert all(item.row["status"] == "reviewed" for item in batch.items)
     return dict(scenario=label, reports=count, faults=faults,
                 first_exit=first, second_exit=second, confirmed=confirmed,
-                file_writes=writes, prs=prs,
+                file_writes=writes, pr_post_attempts=prs, created_prs=successful_prs,
                 first_pass_seconds=round(after_first-start, 4),
                 total_seconds=round(elapsed, 4),
                 peak_tracemalloc_bytes=peak)
