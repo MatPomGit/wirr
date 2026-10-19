@@ -65,8 +65,13 @@ for folder in 'scripts~' 'tools/wirr2' 'tests' 'competition' 'WebSim~'; do
     suite_status=1
   fi
   # unittest may report success with 0 collected tests; never count that as PASS.
-  cases="$(sed -nE 's/^Ran ([0-9]+) tests? in .*/\\1/p' "$logfile" | tail -n 1)"
+  cases="$(sed -nE 's/^Ran ([0-9]+) tests? in .*/\1/p' "$logfile" | tail -n 1)"
   cases="${cases:-0}"
+  if [[ ! "$cases" =~ ^[0-9]+$ ]]; then
+    echo "FAIL: nonnumeric test count in $folder: $cases"
+    ok=0
+    cases=0
+  fi
   if [[ "$suite_status" -ne 0 || "$cases" -eq 0 ]]; then
     echo "FAIL: $folder (exit=$suite_status, tests=$cases)"
     tail -n 60 "$logfile"
@@ -77,7 +82,8 @@ for folder in 'scripts~' 'tools/wirr2' 'tests' 'competition' 'WebSim~'; do
     tail -n 4 "$logfile"
   fi
 done
-if ((total==0)); then echo "ERROR: no Python test suites found"; ok=0; fi
+if ((total < 4)); then echo "ERROR: expected at least four Python test suites, ran $total"; ok=0; fi
+if ((passed_cases < 65)); then echo "ERROR: expected at least 65 successful tests, got $passed_cases"; ok=0; fi
 {
   echo "# WiRR offline validation"
   echo "- UTC: $stamp"
