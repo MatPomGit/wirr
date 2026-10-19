@@ -200,6 +200,7 @@ jobs:
           } >> "${GITHUB_OUTPUT}"
 
           private_paths=(
+            "wirr-modified-files.txt"
             ".github/workflows/sync-kia-students-pr.yml"
             ".github/workflows/wirr-reports-to-github.yml"
             ".github/workflows/wirr-report-contract-tests.yml"
@@ -220,6 +221,7 @@ jobs:
           # An initial scoreboard is exported only if the course has none yet.
           if git ls-tree -r --name-only "upstream/${UPSTREAM_BRANCH}" -- competition \
                | grep -q '^competition/'; then
+            git rm -r -f --ignore-unmatch -- competition
             git checkout "upstream/${UPSTREAM_BRANCH}" -- competition
             echo "Zachowano aktualny ranking studentów z KIA-students/wirr."
           fi
@@ -228,6 +230,7 @@ jobs:
           # A teaching-material export must never delete independent submissions.
           if git ls-tree -r --name-only "upstream/${UPSTREAM_BRANCH}" -- student-work \
                | grep -q '^student-work/'; then
+            git rm -r -f --ignore-unmatch -- student-work
             git checkout "upstream/${UPSTREAM_BRANCH}" -- student-work
           fi
 

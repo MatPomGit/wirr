@@ -23,11 +23,11 @@ Okluzja oznacza zasłanianie obiektu przez bliższą powierzchnię. Test głębi
 
 ## Przygotowanie stanowiska i otwarcie sceny
 
-1. Uruchom Unity Hub i otwórz przygotowany projekt Universal 3D (URP) w Unity 6000.6.5f1. Jeśli nie masz projektu, wykonaj [instalację i przygotowanie](../../Documentation~/Reference/UNITY_COURSE_JOURNEY.md#pierwsze-uruchomienie-w-unity).
-2. W edytorze otwórz menu WiRR → Narzędzia kursu i wybierz laboratorium 04. Materiały próbki znajdziesz w Window → Package Manager → WiRR Course Toolkit → Samples. Zaimportuj próbkę odpowiadającą temu laboratorium; zawiera instrukcję i szablon, a scenę przygotowują narzędzia WiRR.
-3. Na przygotowanym stanowisku otwórz scenę wskazaną przez prowadzącego. W swoim nowym projekcie użyj przycisku „Utwórz / napraw aktywną scenę” i zapisz ją w Assets/WiRR/Lab04. Nie uruchamiaj naprawy na scenie z własnymi zmianami bez zapisania kopii.
-4. Kliknij „Sprawdź konfigurację laboratorium”. Następnie uruchom scenę przyciskiem Play u góry edytora i przejdź do zakładki Game. Pomiary przepisuj do WiRR → Raporty → Formularz raportu laboratoryjnego, wybierając Lab 04.
-5. Do doświadczenia potrzebny jest przygotowany wariant SIM_AR opisany poniżej. Jeżeli scena nie zawiera wskazanych przełączników, punktów odniesienia lub odczytów, zgłoś brak prowadzącemu i skorzystaj z przygotowanego stanowiska. Samo wygenerowanie sceny bazowej nie potwierdza gotowości demonstratora.
+Użyj Unity 6000.6.5f1 i przygotowanego projektu URP. Otwórz WiRR → Nowe instrukcje → Materiały studenta i wybierz scenę laboratorium 04. Następnie naciśnij Play i w zakładce Game rozpocznij sesję z własnym indeksem i grupą. Nie używaj generatora starszej sceny bazowej do tego doświadczenia.
+
+[Pełna instrukcja krok po kroku: instalacja, scena, przyciski i pomiary](../../Documentation~/WiRR2/LAB04-STUDENT-GUIDE.md). Przygotowanie brakujących scen wykonuje prowadzący; istniejące sceny studenta są zachowywane.
+
+Po doświadczeniu wyłącz Play i [przenieś sesję do istniejącego formularza raportu](../../Documentation~/WiRR2/SUPABASE-REPORT-BRIDGE.md). Eksport z panelu sceny jest kopią lokalną i sam nie oddaje pracy.
 
 ## Jedno doświadczenie, trzy działania
 
