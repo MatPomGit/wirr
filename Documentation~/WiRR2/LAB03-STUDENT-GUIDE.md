@@ -73,25 +73,22 @@ Porównanie ma sens tylko przy jednakowej referencji, trasie obserwacji, liczbie
 5. Dla etapu `5.0` wykonaj osobną próbę z włączoną opcją braku odzyskania. Odnotuj, że brak odzyskania nie oznacza czasu równego zero; jest zdarzeniem nieukończonym w zadanym oknie obserwacji.
 6. Uzupełnij wniosek, wskazując, które właściwości wynikają z modelu SIM_AR, a których nie można wnioskować o rzeczywistym urządzeniu bez niezależnego pomiaru.
 
-## Gdzie i jak przekazać raport z laboratoriów 03 i 04
+## Przekazanie raportów: formularz WiRR i potwierdzenie serwera
 
-Dla bloku 02 przygotuj **dwa odrębne wyniki**, po jednym z każdego laboratorium. W aktualnej scenie pilotażowej procedura jest następująca:
+Po zakończeniu każdego laboratorium uruchom w edytorze Unity **WiRR → Raporty → Formularz raportu laboratoryjnego**. Uzupełnij dane, wybierz numer aktualnego laboratorium i sprawdź kompletność. Kliknij **Zapisz raport lokalnie (bez logowania)**. Ten przycisk zapisuje raport i uruchamia jego automatyczną wysyłkę do usługi odbiorczej KIA. Poczekaj na odrębne okno **WiRR: raport przyjęty** z identyfikatorem zgłoszenia; dopiero takie potwierdzenie oznacza przyjęcie przez serwer, nie wystawienie oceny.
 
-1. Ukończ próby laboratorium 03. W panelu po lewej sprawdź listę **Wyniki tego laboratorium** i wpisz uzasadniony wniosek w polu **Twój wniosek (jeden na laboratorium)**.
-2. W panelu **Doświadczenia WiRR** otwórz **Lab04_DepthRoom** albo wybierz **Następny lab**. Zachowaj te same indeksy i grupę, następnie wykonaj laboratorium 04 i zapisz jego wniosek.
-3. Po ukończeniu obydwu ćwiczeń kliknij w widoku **Game** przycisk **Eksportuj dwa wyniki bloku**. Przycisk działa, gdy sesja jest otwarta i nie trwa aktywna próba. Poczekaj na komunikat **Zapisano dwa wyniki lokalnie** wraz ze ścieżką folderu.
-4. Aby odszukać pliki, otwórz **WiRR → Nowe instrukcje → Materiały studenta → Otwórz lokalne wyniki**. Następnie przejdź do `WiRR/exports/<identyfikator_sesji>/<identyfikator_eksportu>/`. Znajdziesz tam `WiRR-lab03.json`, `WiRR-lab04.json` i `block.json`. Nie zmieniaj zawartości JSON.
-5. Wersja pilotażowa zapisuje `deliveryStatus=LOCAL_ONLY`; **nie wysyła raportu automatycznie do serwera ani na GitHub**. Jeśli na danym stanowisku jest dodatkowo wdrożony osobny formularz **WiRR → Raporty → Formularz raportu laboratoryjnego**, użyj go według instrukcji prowadzącego. Za potwierdzenie złożenia raportu uznawaj wyłącznie rzeczywisty komunikat odbioru przez serwer dla obu laboratoriów, nigdy sam zapis JSON.
-6. **Gdy nie ma dostępnej działającej wysyłki lub potwierdzenia**, skorzystaj z procedury awaryjnej wskazanej w instrukcji kursowej: utwórz archiwum ZIP zawierające dwa pliki wynikowe JSON i prześlij je e-mailem na **m.pomianek@prz.edu.pl**. Użyj nazwy `WiRR-blok-02-G1-INDEKS.zip`, zastępując `G1` odpowiednią grupą i `INDEKS` własnym numerem (przy pracy w parze uwzględnij oba numery). Temat wiadomości: `WiRR blok 02, grupa G1, indeks(y)`. W parze wiadomość wysyła jedna osoba.
-7. Jeśli nie można nawet wyeksportować JSON, pobierz szablon [raportu awaryjnego dla bloku 02](WiRR-blok-02-raport-awaryjny.md), wypełnij części dotyczące obu laboratoriów i wyślij plik na ten sam adres. Zachowaj kopię. Nie dołączaj projektu Unity, slajdów ani plików pozbawionych danych eksperymentalnych.
+Powtórz tę procedurę oddzielnie dla laboratorium 03 i 04. Na końcu upewnij się, że **oba** raporty mają potwierdzenie serwera. Nie potrzebujesz konta GitHub, własnego forka ani Git CLI. Przyjęte raporty trafiają do prywatnej kolejki; dalsze przekazanie do GitHub jest odrębnym etapem systemu.
 
-**Kontrola przed zakończeniem:** sprawdź oba numery laboratoriów, wszystkie indeksy, grupę, wykaz ważnych i nieważnych prób, wnioski oraz sposób dostarczenia plików. Zapis lokalny nie jest dowodem przyjęcia raportu przez serwer ani wystawienia oceny.
+W scenach pilotażowych jest także przycisk **Eksportuj dwa wyniki bloku**. Ten mechanizm zapisuje lokalnie pliki `WiRR-lab03.json`, `WiRR-lab04.json` i `block.json`. **Nie jest tym samym co przycisk wysyłki w formularzu WiRR**. Eksport wykonuj jako kopię wyników eksperymentu, ale nie uznawaj go za dowód dostarczenia raportów.
+
+Jeżeli serwer nie potwierdzi odbioru, w formularzu wybierz **Wyślij ponownie zapisany raport**. Niepowodzenie zgłoś prowadzącemu. Awaryjna ścieżka opisana w [instrukcji rozpoczęcia i oddawania pracy](../Reference/QUICK_START.md) polega na przesłaniu ZIP zawierającego raporty JSON z obu laboratoriów na `m.pomianek@prz.edu.pl`, z tematem `WiRR blok 02, grupa, indeksy`. W parze wysyła jedna osoba. Gdy nie działa także eksport JSON, skorzystaj z [formularza awaryjnego bloku 02](WiRR-blok-02-raport-awaryjny.md).
+
+Uwaga organizacyjna: konfigurację wysyłki i kod odbioru zweryfikowano w repozytorium `KIA-students/wirr`, ale nie wykonano w tej rewizji testu rzeczywistego wysłania obydwu raportów ze stanowiska. Przed zajęciami prowadzący powinien sprawdzić pełną drogę raportu i jego potwierdzenie.
 
 ## Opracowanie wyników i zakończenie, około 15 minut
 
 Przed zapisaniem odpowiedzi upewnij się, że potrafisz rozróżnić dokładność, stabilność i ponowną lokalizację. W polu `Twój wniosek (jeden na laboratorium)` napisz kilka pełnych zdań: przedstaw porównane warunki, wskaż zauważoną różnicę błędu i rozrzutu, opisz zachowanie po utracie śledzenia oraz ograniczenie symulacji. Nie zastępuj wniosku samymi hasłami.
 
-W panelu wybierz `Eksportuj dwa wyniki bloku`. W aktualnej wersji demonstratora eksport jest **lokalny** i zapisuje dwa pliki wyników oraz indeks bloku w katalogu wskazanym przez aplikację. Eksport nie potwierdza wysyłki ani zaliczenia. Po laboratorium 04 przekaż pliki sposobem wskazanym przez prowadzącego. Jeśli inne wydanie stanowiskowe wyświetla odrębne potwierdzenie odbioru na serwerze, kieruj się jego rzeczywistym statusem; nie zakładaj, że taki mechanizm działa w zestawie pilotażowym.
 
 **Osiąganie poziomów:** 3.0 wymaga poprawnego umieszczenia obiektu; 3.5 porównania warunków; 4.0 wyjaśnienia błędu i rozrzutu; 4.5 uzasadnionego doboru profilu i powtórzenia; 5.0 próby utraty śledzenia, analizy powrotu i wskazania niepewności. Wybrany w panelu poziom jest wskazówką dydaktyczną, nie automatyczną oceną.
 
