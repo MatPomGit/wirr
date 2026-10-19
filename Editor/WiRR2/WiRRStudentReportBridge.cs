@@ -37,7 +37,7 @@ namespace KIA.WiRR.Editor
                     throw new ArgumentException("Wymagana zakończona sesja bloku 02 (laboratoria 03 i 04).");
                 if (!session.studentIndices.Contains(WiRRStudentProfile.Index))
                     throw new ArgumentException("Indeks zalogowanego studenta nie należy do tej sesji.");
-                if (session.group != (WiRRStudentProfile.Group == 1 ? "G2" : "G1"))
+                if (session.group != (WiRRStudentProfile.GroupLabel))
                     throw new ArgumentException("Grupa profilu WiRR różni się od grupy zapisanej sesji.");
 
                 var choice = EditorUtility.DisplayDialogComplex("WiRR: import wyników",
