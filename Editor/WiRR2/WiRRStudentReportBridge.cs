@@ -84,7 +84,7 @@ namespace KIA.WiRR.Editor
                     "Porównane konfiguracje (według zapisu prób): " +
                     string.Join(" | ", lab.trials.Select(t => t.condition).Distinct().ToArray()));
                 WiRRReportStore.SetValue(document, "basic.conclusion",
-                    string.IsNullOrWhiteSpace(lab.conclusion) ? "Wymaga uzupełnienia wniosku przez studenta." : lab.conclusion);
+                    string.IsNullOrWhiteSpace(lab.conclusion) ? "" : lab.conclusion);
                 WiRRReportStore.SetValue(document, "basic.limits",
                     "Tryb SIM_AR; brak pomiarów sprzętowych. Próby oznaczone FAILED i metryki BRAK zachowano jawnie. " +
                     "Identyfikator sesji: " + session.id + ". Student powinien zweryfikować opis przed wysłaniem.");
