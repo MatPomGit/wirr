@@ -8,7 +8,7 @@ Poniższa procedura dotyczy laboratorium 03 i 04 w wersji komputerowej SIM_AR. N
 
 1. Otwórz stronę kursu: https://github.com/KIA-students/wirr . W zakładce README znajdziesz odnośniki do instrukcji oraz zasobów.
 2. Jeżeli nie masz Unity, wejdź na https://unity.com/download , pobierz Unity Hub dla swojego systemu i zainstaluj go. W Unity Hub zaloguj się na własne konto Unity ID, aktywuj dostępną bezpłatną licencję, przejdź do **Installs → Install Editor** i wybierz zgodną wersję **Unity 6000.6.x**, wskazaną przez prowadzącego. Nie instaluj modułów Android, Quest ani ARCore dla ćwiczeń SIM_AR na PC.
-3. Jeżeli przygotowujesz stanowisko samodzielnie, otwórz Unity Hub, wybierz **Projects → New project**, szablon **Universal 3D (URP)** i naciśnij **Create project**. W uruchomionym edytorze wejdź w **Window → Package Manager**, naciśnij **+ → Install package from git URL…**, wklej `https://github.com/KIA-students/wirr.git#upm` i zatwierdź **Install**. Pakiet instalowany tą metodą wymaga dostępnego narzędzia Git; jeżeli Unity zgłosi jego brak, skorzystaj z instrukcji [konfiguracji stanowiska](../Reference/OS_SETUP.md) albo zgłoś problem prowadzącemu. Nie pobieraj repozytorium jako ZIP, jeżeli dysponujesz gotowym projektem.
+3. Jeżeli przygotowujesz stanowisko samodzielnie, otwórz Unity Hub, wybierz **Projects → New project**, szablon **Universal 3D (URP)** i naciśnij **Create project**. W uruchomionym edytorze wejdź w **Window → Package Manager**, naciśnij **+ → Install package from git URL…**, wklej `https://github.com/KIA-students/wirr.git#upm` i zatwierdź **Install**. Pakiet instalowany tą metodą wymaga dostępnego narzędzia Git; jeżeli Unity zgłosi jego brak, skorzystaj z instrukcji [konfiguracji stanowiska](../Reference/OS_SETUP.md) albo zgłoś problem prowadzącemu. Nie pobieraj repozytorium jako ZIP, jeżeli dysponujesz gotowym projektem. Jeżeli pojawi się błąd zależności, nie kontynuuj pomiarów przed jego usunięciem.
 4. Otwórz **Unity Hub → Projects → Add** (jeżeli projekt nie jest jeszcze na liście), wskaż przygotowany katalog projektu Unity i uruchom go przyciskiem **Open**. Odczekaj na zakończenie importu pakietów. Jeżeli na stanowisku nie ma wskazanego projektu, zapytaj prowadzącego o jego lokalizację; samo pobranie PDF-u nie tworzy działającej sceny.
 5. W górnym menu edytora wybierz **WiRR → Nowe instrukcje → Materiały studenta**. W panelu **Doświadczenia WiRR** kliknij przycisk otwierający scenę dla odpowiedniego laboratorium. Jeżeli przycisk jest nieaktywny, prowadzący może użyć **WiRR → Nowe instrukcje → Przygotuj osiem scen (prowadzący)**. Nie nadpisuj samodzielnie istniejących scen.
 6. W panelu **Project** odszukaj w razie potrzeby scenę w `Assets/WiRR/WiRR2/`. Po jej otwarciu naciśnij przycisk **Play** (trójkąt w górnym pasku Unity). Interakcje wykonuj w widoku **Game**; widok **Scene** służy do edycji, a nie do rejestrowania próby.
@@ -73,22 +73,19 @@ Dla każdego numeru aplikacja pyta `czy powinien być widoczny?`. Odpowiedz `Tak
 
 **Ważne:** Zmian parametrów dokonuj między próbami. Aplikacja unieważnia wynik, jeżeli konfiguracja zmieni się podczas aktywnego pomiaru. Porównania prowadź przy jednakowym zestawie obiektów i tej samej geometrii.
 
+## Opracowanie wyników i zakończenie, około 15 minut
+
+W polu `Twój wniosek (jeden na laboratorium)` opisz, na czym polegał wykryty błąd widoczności, jaki efekt przyniosła zmiana sposobu okluzji lub tolerancji głębi oraz czy poprawa występowała w obu pozycjach kamery. Rozdziel błędy etykiety, odpowiedzi promienia i obrazu.
+
 ## Przekazanie raportów: formularz WiRR i potwierdzenie serwera
 
-Po zakończeniu każdego laboratorium uruchom w edytorze Unity **WiRR → Raporty → Formularz raportu laboratoryjnego**. Uzupełnij dane, wybierz numer aktualnego laboratorium i sprawdź kompletność. Kliknij **Zapisz raport lokalnie (bez logowania)**. Ten przycisk zapisuje raport i uruchamia jego automatyczną wysyłkę do usługi odbiorczej KIA. Poczekaj na odrębne okno **WiRR: raport przyjęty** z identyfikatorem zgłoszenia; dopiero takie potwierdzenie oznacza przyjęcie przez serwer, nie wystawienie oceny.
+Po zakończeniu doświadczenia i wpisaniu wniosku uruchom w edytorze Unity **WiRR → Raporty → Formularz raportu laboratoryjnego**. Uzupełnij dane, wybierz numer aktualnego laboratorium i sprawdź kompletność. Kliknij **Zapisz raport lokalnie (bez logowania)**. Ten przycisk zapisuje raport i uruchamia jego automatyczną wysyłkę do usługi odbiorczej KIA. Poczekaj na odrębne okno **WiRR: raport przyjęty** z identyfikatorem zgłoszenia; dopiero takie potwierdzenie oznacza przyjęcie przez serwer, nie wystawienie oceny.
 
 Powtórz tę procedurę oddzielnie dla laboratorium 03 i 04. Na końcu upewnij się, że **oba** raporty mają potwierdzenie serwera. Nie potrzebujesz konta GitHub, własnego forka ani Git CLI. Przyjęte raporty trafiają do prywatnej kolejki; dalsze przekazanie do GitHub jest odrębnym etapem systemu.
 
 W scenach pilotażowych jest także przycisk **Eksportuj dwa wyniki bloku**. Ten mechanizm zapisuje lokalnie pliki `WiRR-lab03.json`, `WiRR-lab04.json` i `block.json`. **Nie jest tym samym co przycisk wysyłki w formularzu WiRR**. Eksport wykonuj jako kopię wyników eksperymentu, ale nie uznawaj go za dowód dostarczenia raportów.
 
 Jeżeli serwer nie potwierdzi odbioru, w formularzu wybierz **Wyślij ponownie zapisany raport**. Niepowodzenie zgłoś prowadzącemu. Awaryjna ścieżka opisana w [instrukcji rozpoczęcia i oddawania pracy](../Reference/QUICK_START.md) polega na przesłaniu ZIP zawierającego raporty JSON z obu laboratoriów na `m.pomianek@prz.edu.pl`, z tematem `WiRR blok 02, grupa, indeksy`. W parze wysyła jedna osoba. Gdy nie działa także eksport JSON, skorzystaj z [formularza awaryjnego bloku 02](WiRR-blok-02-raport-awaryjny.md).
-
-Uwaga organizacyjna: konfigurację wysyłki i kod odbioru zweryfikowano w repozytorium `KIA-students/wirr`, ale nie wykonano w tej rewizji testu rzeczywistego wysłania obydwu raportów ze stanowiska. Przed zajęciami prowadzący powinien sprawdzić pełną drogę raportu i jego potwierdzenie.
-
-## Opracowanie wyników i zakończenie, około 15 minut
-
-W polu `Twój wniosek (jeden na laboratorium)` opisz, na czym polegał wykryty błąd widoczności, jaki efekt przyniosła zmiana sposobu okluzji lub tolerancji głębi oraz czy poprawa występowała w obu pozycjach kamery. Rozdziel błędy etykiety, odpowiedzi promienia i obrazu.
-
 
 **Osiąganie poziomów:** 3.0 wymaga poprawnego rozpoznania niezgodności; 3.5 porównania A/B; 4.0 wyjaśnienia różnicy między testem głębi a `raycast`; 4.5 świadomego doboru tolerancji i porównania przed/po; 5.0 kontrpróby w drugim widoku i wskazania ograniczenia. Interpretację i ocenę zatwierdza prowadzący.
 
