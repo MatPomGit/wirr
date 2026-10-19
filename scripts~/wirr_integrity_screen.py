@@ -54,13 +54,13 @@ def scan(report):
             times = [number(v) for k, v in answers.items()
                      if k.startswith(prefix + "próba_") and k.endswith("_s")]
             times = sorted(v for v in times if v is not None)
+            reported = number(value)
             if any(v < 0 for v in times):
                 findings.append({"type": "negative_trial_duration", "field": key,
                                  "detail": "recorded trial duration cannot be negative"})
             if reported is not None and reported < 0:
                 findings.append({"type": "negative_median_duration", "field": key,
                                  "detail": "median duration cannot be negative"})
-            reported = number(value)
             if reported is not None and len(times) < 3:
                 unchecked_measurements += 1
             if reported is not None and len(times) >= 3:
