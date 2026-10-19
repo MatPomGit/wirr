@@ -205,6 +205,10 @@ jobs:
             "tools/wirr2/test_sync_export_guard.py"
             "tools/unity-ci/run-homeserver-offline.sh"
             "tools/unity-ci/stress-report-exporter.py"
+            "tools/unity-ci"
+            ".github/workflows/unity-docker-manual.yml"
+            "tests/test_unity_docker_package_path.py"
+            "tests/test_unity_nunit_results.py"
             ".github/workflows/sync-kia-students-pr.yml"
             ".github/workflows/wirr-reports-to-github.yml"
             ".github/workflows/wirr-report-contract-tests.yml"
@@ -239,7 +243,7 @@ jobs:
           fi
 
           for path in "${private_paths[@]}"; do
-            git rm -f --ignore-unmatch -- "${path}"
+            git rm -r -f --ignore-unmatch -- "${path}"
           done
 
           for path in "${private_paths[@]}"; do
