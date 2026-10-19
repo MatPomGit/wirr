@@ -13,6 +13,11 @@ from pathlib import Path
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
+if not (ROOT / "scripts~" / "test_wirr_report_exporter.py").is_file():
+    import os
+    ROOT = Path(os.environ.get("WIRR_REPO", str(Path.home() / "repo/wirr-matpom"))).resolve()
+if not (ROOT / "scripts~" / "test_wirr_report_exporter.py").is_file():
+    raise SystemExit(f"WiRR test module not found in {ROOT}")
 TEST = ROOT / "scripts~" / "test_wirr_report_exporter.py"
 spec = importlib.util.spec_from_file_location("wirr_exporter_tests", TEST)
 module = importlib.util.module_from_spec(spec)
