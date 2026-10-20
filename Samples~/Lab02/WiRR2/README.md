@@ -1,4 +1,3 @@
-<p align="center"><img src="../../../Documentation~/WiRR2/assets/prz.png" width="160" alt="Politechnika Rzeszowska">&nbsp;&nbsp;<img src="../../../Documentation~/WiRR2/assets/kia.png" width="160" alt="Katedra Informatyki i Automatyki PRz"></p>
 
 # Chwycić, nie kliknąć: ergonomia manipulacji
 
@@ -15,7 +14,7 @@ Materiały kursu: https://github.com/KIA-students/wirr
 
 ## Załączniki do laboratorium 02
 
-- [Załącznik 1. Papierowa karta pomiarowa (osobny plik Markdown)](../ZALACZNIK-1-KARTA-POMIAROWA.md)
-- [Załącznik 2. Kwestionariusz SSQ do opcjonalnego pomiaru przed/po ekspozycji HMD](../ZALACZNIK-2-SSQ.md)
+- [Załącznik 1. Papierowa karta pomiarowa (osobny plik Markdown)](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-02/karta-pomiarowa.md)
+- [Załącznik 2. Kwestionariusz SSQ do opcjonalnego pomiaru przed/po ekspozycji HMD](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-02/kwestionariusz-ssq.md)
 
 Każdy załącznik zaczyna się od osobnej strony, zawiera logotypy PRz/KIA i nadaje się do samodzielnego wydruku. Zapis wyników na papierze nie jest potwierdzeniem odbioru przez Supabase.
