@@ -1,3 +1,5 @@
+<p align="center"><img src="../../../Documentation~/WiRR2/assets/prz.png" width="160" alt="Politechnika Rzeszowska">&nbsp;&nbsp;<img src="../../../Documentation~/WiRR2/assets/kia.png" width="160" alt="Katedra Informatyki i Automatyki PRz"></p>
+
 # Projektant kontra percepcja
 
 Materiały pilotażowe do instrukcji 2.0.0-draft.2.
@@ -9,3 +11,10 @@ Scena: `Lab07_Expedition.unity`; źródło danych: **DESKTOP_SIM**. Polecenia i 
 Po pracy eksportuj dwa wyniki bloku. Zapis lokalny nie oznacza wysłania ani uzyskania oceny. Pełne podłączenie nowych checkpointów i odbiór na stanowiskach pozostają otwarte.
 
 Materiały kursu: https://github.com/KIA-students/wirr
+
+
+## Załączniki do laboratorium 07
+
+- [Załącznik 1. Papierowa karta pomiarowa (osobny plik Markdown)](../ZALACZNIK-1-KARTA-POMIAROWA.md)
+
+Każdy załącznik zaczyna się od osobnej strony, zawiera logotypy PRz/KIA i nadaje się do samodzielnego wydruku. Zapis wyników na papierze nie jest potwierdzeniem odbioru przez Supabase.
