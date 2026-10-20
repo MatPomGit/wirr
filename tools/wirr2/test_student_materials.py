@@ -72,6 +72,47 @@ class TestStudentMaterials(unittest.TestCase):
         self.assertNotIn("t.deviceMode != \"SIM_AR\"", adapter)
         self.assertNotIn("Deno.serve(", adapter)
 
+    def test_separate_markdown_annexes_start_new_pages_and_are_linked(self):
+        for lab in range(1, 7):
+            with self.subTest(lab=lab):
+                folder = ROOT / f"Samples~/Lab{lab:02}"
+                readme = (folder / "README.md").read_text(encoding="utf-8")
+                card_name = "ZALACZNIK-1-KARTA-POMIAROWA.md"
+                card = (folder / card_name).read_text(encoding="utf-8")
+                self.assertIn(card_name, readme)
+                self.assertTrue(card.startswith('<div style="break-before: page; page-break-before: always;"></div>'))
+                self.assertIn("## Rejestr prób", card)
+                self.assertIn("assets/prz.png", card)
+                self.assertIn("assets/kia.png", card)
+                self.assertIn("________", card)
+                if lab in (1, 2):
+                    second = ("ZALACZNIK-2-ANKIETA-DOSWIADCZEN.md" if lab == 1
+                              else "ZALACZNIK-2-SSQ.md")
+                    self.assertIn(second, readme)
+                    extra = (folder / second).read_text(encoding="utf-8")
+                    self.assertTrue(extra.startswith('<div style="break-before: page; page-break-before: always;"></div>'))
+                    self.assertIn("assets/prz.png", extra)
+                    self.assertIn("assets/kia.png", extra)
+
+    def test_paper_ssq_matches_course_scoring_contract(self):
+        form = (ROOT / "Samples~/Lab02/ZALACZNIK-2-SSQ.md").read_text(encoding="utf-8")
+        source = (ROOT / "WebSim~/site/ssq.mjs").read_text(encoding="utf-8")
+        symptoms = re.findall(r"^\\|\\s*(\\d{1,2})\\s*\\|[^\\n]*\\| ______ \\| ______ \\|$", form, re.MULTILINE)
+        self.assertEqual([int(n) for n in symptoms], list(range(1, 17)))
+        for weight in ("9,54", "7,58", "13,92", "3,74"):
+            self.assertIn(weight, form)
+            self.assertIn(weight.replace(",", "."), source)
+        self.assertIn("N/D", form)
+        self.assertIn("nie przesyłaj", form)
+
+    def test_entry_survey_has_two_distinct_ordinal_scales_and_no_identifiers(self):
+        survey = (ROOT / "Samples~/Lab01/ZALACZNIK-2-ANKIETA-DOSWIADCZEN.md").read_text(encoding="utf-8")
+        for name in ("Skala E", "Skala U", "Git", "Unity", "ROS 2", "Gazebo", "VR", "AR"):
+            self.assertIn(name, survey)
+        self.assertIn("0–4", survey)
+        self.assertIn("nie", survey.lower())
+        self.assertIn("Nie wpisuj imienia", survey)
+
     def test_reference_replay_is_finite_monotonic_and_named(self):
         rows = list(csv.DictReader(io.StringIO((ROOT / "Runtime/Resources/WiRR2/jointstate-replay.csv").read_text())))
         self.assertEqual(len(rows), 301)
