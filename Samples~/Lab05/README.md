@@ -18,6 +18,8 @@
 
 **Pytanie:** Który najlżejszy model nadal spełnia funkcję części?
 
+Pełna [instrukcja studencka Lab 05 z logotypami PRz/KIA i Załącznikiem 1 do druku](../../Documentation~/WiRR2/LAB05-STUDENT-GUIDE.md). Wyniki z sesji bloku 03 przenieś do formularza przez `WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu`; sam eksport JSON nie wysyła pracy.
+
 ## Co będziesz badać
 
 Model CAD opisuje geometrię konstrukcyjną; siatka renderingu przybliża jej powierzchnię trójkątami. Redukcja siatki może usunąć ważną cechę, np. otwór. LOD wybiera szczegółowość zależnie od widoku. Collider opisuje kolizję i nie musi odpowiadać widocznej siatce. Liczba trójkątów jest jedną z przyczyn kosztu, a nie pełną miarą wydajności.
