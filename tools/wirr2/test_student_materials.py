@@ -45,7 +45,7 @@ class TestStudentMaterials(unittest.TestCase):
         for logo in ("prz.png", "kia.png"):
             payload = (base / "assets" / logo).read_bytes()
             self.assertGreater(len(payload), 1000)
-            self.assertTrue(payload.startswith(b"\\x89PNG\\r\\n\\x1a\\n"))
+            self.assertTrue(payload.startswith(b"\x89PNG\r\n\x1a\n"))
         for lab in range(3, 7):
             with self.subTest(lab=lab):
                 number = f"{lab:02}"
