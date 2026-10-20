@@ -17,6 +17,51 @@ namespace KIA.WiRR.Editor.Tests
             catch (TargetInvocationException error) { throw error.InnerException; }
         }
 
+        private static object Invoke(string methodName, params object[] args)
+        {
+            var type = typeof(global::WiRRPublicReportSubmission).Assembly.GetType(
+                "KIA.WiRR.Editor.WiRRStudentReportBridge", true);
+            var method = type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
+            try { return method.Invoke(null, args); }
+            catch (TargetInvocationException error) { throw error.InnerException; }
+        }
+
+        [TestCase(1, 1, 2)]
+        [TestCase(2, 3, 4)]
+        [TestCase(3, 5, 6)]
+        [TestCase(4, 7, 8)]
+        public void AllBlocksMapToTwoDistinctReports(int block, int first, int second)
+        {
+            CollectionAssert.AreEqual(new[] { first, second }, (int[])Invoke("BlockLabs", block));
+        }
+
+        [TestCase(0)]
+        [TestCase(5)]
+        public void InvalidBlockIsRejectedBeforeDraftMutation(int block)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => Invoke("BlockLabs", block));
+        }
+
+        [TestCase(1, "DESKTOP_SIM")]
+        [TestCase(2, "DESKTOP_SIM")]
+        [TestCase(3, "SIM_AR")]
+        [TestCase(4, "SIM_AR")]
+        [TestCase(5, "DESKTOP_SIM")]
+        [TestCase(6, "ROS_REPLAY")]
+        [TestCase(7, "DESKTOP_SIM")]
+        [TestCase(8, "DESKTOP_SIM")]
+        public void ExpectedSourceIsExplicitAndDoesNotClaimRosLive(int lab, string expected)
+        {
+            Assert.AreEqual(expected, (string)Invoke("ExpectedMode", lab));
+        }
+
+        [TestCase(0)]
+        [TestCase(9)]
+        public void InvalidLabHasNoSourceMode(int lab)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => Invoke("ExpectedMode", lab));
+        }
+
         [Test]
         public void ForeignDraftWithoutTeamIdIsRejectedWithoutRelabelling()
         {
