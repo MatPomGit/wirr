@@ -37,7 +37,7 @@ namespace KIA.WiRR.Editor
             if (session == null) throw new ArgumentException("Brak sesji WiRR2.");
             if (!BlockLabs(session.block).Contains(labNo))
                 throw new ArgumentException("Laboratorium nie należy do wybranego bloku.");
-            var lab = session.Lab(labNo);
+            var lab = session.labs == null ? null : session.labs.Find(x => x != null && x.labNumber == labNo);
             if (lab == null || lab.trials == null || lab.trials.Count == 0)
                 throw new ArgumentException("Brak zakończonych prób laboratorium " + labNo + ".");
             var expected = ExpectedMode(labNo);
