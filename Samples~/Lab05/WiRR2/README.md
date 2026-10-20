@@ -1,8 +1,7 @@
-<p align="center"><img src="../../../Documentation~/WiRR2/assets/prz.png" width="160" alt="Politechnika Rzeszowska">&nbsp;&nbsp;<img src="../../../Documentation~/WiRR2/assets/kia.png" width="160" alt="Katedra Informatyki i Automatyki PRz"></p>
 
 # Geometria kosztuje, ale otwór montażowy musi zostać
 
-Instrukcja dla studentów: [Laboratorium 05, krok po kroku](../../../Documentation~/WiRR2/LAB05-STUDENT-GUIDE.md). Eksport z tej sceny zapisuje lokalne dane. Adapter automatycznego importu do formularza dotyczy obecnie wyłącznie laboratoriów 03–04; wyniki laboratorium 05 przenieś ręcznie do `WiRR → Raporty → Formularz raportu laboratoryjnego` i wyślij osobny raport przyciskiem `Zapisz raport lokalnie (bez logowania)`. Dopiero potwierdzenie serwera oznacza przyjęcie.
+Instrukcja dla studentów: [Laboratorium 05, krok po kroku](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-05/content.md). Eksport z tej sceny zapisuje lokalne dane. Adapter automatycznego importu do formularza dotyczy obecnie wyłącznie laboratoriów 03–04; wyniki laboratorium 05 przenieś ręcznie do `WiRR → Raporty → Formularz raportu laboratoryjnego` i wyślij osobny raport przyciskiem `Zapisz raport lokalnie (bez logowania)`. Dopiero potwierdzenie serwera oznacza przyjęcie.
 
 Materiały pilotażowe do instrukcji 2.0.0-draft.2.
 
@@ -10,13 +9,13 @@ Prowadzący przygotowuje projekt przez `WiRR → Nowe instrukcje → Przygotuj o
 
 Scena: `Lab05_CADWorkshop.unity`; źródło danych: **DESKTOP_SIM**. Polecenia i progi są dostępne bez sieci w panelu sceny. Profil solo/para jest wspólny dla dwóch laboratoriów.
 
-Po pracy wyłącz `Play`, wybierz `WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu`, wskaż sesję bloku 03 i zaimportuj kolejno laboratoria 05 i 06. Zweryfikuj dwa potwierdzenia odbioru przez serwer. Lokalny eksport nie oznacza wysłania ani oceny. [Pełna instrukcja i karta do druku](../../../Documentation~/WiRR2/LAB05-STUDENT-GUIDE.md). Pełne podłączenie nowych checkpointów i odbiór na stanowiskach pozostają otwarte.
+Po pracy wyłącz `Play`, wybierz `WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu`, wskaż sesję bloku 03 i zaimportuj kolejno laboratoria 05 i 06. Zweryfikuj dwa potwierdzenia odbioru przez serwer. Lokalny eksport nie oznacza wysłania ani oceny. [Pełna instrukcja i karta do druku](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-05/content.md). Pełne podłączenie nowych checkpointów i odbiór na stanowiskach pozostają otwarte.
 
 Materiały kursu: https://github.com/KIA-students/wirr
 
 
 ## Załączniki do laboratorium 05
 
-- [Załącznik 1. Papierowa karta pomiarowa (osobny plik Markdown)](../ZALACZNIK-1-KARTA-POMIAROWA.md)
+- [Załącznik 1. Papierowa karta pomiarowa (osobny plik Markdown)](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-05/karta-pomiarowa.md)
 
 Każdy załącznik zaczyna się od osobnej strony, zawiera logotypy PRz/KIA i nadaje się do samodzielnego wydruku. Zapis wyników na papierze nie jest potwierdzeniem odbioru przez Supabase.
