@@ -40,7 +40,7 @@ Wypełnij **obie kolumny tylko wtedy, gdy rzeczywiście przeprowadzono pomiar pr
 | 12 | Zawroty głowy przy otwartych oczach | ______ | ______ |
 | 13 | Zawroty głowy przy zamkniętych oczach | ______ | ______ |
 | 14 | Wrażenie wirowania | ______ | ______ |
-| 15 | Dyskomfort w żołądku (odczuwanie żołądka) | ______ | ______ |
+| 15 | Odczuwanie żołądka / dyskomfort w żołądku | ______ | ______ |
 | 16 | Odbijanie | ______ | ______ |
 
 ## Punktowanie (opcjonalnie, dla kompletnego zestawu 16 odpowiedzi)
