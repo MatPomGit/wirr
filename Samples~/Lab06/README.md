@@ -18,6 +18,8 @@
 
 **Pytanie:** Czy płynny ruch robota oznacza, że jego stan jest aktualny?
 
+Pełna [instrukcja studencka Lab 06 z logotypami PRz/KIA i Załącznikiem 1 do druku](../../Documentation~/WiRR2/LAB06-STUDENT-GUIDE.md). Wyniki z sesji bloku 03 przenieś do formularza przez `WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu`; `ROS_REPLAY` nie mierzy RTT.
+
 ## Co będziesz badać
 
 JointState przypisuje położenia przegubom przez ich nazwy, nie przez przypadkową kolejność w tablicy. REPLAY odtwarza zapis; ROS_LIVE wymaga rzeczywistego źródła. STALE oznacza przekroczenie przyjętego wieku danych. Odstęp między wiadomościami i opóźnienie wykrycia STALE nie są RTT. RTT wymaga pomiaru drogi żądanie–odpowiedź.
