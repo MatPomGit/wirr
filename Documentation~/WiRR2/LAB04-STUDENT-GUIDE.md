@@ -112,36 +112,12 @@ Materiały kursowe: https://github.com/KIA-students/wirr . Wersja instrukcji: 20
 
 ---
 
+<div style="break-before: page; page-break-before: always;"></div>
+
 ## Załącznik 1. Karta raportu laboratoryjnego (wersja papierowa)
 
-[**Otwórz kartę laboratorium 04 do wydruku na arkuszu A4**](print/LAB04-KARTA-RAPORTU.html). Pobierz plik HTML i otwórz go w przeglądarce, po czym wybierz **Drukuj** (Ctrl+P). Strona ma format A4 poziomo, zawiera logotypy PRz i KIA oraz puste pola przeznaczone do odręcznego uzupełnienia. Wersję do notowania bezpośrednio z tej instrukcji zamieszczono poniżej.
+[**Załącznik 1: karta pomiarowa laboratorium 04, osobny plik Markdown do wydruku**](../../Samples~/Lab04/ZALACZNIK-1-KARTA-POMIAROWA.md).
 
-**WiRR, laboratorium 04. Okluzja i widoczność**. Tryb: `SIM_AR`. Data: _______________. Grupa: □ G1 □ G2. Stanowisko: ____________. Unity: _______________.
+Karta rozpoczyna się od nowej strony, ma oryginalne logotypy Politechniki Rzeszowskiej i KIA, puste wiersze na pomiary, warunki, wnioski i identyfikator potwierdzenia. Wydruk można wypełniać ręcznie w trakcie ćwiczenia. Jako dodatkowy układ A4 poziomo dostępna jest [samodzielna karta HTML do druku](print/LAB04-KARTA-RAPORTU.html).
 
-Indeks pierwszej osoby: __________________________. Indeks drugiej osoby (przy pracy w parze): __________________________.
-
-### Warunki prób i wyniki
-
-| Próba | Wariant A/B | Etap | Widok | Tolerancja [m] | Odpowiedzi 1/2/3 | Status |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | __________ | __________ | __________ | __________ | __________ | __________ |
-| 2 | __________ | __________ | __________ | __________ | __________ | __________ |
-| 3 | __________ | __________ | __________ | __________ | __________ | __________ |
-| 4 | __________ | __________ | __________ | __________ | __________ | __________ |
-| 5 | __________ | __________ | __________ | __________ | __________ | __________ |
-
-Warunki stałe i jedna świadomie zmieniana wielkość: _____________________________________________________
-
-__________________________________________________________________________________________________________
-
-Wniosek na podstawie własnych odczytów: ___________________________________________________________________
-
-__________________________________________________________________________________________________________
-
-Ograniczenia i źródło danych (`SIM_AR`): _______________________________________________________________
-
-Próby z brakiem wyniku oznacz „BRAK”, a nie 0. Zachowaj status `FAILED` i przyczynę odrzucenia próby.
-
-Identyfikator potwierdzenia przyjęcia przez serwer (jeżeli raport wysłano elektronicznie): ________________________
-
-Karta papierowa służy jako alternatywa **do notowania danych podczas zajęć**. Nie stanowi dowodu wysłania raportu. Po zakończeniu przenieś wyniki do formularza WiRR i zachowaj odrębne potwierdzenie Supabase, chyba że prowadzący dopuścił oddanie papierowe w trybie awaryjnym.
+**Uwaga:** karta służy do rejestracji wyników podczas ćwiczenia. Elektroniczne oddanie przez WiRR/Supabase jest niezależnym krokiem, chyba że prowadzący zatwierdzi tryb awaryjny.
