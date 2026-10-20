@@ -1,3 +1,5 @@
+<p align="center"><img src="../../Documentation~/WiRR2/assets/prz.png" width="175" alt="Politechnika Rzeszowska"> &nbsp;&nbsp; <img src="../../Documentation~/WiRR2/assets/kia.png" width="175" alt="Katedra Informatyki i Automatyki PRz"></p>
+
 # Lab 05: Geometria kosztuje, ale otwór montażowy musi zostać
 
 **Instrukcja krok po kroku (90 minut):** [Laboratorium 05: geometria CAD, LOD i benchmark](../../Documentation~/WiRR2/LAB05-STUDENT-GUIDE.md). Przed rozpoczęciem znajdziesz w niej dokładną procedurę instalacji Unity, otwarcia sceny, kolejności prób i wysłania osobnego raportu przez formularz WiRR/Supabase. Poniższy plik jest skróconą kartą doświadczenia.
@@ -91,3 +93,14 @@ Telefon i gogle nie są wymagane do żadnego progu. Nie zmieniaj komputera ani k
 **Przypadek użycia:** Wymagana dokładność zależy od zadania i dystansu. Próg LOD odczytaj z przygotowanej konfiguracji, nie z tej ilustracji.
 
 [Szablon tylko przy awarii eksportu JSON](../../Documentation~/WiRR2/WiRR-blok-03-raport-awaryjny.md).
+
+
+---
+
+<div style="break-before: page; page-break-before: always;"></div>
+
+## Załączniki do druku
+
+[Załącznik 1. Karta pomiarowa (05), Markdown do wydruku](ZALACZNIK-1-KARTA-POMIAROWA.md)
+
+Każdy załącznik jest **osobnym plikiem Markdown** z podziałem strony na początku i logotypami PRz oraz KIA. Otwórz i wydrukuj go oddzielnie lub zachowaj podział stron w dokumencie zbiorczym. Karta pomiarowa służy do odręcznego notowania, nie jest potwierdzeniem przyjęcia raportu przez Supabase.
