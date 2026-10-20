@@ -56,8 +56,8 @@ class TestStudentMaterials(unittest.TestCase):
                 self.assertIn(f"print/LAB{number}-KARTA-RAPORTU.html", guide)
                 html = (base / "print" / f"LAB{number}-KARTA-RAPORTU.html").read_text(encoding="utf-8")
                 self.assertIn("@page {size:A4 landscape;", html)
-                self.assertIn('src="../assets/prz.png"', html)
-                self.assertIn('src="../assets/kia.png"', html)
+                self.assertEqual(html.count('src="data:image/png;base64,'), 2,
+                                 "A4 cards must contain both actual logos when opened offline")
                 self.assertIn("<table>", html)
                 self.assertIn("Supabase", html)
 
