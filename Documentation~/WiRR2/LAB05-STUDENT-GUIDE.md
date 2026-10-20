@@ -1,6 +1,13 @@
+<p align="center">
+  <img src="assets/prz.png" width="175" alt="Logotyp Politechniki Rzeszowskiej">
+  &nbsp;&nbsp;
+  <img src="assets/kia.png" width="175" alt="Logotyp Katedry Informatyki i Automatyki PRz">
+</p>
+
 # Laboratorium 05. Optymalizacja reprezentacji CAD i ocena zachowania cech geometrycznych
 
 ## Spis treści
+- [Załącznik 1. Karta raportu laboratoryjnego (wersja papierowa)](#załącznik-1-karta-raportu-laboratoryjnego-wersja-papierowa)
 
 - [Pobranie materiałów i pierwsze uruchomienie](#pobranie-materiałów-i-pierwsze-uruchomienie)
 - [Cel i zasady pomiaru](#cel-i-zasady-pomiaru)
@@ -112,3 +119,38 @@ Jeżeli nie widać menu WiRR, sprawdź zakończenie importu pakietu w `Window �
 Materiał rozszerzony dotyczący importu STEP, tessellacji i produkcyjnego modelu CAD znajduje się w [instrukcji narzędzi CAD](../Reference/LAB5_STARTER_README.md). Są to **dodatkowe ćwiczenia wymagające odpowiedniego stanowiska**; ich wyników nie przypisuj automatycznie scenie `DESKTOP_SIM`.
 
 Materiały kursowe: [KIA-students/wirr](https://github.com/KIA-students/wirr). Wersja instrukcji: 20.10.2026.
+---
+
+## Załącznik 1. Karta raportu laboratoryjnego (wersja papierowa)
+
+[**Otwórz kartę laboratorium 05 do wydruku na arkuszu A4**](print/LAB05-KARTA-RAPORTU.html). Pobierz plik HTML i otwórz go w przeglądarce, po czym wybierz **Drukuj** (Ctrl+P). Strona ma format A4 poziomo, zawiera logotypy PRz i KIA oraz puste pola przeznaczone do odręcznego uzupełnienia. Wersję do notowania bezpośrednio z tej instrukcji zamieszczono poniżej.
+
+**WiRR, laboratorium 05. Optymalizacja geometrii i LOD**. Tryb: `DESKTOP_SIM`. Data: _______________. Grupa: □ G1 □ G2. Stanowisko: ____________. Unity: _______________.
+
+Indeks pierwszej osoby: __________________________. Indeks drugiej osoby (przy pracy w parze): __________________________.
+
+### Warunki prób i wyniki
+
+| Próba | LOD i progi [m] | Etap | Trójkąty | Materiały | Mediana/p95 [ms] | Otwór/status |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | __________ | __________ | __________ | __________ | __________ | __________ |
+| 2 | __________ | __________ | __________ | __________ | __________ | __________ |
+| 3 | __________ | __________ | __________ | __________ | __________ | __________ |
+| 4 | __________ | __________ | __________ | __________ | __________ | __________ |
+| 5 | __________ | __________ | __________ | __________ | __________ | __________ |
+
+Warunki stałe i jedna świadomie zmieniana wielkość: _____________________________________________________
+
+__________________________________________________________________________________________________________
+
+Wniosek na podstawie własnych odczytów: ___________________________________________________________________
+
+__________________________________________________________________________________________________________
+
+Ograniczenia i źródło danych (`DESKTOP_SIM`): _______________________________________________________________
+
+Próby z brakiem wyniku oznacz „BRAK”, a nie 0. Zachowaj status `FAILED` i przyczynę odrzucenia próby.
+
+Identyfikator potwierdzenia przyjęcia przez serwer (jeżeli raport wysłano elektronicznie): ________________________
+
+Karta papierowa służy jako alternatywa **do notowania danych podczas zajęć**. Nie stanowi dowodu wysłania raportu. Po zakończeniu przenieś wyniki do formularza WiRR i zachowaj odrębne potwierdzenie Supabase, chyba że prowadzący dopuścił oddanie papierowe w trybie awaryjnym.
