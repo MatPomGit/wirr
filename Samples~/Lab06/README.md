@@ -1,8 +1,7 @@
-<p align="center"><img src="../../Documentation~/WiRR2/assets/prz.png" width="175" alt="Politechnika Rzeszowska"> &nbsp;&nbsp; <img src="../../Documentation~/WiRR2/assets/kia.png" width="175" alt="Katedra Informatyki i Automatyki PRz"></p>
 
 # Lab 06: Bliźniak cyfrowy powinien wiedzieć, kiedy nie wie
 
-**Instrukcja krok po kroku (90 minut):** [Laboratorium 06: ROS_REPLAY, STALE i watchdog](../../Documentation~/WiRR2/LAB06-STUDENT-GUIDE.md). Zawiera szczegółowe przyciski Unity, scenariusze przerw, opis metryk i procedurę oddania raportu przez istniejący formularz WiRR/Supabase. Nie trzeba uruchamiać ROS_LIVE ani Dockera.
+**Instrukcja krok po kroku (90 minut):** [Laboratorium 06: ROS_REPLAY, STALE i watchdog](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-06/content.md). Zawiera szczegółowe przyciski Unity, scenariusze przerw, opis metryk i procedurę oddania raportu przez istniejący formularz WiRR/Supabase. Nie trzeba uruchamiać ROS_LIVE ani Dockera.
 
 ## Spis treści
 
@@ -20,7 +19,7 @@
 
 **Pytanie:** Czy płynny ruch robota oznacza, że jego stan jest aktualny?
 
-Pełna [instrukcja studencka Lab 06 z logotypami PRz/KIA i Załącznikiem 1 do druku](../../Documentation~/WiRR2/LAB06-STUDENT-GUIDE.md). Wyniki z sesji bloku 03 przenieś do formularza przez `WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu`; `ROS_REPLAY` nie mierzy RTT.
+Pełna [instrukcja studencka Lab 06 z logotypami PRz/KIA i Załącznikiem 1 do druku](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-06/content.md). Wyniki z sesji bloku 03 przenieś do formularza przez `WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu`; `ROS_REPLAY` nie mierzy RTT.
 
 ## Co będziesz badać
 
@@ -101,6 +100,6 @@ Telefon i gogle nie są wymagane do żadnego progu. Nie zmieniaj komputera ani k
 
 ## Załączniki do druku
 
-[Załącznik 1. Karta pomiarowa (06), Markdown do wydruku](ZALACZNIK-1-KARTA-POMIAROWA.md)
+[Załącznik 1. Karta pomiarowa (06), Markdown do wydruku](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-06/karta-pomiarowa.md)
 
 Każdy załącznik jest **osobnym plikiem Markdown** z podziałem strony na początku i logotypami PRz oraz KIA. Otwórz i wydrukuj go oddzielnie lub zachowaj podział stron w dokumencie zbiorczym. Karta pomiarowa służy do odręcznego notowania, nie jest potwierdzeniem przyjęcia raportu przez Supabase.
