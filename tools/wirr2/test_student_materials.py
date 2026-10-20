@@ -73,7 +73,7 @@ class TestStudentMaterials(unittest.TestCase):
         self.assertNotIn("Deno.serve(", adapter)
 
     def test_separate_markdown_annexes_start_new_pages_and_are_linked(self):
-        for lab in range(1, 7):
+        for lab in range(1, 9):
             with self.subTest(lab=lab):
                 folder = ROOT / f"Samples~/Lab{lab:02}"
                 readme = (folder / "README.md").read_text(encoding="utf-8")
