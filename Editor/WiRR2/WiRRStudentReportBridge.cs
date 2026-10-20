@@ -10,12 +10,27 @@ using UnityEngine;
 namespace KIA.WiRR.Editor
 {
     /// <summary>
-    /// Transfers observed SIM_AR trials to the EXISTING WiRR report form.
+    /// Transfers observed WiRR2 block 01–04 trials to the EXISTING WiRR report form.
     /// The form retains its normal validation and Supabase submission transport.
     /// No automatic submission, invented checkpoint measurements or second endpoint.
     /// </summary>
     internal static class WiRRStudentReportBridge
     {
+        // The pilot supports 4 blocks, two distinct reports per block; never silently
+        // accept a different source mode or infer an unmeasured network RTT.
+        internal static int[] BlockLabs(int block)
+        {
+            if (block < 1 || block > 4) throw new ArgumentOutOfRangeException(nameof(block));
+            return new[] { block * 2 - 1, block * 2 };
+        }
+
+        internal static string ExpectedMode(int labNumber)
+        {
+            if (labNumber < 1 || labNumber > 8) throw new ArgumentOutOfRangeException(nameof(labNumber));
+            return labNumber == 3 || labNumber == 4 ? "SIM_AR" :
+                labNumber == 6 ? "ROS_REPLAY" : "DESKTOP_SIM";
+        }
+
         // Read before ApplyStudentProfile: a draft must never be relabelled as another student's work.
         internal static void ValidateExistingOwner(WiRRReportDocument document, string[] indices, string group)
         {
@@ -36,7 +51,7 @@ namespace KIA.WiRR.Editor
                 return;
             }
             var root = Path.Combine(Application.persistentDataPath, "WiRR", "sessions");
-            var path = EditorUtility.OpenFilePanel("Wybierz zapisaną sesję bloku 02 WiRR2", root, "json");
+            var path = EditorUtility.OpenFilePanel("Wybierz zapisaną sesję WiRR2 (blok 01–04)", root, "json");
             if (string.IsNullOrEmpty(path)) return;
             try
             {
@@ -45,20 +60,23 @@ namespace KIA.WiRR.Editor
                     throw new ArgumentException("Sesja przekracza limit 4 MB.");
                 var session = JsonUtility.FromJson<WiRRStudentSession>(File.ReadAllText(path, Encoding.UTF8));
                 WiRRStudentStorage.Validate(session);
-                if (session.block != 2 || session.pendingTrial != null)
-                    throw new ArgumentException("Wymagana zakończona sesja bloku 02 (laboratoria 03 i 04).");
+                if (session.block < 1 || session.block > 4 || session.pendingTrial != null)
+                    throw new ArgumentException("Wymagana zakończona sesja bloku 01–04 (dwa laboratoria).");
                 if (!session.studentIndices.Contains(WiRRStudentProfile.Index))
                     throw new ArgumentException("Indeks zalogowanego studenta nie należy do tej sesji.");
                 if (session.group != (WiRRStudentProfile.GroupLabel))
                     throw new ArgumentException("Grupa profilu WiRR różni się od grupy zapisanej sesji.");
 
+                var labs = BlockLabs(session.block);
                 var choice = EditorUtility.DisplayDialogComplex("WiRR: import wyników",
-                    "Zaimportować wyniki z sesji do formularza laboratorium 03 czy 04? " +
-                    "Zostaną zachowane wszystkie próby i braki danych w opisie. " +
+                    "Sesja bloku " + session.block.ToString("00") + ". Wybrać raport " +
+                    labs[0].ToString("00") + " albo " + labs[1].ToString("00") + "? " +
+                    "Zostaną zachowane próby i jawne braki danych. " +
                     "Import NIE wysyła raportu do Supabase.",
-                    "Laboratorium 03", "Anuluj", "Laboratorium 04");
+                    "Laboratorium " + labs[0].ToString("00"), "Anuluj",
+                    "Laboratorium " + labs[1].ToString("00"));
                 if (choice == 1) return;
-                var labNo = choice == 0 ? 3 : 4;
+                var labNo = choice == 0 ? labs[0] : labs[1];
                 var lab = session.Lab(labNo);
                 if (lab.trials.Count == 0)
                     throw new ArgumentException("Brak zakończonych prób laboratorium " + labNo + ".");
@@ -74,8 +92,11 @@ namespace KIA.WiRR.Editor
                         "Zachowaj kopię poprzedniego raportu, jeśli jest potrzebna.", "Zastąp pola", "Anuluj"))
                     return;
                 // Reuse the existing v1 report and normal Supabase transport.
-                if (lab.trials.Any(t => t.deviceMode != "SIM_AR"))
-                    throw new ArgumentException("Raport SIM_AR nie może zawierać prób z innego źródła.");
+                // Source modes are lab-specific: 05 is DESKTOP_SIM, 06 ROS_REPLAY.
+                var sourceMode = ExpectedMode(labNo);
+                if (lab.trials.Any(t => t.deviceMode != sourceMode))
+                    throw new ArgumentException("Próby laboratorium " + labNo +
+                        " nie odpowiadają oczekiwanemu źródłu " + sourceMode + ".");
                 // Save applies the active profile to element zero: keep the partner exactly once.
                 document.studentIndices = new[] { WiRRStudentProfile.Index }
                     .Concat(session.studentIndices.Where(x => x != WiRRStudentProfile.Index)).ToList();
@@ -83,7 +104,7 @@ namespace KIA.WiRR.Editor
                 document.group = session.group;
                 document.teamId = "S" + WiRRStudentProfile.Identifier;
                 WiRRReportStore.SetValue(document, "basic.mode", "true");
-                WiRRReportStore.SetValue(document, "basic.source", "Unity 6, WiRR2, SIM_AR (dane syntetyczne, nie pomiar sprzętowy)");
+                WiRRReportStore.SetValue(document, "basic.source", "Unity 6, WiRR2, " + sourceMode + " (lokalna symulacja lub replay; brak pomiaru sprzętowego)");
                 var observations = new StringBuilder();
                 foreach (var trial in lab.trials)
                 {
@@ -108,7 +129,9 @@ namespace KIA.WiRR.Editor
                 WiRRReportStore.SetValue(document, "basic.conclusion",
                     string.IsNullOrWhiteSpace(lab.conclusion) ? "" : lab.conclusion);
                 WiRRReportStore.SetValue(document, "basic.limits",
-                    "Tryb SIM_AR; brak pomiarów sprzętowych. Próby oznaczone FAILED i metryki BRAK zachowano jawnie. " +
+                    "Tryb " + sourceMode + "; brak potwierdzonego pomiaru urządzenia/łącza. " +
+                    (sourceMode == "ROS_REPLAY" ? "Lokalny zapis nie mierzy RTT ani ROS_LIVE. " : "") +
+                    "Próby FAILED i metryki BRAK zachowano jawnie. " +
                     "Identyfikator sesji: " + session.id + ". Student powinien zweryfikować opis przed wysłaniem.");
                 WiRRReportStore.Save(document);
                 WiRRReportWindow.OpenForLab(labNo);
