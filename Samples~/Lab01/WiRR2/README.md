@@ -1,4 +1,3 @@
-<p align="center"><img src="../../../Documentation~/WiRR2/assets/prz.png" width="160" alt="Politechnika Rzeszowska">&nbsp;&nbsp;<img src="../../../Documentation~/WiRR2/assets/kia.png" width="160" alt="Katedra Informatyki i Automatyki PRz"></p>
 
 # Rzeczywistość ma jednostki, a GPU ograniczenia
 
@@ -15,7 +14,7 @@ Materiały kursu: https://github.com/KIA-students/wirr
 
 ## Załączniki do laboratorium 01
 
-- [Załącznik 1. Papierowa karta pomiarowa (osobny plik Markdown)](../ZALACZNIK-1-KARTA-POMIAROWA.md)
-- [Załącznik 2. Ankieta doświadczeń VR/AR oraz kompetencji Git, Unity, ROS 2, Gazebo](../ZALACZNIK-2-ANKIETA-DOSWIADCZEN.md)
+- [Załącznik 1. Papierowa karta pomiarowa (osobny plik Markdown)](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-01/karta-pomiarowa.md)
+- [Załącznik 2. Ankieta doświadczeń VR/AR oraz kompetencji Git, Unity, ROS 2, Gazebo](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-01/ankieta-doswiadczenia-vr-ar.md)
 
 Każdy załącznik zaczyna się od osobnej strony, zawiera logotypy PRz/KIA i nadaje się do samodzielnego wydruku. Zapis wyników na papierze nie jest potwierdzeniem odbioru przez Supabase.
