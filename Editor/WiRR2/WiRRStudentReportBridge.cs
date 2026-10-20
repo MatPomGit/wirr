@@ -31,9 +31,25 @@ namespace KIA.WiRR.Editor
                 labNumber == 6 ? "ROS_REPLAY" : "DESKTOP_SIM";
         }
 
+        // Validate the complete selected lab before loading or modifying any v1 report draft.
+        internal static void ValidateLabForImport(WiRRStudentSession session, int labNo)
+        {
+            if (session == null) throw new ArgumentException("Brak sesji WiRR2.");
+            if (!BlockLabs(session.block).Contains(labNo))
+                throw new ArgumentException("Laboratorium nie należy do wybranego bloku.");
+            var lab = session.Lab(labNo);
+            if (lab == null || lab.trials == null || lab.trials.Count == 0)
+                throw new ArgumentException("Brak zakończonych prób laboratorium " + labNo + ".");
+            var expected = ExpectedMode(labNo);
+            if (lab.trials.Any(t => t == null || t.deviceMode != expected))
+                throw new ArgumentException("Próby laboratorium " + labNo +
+                    " nie odpowiadają oczekiwanemu źródłu " + expected + ".");
+        }
+
         // Read before ApplyStudentProfile: a draft must never be relabelled as another student's work.
         internal static void ValidateExistingOwner(WiRRReportDocument document, string[] indices, string group)
         {
+            if (document == null || indices == null) throw new ArgumentException("Brak profilu raportu.");
             if (document.studentIndices != null && document.studentIndices.Any(x =>
                 !string.IsNullOrWhiteSpace(x) && !indices.Contains(x)))
                 throw new ArgumentException("W formularzu istnieje raport innych studentów. Nie nadpisano go.");
@@ -62,7 +78,7 @@ namespace KIA.WiRR.Editor
                 WiRRStudentStorage.Validate(session);
                 if (session.block < 1 || session.block > 4 || session.pendingTrial != null)
                     throw new ArgumentException("Wymagana zakończona sesja bloku 01–04 (dwa laboratoria).");
-                if (!session.studentIndices.Contains(WiRRStudentProfile.Index))
+                if (session.studentIndices == null || !session.studentIndices.Contains(WiRRStudentProfile.Index))
                     throw new ArgumentException("Indeks zalogowanego studenta nie należy do tej sesji.");
                 if (session.group != (WiRRStudentProfile.GroupLabel))
                     throw new ArgumentException("Grupa profilu WiRR różni się od grupy zapisanej sesji.");
@@ -77,9 +93,8 @@ namespace KIA.WiRR.Editor
                     "Laboratorium " + labs[1].ToString("00"));
                 if (choice == 1) return;
                 var labNo = choice == 0 ? labs[0] : labs[1];
+                ValidateLabForImport(session, labNo);
                 var lab = session.Lab(labNo);
-                if (lab.trials.Count == 0)
-                    throw new ArgumentException("Brak zakończonych prób laboratorium " + labNo + ".");
 
                 var document = WiRRReportStore.LoadOrCreate(labNo, applyStudentProfile: false);
                 var hasExistingContent = document.answers.Any(answer =>
@@ -94,9 +109,6 @@ namespace KIA.WiRR.Editor
                 // Reuse the existing v1 report and normal Supabase transport.
                 // Source modes are lab-specific: 05 is DESKTOP_SIM, 06 ROS_REPLAY.
                 var sourceMode = ExpectedMode(labNo);
-                if (lab.trials.Any(t => t.deviceMode != sourceMode))
-                    throw new ArgumentException("Próby laboratorium " + labNo +
-                        " nie odpowiadają oczekiwanemu źródłu " + sourceMode + ".");
                 // Save applies the active profile to element zero: keep the partner exactly once.
                 document.studentIndices = new[] { WiRRStudentProfile.Index }
                     .Concat(session.studentIndices.Where(x => x != WiRRStudentProfile.Index)).ToList();
