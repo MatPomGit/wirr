@@ -1,4 +1,3 @@
-<p align="center"><img src="../../Documentation~/WiRR2/assets/prz.png" width="175" alt="Politechnika Rzeszowska"> &nbsp;&nbsp; <img src="../../Documentation~/WiRR2/assets/kia.png" width="175" alt="Katedra Informatyki i Automatyki PRz"></p>
 
 # Lab 01: Rzeczywistość ma jednostki, a GPU ograniczenia
 
@@ -97,8 +96,8 @@ Telefon i gogle nie są wymagane do żadnego progu. Nie zmieniaj komputera ani k
 
 ## Załączniki do druku
 
-[Załącznik 1. Karta pomiarowa (01), Markdown do wydruku](ZALACZNIK-1-KARTA-POMIAROWA.md)
+[Załącznik 1. Karta pomiarowa (01), Markdown do wydruku](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-01/karta-pomiarowa.md)
 
-[Załącznik 2. Ankieta doświadczeń VR/AR i kompetencji Git, Unity, ROS 2, Gazebo](ZALACZNIK-2-ANKIETA-DOSWIADCZEN.md)
+[Załącznik 2. Ankieta doświadczeń VR/AR i kompetencji Git, Unity, ROS 2, Gazebo](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-01/ankieta-doswiadczenia-vr-ar.md)
 
 Każdy załącznik jest **osobnym plikiem Markdown** z podziałem strony na początku i logotypami PRz oraz KIA. Otwórz i wydrukuj go oddzielnie lub zachowaj podział stron w dokumencie zbiorczym. Karta pomiarowa służy do odręcznego notowania, nie jest potwierdzeniem przyjęcia raportu przez Supabase.
