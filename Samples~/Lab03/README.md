@@ -1,3 +1,4 @@
+
 # Lab 03: Kotwica to nie gwarancja stałości
 
 ## Spis treści
@@ -25,7 +26,7 @@ Wykrycie płaszczyzny, trafienie promienia i utworzenie kotwicy to różne opera
 
 Użyj Unity 6000.6.5f1 i przygotowanego projektu URP. Otwórz WiRR → Nowe instrukcje → Materiały studenta i wybierz scenę laboratorium 03. Następnie naciśnij Play i w zakładce Game rozpocznij sesję z własnym indeksem i grupą. Nie używaj generatora starszej sceny bazowej do tego doświadczenia.
 
-[Pełna instrukcja krok po kroku: instalacja, scena, przyciski i pomiary](../../Documentation~/WiRR2/LAB03-STUDENT-GUIDE.md). Przygotowanie brakujących scen wykonuje prowadzący; istniejące sceny studenta są zachowywane.
+[Pełna instrukcja krok po kroku: instalacja, scena, przyciski i pomiary](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-03/content.md). Przygotowanie brakujących scen wykonuje prowadzący; istniejące sceny studenta są zachowywane.
 
 Po doświadczeniu wyłącz Play i [przenieś sesję do istniejącego formularza raportu](../../Documentation~/WiRR2/SUPABASE-REPORT-BRIDGE.md). Eksport z panelu sceny jest kopią lokalną i sam nie oddaje pracy.
 
@@ -96,3 +97,14 @@ Telefon i gogle nie są wymagane do żadnego progu. Nie zmieniaj komputera ani k
 **Utrata śledzenia:** Po ponownej lokalizacji sprawdź zarówno zmianę położenia, jak i rozrzut. Brak odczytu nie jest zerowym błędem.
 
 [Szablon tylko przy awarii eksportu JSON](../../Documentation~/WiRR2/WiRR-blok-02-raport-awaryjny.md).
+
+
+---
+
+<div style="break-before: page; page-break-before: always;"></div>
+
+## Załączniki do druku
+
+[Załącznik 1. Karta pomiarowa (03), Markdown do wydruku](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-03/karta-pomiarowa.md)
+
+Każdy załącznik jest **osobnym plikiem Markdown** z podziałem strony na początku i logotypami PRz oraz KIA. Otwórz i wydrukuj go oddzielnie lub zachowaj podział stron w dokumencie zbiorczym. Karta pomiarowa służy do odręcznego notowania, nie jest potwierdzeniem przyjęcia raportu przez Supabase.

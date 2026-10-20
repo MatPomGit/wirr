@@ -1,3 +1,4 @@
+
 # Wymyśl użyteczne 90 sekund XR
 
 Materiały pilotażowe do instrukcji 2.0.0-draft.2.
@@ -9,3 +10,10 @@ Scena: `Lab08_ExperienceStudio.unity`; źródło danych: **DESKTOP_SIM**. Polece
 Po pracy eksportuj dwa wyniki bloku. Zapis lokalny nie oznacza wysłania ani uzyskania oceny. Pełne podłączenie nowych checkpointów i odbiór na stanowiskach pozostają otwarte.
 
 Materiały kursu: https://github.com/KIA-students/wirr
+
+
+## Załączniki do laboratorium 08
+
+- [Załącznik 1. Papierowa karta pomiarowa (osobny plik Markdown)](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-08/karta-pomiarowa.md)
+
+Każdy załącznik zaczyna się od osobnej strony, zawiera logotypy PRz/KIA i nadaje się do samodzielnego wydruku. Zapis wyników na papierze nie jest potwierdzeniem odbioru przez Supabase.

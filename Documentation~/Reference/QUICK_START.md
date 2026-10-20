@@ -5,10 +5,10 @@
 
 
 
-1. Otwórz przygotowany projekt Unity 6000.6.5f1 i bieżący blok. Pracuj solo lub w parze. W scenach SIM_AR Lab03–04 po zakończeniu Play [przenieś zapisaną sesję do formularza](../WiRR2/SUPABASE-REPORT-BRIDGE.md). W Lab05–06 (blok 03) adapter automatycznego importu nie jest jeszcze dostępny: [przenieś rzeczywiste wyniki ręcznie do istniejącego formularza](../WiRR2/SUPABASE-REPORT-BRIDGE.md#laboratoria-05-i-06-przekazanie-wyników-bez-adaptera). Lokalny eksport dwóch wyników sam nie oddaje pracy.
+1. Otwórz przygotowany projekt Unity 6000.6.5f1 i bieżący blok. Pracuj solo lub w parze. We wszystkich scenach WiRR2 (Lab01–08) po zakończeniu Play [przenieś zapisaną sesję do formularza](../WiRR2/SUPABASE-REPORT-BRIDGE.md). Adapter rozpoznaje właściwy blok, dwa laboratoria i źródło danych. Lokalny eksport dwóch wyników sam nie oddaje pracy.
 2. Wpisz indeksy i grupę G1/G2 raz na blok.
-3. Wykonaj pierwsze laboratorium. Otwórz **WiRR > Raporty > Formularz raportu laboratoryjnego**, sprawdź numer labu i kompletność, kliknij **Zapisz raport lokalnie (bez logowania)**. Unity zapisze JSON i rozpocznie wysyłkę.
-4. W tym samym projekcie wykonaj drugie laboratorium i zapisz jego raport tym samym przyciskiem.
+3. Wykonaj pierwsze laboratorium i zakończ tryb Play. Wybierz **WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu**, wskaż plik sesji bloku i pierwsze laboratorium. Sprawdź dane w formularzu, jego kompletność i dopiero wtedy kliknij **Zapisz raport lokalnie (bez logowania)**. Import nie wysyła danych.
+4. W tym samym projekcie wykonaj drugie laboratorium. Po zakończeniu Play ponownie zaimportuj tę samą sesję, wybierając drugie laboratorium, sprawdź formularz i oddzielnie wyślij raport.
 5. Na koniec bloku sprawdź osobne potwierdzenie przyjęcia przez serwer dla obu laboratoriów. System automatycznie przekazuje zgłoszenia do **KIA-students/wirr**. Przy poprawnej wysyłce niczego nie pakuj ani nie wysyłaj e-mailem. W parze wystarczą dwa raporty z oboma indeksami.
 
 Sam zapis lokalny nie oznacza oddania. Potwierdzenie serwera oznacza przyjęcie do kolejki; automatyczne utworzenie zgłoszenia w repozytorium następuje osobno. Przyjęcie raportu nie oznacza zatwierdzenia oceny. Nie potrzebujesz Git, GitHub CLI ani własnego forka.

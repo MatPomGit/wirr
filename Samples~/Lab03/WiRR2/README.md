@@ -1,3 +1,4 @@
+
 # Kotwica to nie gwarancja stałości
 
 Materiały pilotażowe do instrukcji 2.0.0-draft.2.
@@ -10,4 +11,11 @@ Po pracy eksportuj dwa wyniki bloku. Zapis lokalny nie oznacza wysłania ani uzy
 
 Materiały kursu: https://github.com/KIA-students/wirr
 
-Szczegółowa instrukcja krok po kroku (język polski): [laboratorium 03](../../../Documentation~/WiRR2/LAB03-STUDENT-GUIDE.md).
+Szczegółowa instrukcja krok po kroku (język polski): [laboratorium 03](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-03/content.md).
+
+
+## Załączniki do laboratorium 03
+
+- [Załącznik 1. Papierowa karta pomiarowa (osobny plik Markdown)](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-03/karta-pomiarowa.md)
+
+Każdy załącznik zaczyna się od osobnej strony, zawiera logotypy PRz/KIA i nadaje się do samodzielnego wydruku. Zapis wyników na papierze nie jest potwierdzeniem odbioru przez Supabase.

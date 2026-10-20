@@ -40,6 +40,17 @@ class TestStudentMaterials(unittest.TestCase):
                 self.assertEqual(behaviour["labNumber"], lab)
                 self.assertEqual(len(documents), 4)
 
+    def test_unity_report_adapter_supports_all_four_blocks_without_new_transport(self):
+        adapter = (ROOT / "Editor/WiRR2/WiRRStudentReportBridge.cs").read_text(encoding="utf-8")
+        self.assertIn("BlockLabs(session.block)", adapter)
+        self.assertIn("session.block < 1 || session.block > 4", adapter)
+        self.assertIn("ExpectedMode(labNo)", adapter)
+        self.assertIn("labNumber == 6 ? \"ROS_REPLAY\" : \"DESKTOP_SIM\"", adapter)
+        self.assertIn("WiRRReportWindow.OpenForLab(labNo)", adapter)
+        self.assertNotIn("session.block != 2", adapter)
+        self.assertNotIn("t.deviceMode != \"SIM_AR\"", adapter)
+        self.assertNotIn("Deno.serve(", adapter)
+
     def test_reference_replay_is_finite_monotonic_and_named(self):
         rows = list(csv.DictReader(io.StringIO((ROOT / "Runtime/Resources/WiRR2/jointstate-replay.csv").read_text())))
         self.assertEqual(len(rows), 301)
