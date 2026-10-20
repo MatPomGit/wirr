@@ -8,6 +8,6 @@ Prowadzący przygotowuje projekt przez `WiRR → Nowe instrukcje → Przygotuj o
 
 Scena: `Lab06_DigitalTwin.unity`; źródło danych: **ROS_REPLAY**. Polecenia i progi są dostępne bez sieci w panelu sceny. Profil solo/para jest wspólny dla dwóch laboratoriów.
 
-Po pracy eksportuj dwa wyniki bloku. Zapis lokalny nie oznacza wysłania ani uzyskania oceny. Pełne podłączenie nowych checkpointów i odbiór na stanowiskach pozostają otwarte.
+Po pracy wyłącz `Play`, wybierz `WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu`, wskaż sesję bloku 03 i zaimportuj kolejno laboratoria 05 i 06. Zweryfikuj dwa potwierdzenia odbioru przez serwer. Lokalny eksport nie oznacza wysłania ani oceny. [Pełna instrukcja i karta do druku](../../../Documentation~/WiRR2/LAB06-STUDENT-GUIDE.md). Pełne podłączenie nowych checkpointów i odbiór na stanowiskach pozostają otwarte.
 
 Materiały kursu: https://github.com/KIA-students/wirr
