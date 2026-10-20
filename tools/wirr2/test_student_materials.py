@@ -40,6 +40,38 @@ class TestStudentMaterials(unittest.TestCase):
                 self.assertEqual(behaviour["labNumber"], lab)
                 self.assertEqual(len(documents), 4)
 
+    def test_lab03_to_06_guides_have_offline_logos_and_printable_report_annex(self):
+        base = ROOT / "Documentation~/WiRR2"
+        for logo in ("prz.png", "kia.png"):
+            payload = (base / "assets" / logo).read_bytes()
+            self.assertGreater(len(payload), 1000)
+            self.assertTrue(payload.startswith(b"\\x89PNG\\r\\n\\x1a\\n"))
+        for lab in range(3, 7):
+            with self.subTest(lab=lab):
+                number = f"{lab:02}"
+                guide = (base / f"LAB{number}-STUDENT-GUIDE.md").read_text(encoding="utf-8")
+                self.assertIn('src="assets/prz.png"', guide)
+                self.assertIn('src="assets/kia.png"', guide)
+                self.assertIn("## Załącznik 1. Karta raportu laboratoryjnego", guide)
+                self.assertIn(f"print/LAB{number}-KARTA-RAPORTU.html", guide)
+                html = (base / "print" / f"LAB{number}-KARTA-RAPORTU.html").read_text(encoding="utf-8")
+                self.assertIn("@page {size:A4 landscape;", html)
+                self.assertIn('src="../assets/prz.png"', html)
+                self.assertIn('src="../assets/kia.png"', html)
+                self.assertIn("<table>", html)
+                self.assertIn("Supabase", html)
+
+    def test_unity_report_adapter_supports_all_four_blocks_without_new_transport(self):
+        adapter = (ROOT / "Editor/WiRR2/WiRRStudentReportBridge.cs").read_text(encoding="utf-8")
+        self.assertIn("BlockLabs(session.block)", adapter)
+        self.assertIn("session.block < 1 || session.block > 4", adapter)
+        self.assertIn("ExpectedMode(labNo)", adapter)
+        self.assertIn("labNumber == 6 ? \"ROS_REPLAY\" : \"DESKTOP_SIM\"", adapter)
+        self.assertIn("WiRRReportWindow.OpenForLab(labNo)", adapter)
+        self.assertNotIn("session.block != 2", adapter)
+        self.assertNotIn("t.deviceMode != \"SIM_AR\"", adapter)
+        self.assertNotIn("Deno.serve(", adapter)
+
     def test_reference_replay_is_finite_monotonic_and_named(self):
         rows = list(csv.DictReader(io.StringIO((ROOT / "Runtime/Resources/WiRR2/jointstate-replay.csv").read_text())))
         self.assertEqual(len(rows), 301)
