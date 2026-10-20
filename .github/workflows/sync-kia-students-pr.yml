@@ -246,6 +246,15 @@ jobs:
             git rm -r -f --ignore-unmatch -- "${path}"
           done
 
+          # The source AGENTS.md can contain internal agent/autopilot guidance.
+          # Preserve the last known public copy instead of exporting those
+          # private instructions. The subsequent global leak scan stays active.
+          if git cat-file -e "upstream/${UPSTREAM_BRANCH}:AGENTS.md" 2>/dev/null; then
+            git checkout "upstream/${UPSTREAM_BRANCH}" -- AGENTS.md
+          else
+            git rm -f --ignore-unmatch -- AGENTS.md
+          fi
+
           for path in "${private_paths[@]}"; do
             if [ -e "${path}" ]; then
               echo "::error::Prywatny workflow pozostał w eksporcie: ${path}"
