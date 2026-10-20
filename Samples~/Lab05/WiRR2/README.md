@@ -1,7 +1,7 @@
 
 # Geometria kosztuje, ale otwór montażowy musi zostać
 
-Instrukcja dla studentów: [Laboratorium 05, krok po kroku](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-05/content.md). Eksport z tej sceny zapisuje lokalne dane. Adapter automatycznego importu do formularza dotyczy obecnie wyłącznie laboratoriów 03–04; wyniki laboratorium 05 przenieś ręcznie do `WiRR → Raporty → Formularz raportu laboratoryjnego` i wyślij osobny raport przyciskiem `Zapisz raport lokalnie (bez logowania)`. Dopiero potwierdzenie serwera oznacza przyjęcie.
+Instrukcja dla studentów: [Laboratorium 05, krok po kroku](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-05/content.md). Eksport z tej sceny zapisuje lokalne dane. Adapter w ramach PR #116 obsługuje bloki 01–04 (laboratoria 01–08), ale przed odbiorem w Unity należy zweryfikować import dla każdego bloku. Import nie wysyła raportu: po kontroli formularza użyj `Zapisz raport lokalnie (bez logowania)`. Dopiero potwierdzenie serwera oznacza przyjęcie.
 
 Materiały pilotażowe do instrukcji 2.0.0-draft.2.
 
