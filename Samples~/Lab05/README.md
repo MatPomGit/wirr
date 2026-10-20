@@ -1,8 +1,7 @@
-<p align="center"><img src="../../Documentation~/WiRR2/assets/prz.png" width="175" alt="Politechnika Rzeszowska"> &nbsp;&nbsp; <img src="../../Documentation~/WiRR2/assets/kia.png" width="175" alt="Katedra Informatyki i Automatyki PRz"></p>
 
 # Lab 05: Geometria kosztuje, ale otwór montażowy musi zostać
 
-**Instrukcja krok po kroku (90 minut):** [Laboratorium 05: geometria CAD, LOD i benchmark](../../Documentation~/WiRR2/LAB05-STUDENT-GUIDE.md). Przed rozpoczęciem znajdziesz w niej dokładną procedurę instalacji Unity, otwarcia sceny, kolejności prób i wysłania osobnego raportu przez formularz WiRR/Supabase. Poniższy plik jest skróconą kartą doświadczenia.
+**Instrukcja krok po kroku (90 minut):** [Laboratorium 05: geometria CAD, LOD i benchmark](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-05/content.md). Przed rozpoczęciem znajdziesz w niej dokładną procedurę instalacji Unity, otwarcia sceny, kolejności prób i wysłania osobnego raportu przez formularz WiRR/Supabase. Poniższy plik jest skróconą kartą doświadczenia.
 
 ## Spis treści
 
@@ -20,7 +19,7 @@
 
 **Pytanie:** Który najlżejszy model nadal spełnia funkcję części?
 
-Pełna [instrukcja studencka Lab 05 z logotypami PRz/KIA i Załącznikiem 1 do druku](../../Documentation~/WiRR2/LAB05-STUDENT-GUIDE.md). Wyniki z sesji bloku 03 przenieś do formularza przez `WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu`; sam eksport JSON nie wysyła pracy.
+Pełna [instrukcja studencka Lab 05 z logotypami PRz/KIA i Załącznikiem 1 do druku](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-05/content.md). Wyniki z sesji bloku 03 przenieś do formularza przez `WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu`; sam eksport JSON nie wysyła pracy.
 
 ## Co będziesz badać
 
@@ -101,6 +100,6 @@ Telefon i gogle nie są wymagane do żadnego progu. Nie zmieniaj komputera ani k
 
 ## Załączniki do druku
 
-[Załącznik 1. Karta pomiarowa (05), Markdown do wydruku](ZALACZNIK-1-KARTA-POMIAROWA.md)
+[Załącznik 1. Karta pomiarowa (05), Markdown do wydruku](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-05/karta-pomiarowa.md)
 
 Każdy załącznik jest **osobnym plikiem Markdown** z podziałem strony na początku i logotypami PRz oraz KIA. Otwórz i wydrukuj go oddzielnie lub zachowaj podział stron w dokumencie zbiorczym. Karta pomiarowa służy do odręcznego notowania, nie jest potwierdzeniem przyjęcia raportu przez Supabase.
