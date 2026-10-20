@@ -1,9 +1,3 @@
-<p align="center">
-  <img src="assets/prz.png" width="175" alt="Logotyp Politechniki Rzeszowskiej">
-  &nbsp;&nbsp;
-  <img src="assets/kia.png" width="175" alt="Logotyp Katedry Informatyki i Automatyki PRz">
-</p>
-
 # Raportowanie WiRR 2.0: wszystkie cztery bloki przez istniejący formularz Supabase
 
 Aktualizacja: 20.10.2026. Adapter Unity importuje wyniki **laboratoriów 01–08** z lokalnych sesji WiRR 2.0 do **istniejącego** formularza `wirr-report/1.0`. Nie wdraża nowego endpointu ani nie wysyła danych automatycznie. Potwierdzenie przyjęcia przez Supabase i późniejsze przekazanie zgłoszenia do GitHub są **osobnymi zdarzeniami**.
@@ -36,7 +30,7 @@ Zapis `ROS_REPLAY` nie jest dowodem pracy z robotem ani połączenia `ROS_LIVE`.
 
 Przy problemie z połączeniem zachowaj raport JSON i wybierz `Wyślij ponownie zapisany raport` po odzyskaniu sieci. Jeżeli nie ma potwierdzenia, skorzystaj z [procedury awaryjnej](../Reference/QUICK_START.md) i odpowiedniego szablonu `WiRR-blok-0N-raport-awaryjny.md`.
 
-Instrukcje [03](LAB03-STUDENT-GUIDE.md), [04](LAB04-STUDENT-GUIDE.md), [05](LAB05-STUDENT-GUIDE.md) i [06](LAB06-STUDENT-GUIDE.md) zawierają na końcu **Załącznik 1**, z pustą tabelą do notowania i odnośnikiem do niezależnego formularza HTML do wydrukowania na A4. Karta papierowa pomaga w pomiarach, lecz nie jest pokwitowaniem serwera.
+Kanoniczne instrukcje i załączniki (karty pomiarowe, ankieta i SSQ) są utrzymywane w [repozytorium dydaktycznym prz](https://github.com/MatPomGit/prz/tree/docs/wirr-unity-start-from-pr116-20261020/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories). W tym pakiecie pozostaje implementacja adaptera Unity i opis techniczny transportu. Karta papierowa nie jest pokwitowaniem serwera.
 
 ## Bezpieczeństwo i odbiór
 
