@@ -30,7 +30,7 @@ Zapis `ROS_REPLAY` nie jest dowodem pracy z robotem ani połączenia `ROS_LIVE`.
 
 Przy problemie z połączeniem zachowaj raport JSON i wybierz `Wyślij ponownie zapisany raport` po odzyskaniu sieci. Jeżeli nie ma potwierdzenia, skorzystaj z [procedury awaryjnej](../Reference/QUICK_START.md) i odpowiedniego szablonu `WiRR-blok-0N-raport-awaryjny.md`.
 
-Kanoniczne instrukcje i załączniki (karty pomiarowe, ankieta i SSQ) są utrzymywane w [repozytorium dydaktycznym prz](https://github.com/MatPomGit/prz/tree/docs/wirr-unity-start-from-pr116-20261020/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories). W tym pakiecie pozostaje implementacja adaptera Unity i opis techniczny transportu. Karta papierowa nie jest pokwitowaniem serwera.
+Kanoniczne instrukcje i załączniki (karty pomiarowe, ankieta i SSQ) są utrzymywane w [repozytorium dydaktycznym prz](https://github.com/MatPomGit/prz/tree/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories). W tym pakiecie pozostaje implementacja adaptera Unity i opis techniczny transportu. Karta papierowa nie jest pokwitowaniem serwera.
 
 ## Bezpieczeństwo i odbiór
 
