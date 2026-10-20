@@ -1,3 +1,5 @@
+<p align="center"><img src="../../Documentation~/WiRR2/assets/prz.png" width="175" alt="Politechnika Rzeszowska"> &nbsp;&nbsp; <img src="../../Documentation~/WiRR2/assets/kia.png" width="175" alt="Katedra Informatyki i Automatyki PRz"></p>
+
 # Lab 02: Chwycić, nie kliknąć: ergonomia manipulacji
 
 ## Spis treści
@@ -67,7 +69,7 @@ Technika ___ pomaga przy ___; koszt lub ograniczenie tej decyzji to ___.
 ## Oddanie całego bloku
 
 1. Blok 01: Lab 01 i Lab 02. Zachowaj dwa osobne wyniki: numer labu, indeksy, grupę G1/G2, tryb danych, próby i osiągnięty etap. Od 4.0 dopisz jeden krótki wniosek na laboratorium.
-2. Po każdym laboratorium otwórz WiRR > Raporty > Formularz raportu laboratoryjnego. Sprawdź numer labu i kompletność. Kliknij „Zapisz raport lokalnie (bez logowania)”. Unity zapisze JSON i rozpocznie wysyłkę. System automatycznie przekaże zgłoszenie do KIA-students/wirr. Nie zakładaj forka, nie używaj Git ani nie wysyłaj e-maila przy poprawnej wysyłce.
+2. Po każdym laboratorium zakończ Play i wybierz `WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu`. Wybierz zapisaną sesję właściwego bloku i bieżące laboratorium, a następnie otwórz `WiRR → Raporty → Formularz raportu laboratoryjnego`. Sprawdź numer labu i kompletność. Kliknij „Zapisz raport lokalnie (bez logowania)”. Unity zapisze JSON i rozpocznie wysyłkę. System automatycznie przekaże zgłoszenie do KIA-students/wirr. Nie zakładaj forka, nie używaj Git ani nie wysyłaj e-maila przy poprawnej wysyłce.
 3. Na końcu bloku sprawdź potwierdzenie przyjęcia przez serwer dla obu laboratoriów. Sam zapis lokalny nie oznacza oddania. Przyjęcie przez serwer oznacza oczekiwanie na automatyczne przekazanie do repozytorium, a nie zatwierdzoną ocenę. W parze wystarczą dwa wyniki ze wspólnego stanowiska z oboma indeksami.
 4. Brak potwierdzenia: zachowaj pliki i użyj „Wyślij ponownie zapisany raport”. Bez Internetu ponów po odzyskaniu połączenia. Jeśli nadal się nie udaje, zgłoś błąd prowadzącemu i awaryjnie wyślij lab01.json i lab02.json w ZIP WiRR-blok-01-G1-INDEKS.zip na m.pomianek@prz.edu.pl; temat: WiRR blok 01, grupa, indeksy. Wstaw własną grupę i indeksy; w parze wysyła jedna osoba.
 5. Tylko gdy nie działa także eksport JSON, uzupełnij WiRR-blok-01-raport-awaryjny.md dla obu laboratoriów i wyślij ten jeden plik zamiast ZIP na ten sam adres. Zachowaj kopię. Nie dołączaj projektu Unity, slajdów ani dodatkowego sprawozdania.
@@ -87,3 +89,16 @@ Telefon i gogle nie są wymagane do żadnego progu. Nie zmieniaj komputera ani k
 **Bez uogólnienia na HMD:** Sterowanie PC ilustruje technikę wejścia. Nie mierzy naturalnego chwytu ręki ani komfortu w goglach.
 
 [Szablon tylko przy awarii eksportu JSON](../../Documentation~/WiRR2/WiRR-blok-01-raport-awaryjny.md).
+
+
+---
+
+<div style="break-before: page; page-break-before: always;"></div>
+
+## Załączniki do druku
+
+[Załącznik 1. Karta pomiarowa (02), Markdown do wydruku](ZALACZNIK-1-KARTA-POMIAROWA.md)
+
+[Załącznik 2. Kwestionariusz SSQ, 16 objawów, pomiar przed/po](ZALACZNIK-2-SSQ.md)
+
+Każdy załącznik jest **osobnym plikiem Markdown** z podziałem strony na początku i logotypami PRz oraz KIA. Otwórz i wydrukuj go oddzielnie lub zachowaj podział stron w dokumencie zbiorczym. Karta pomiarowa służy do odręcznego notowania, nie jest potwierdzeniem przyjęcia raportu przez Supabase.
