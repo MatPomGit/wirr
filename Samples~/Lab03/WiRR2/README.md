@@ -1,3 +1,5 @@
+<p align="center"><img src="../../../Documentation~/WiRR2/assets/prz.png" width="160" alt="Politechnika Rzeszowska">&nbsp;&nbsp;<img src="../../../Documentation~/WiRR2/assets/kia.png" width="160" alt="Katedra Informatyki i Automatyki PRz"></p>
+
 # Kotwica to nie gwarancja stałości
 
 Materiały pilotażowe do instrukcji 2.0.0-draft.2.
@@ -11,3 +13,10 @@ Po pracy eksportuj dwa wyniki bloku. Zapis lokalny nie oznacza wysłania ani uzy
 Materiały kursu: https://github.com/KIA-students/wirr
 
 Szczegółowa instrukcja krok po kroku (język polski): [laboratorium 03](../../../Documentation~/WiRR2/LAB03-STUDENT-GUIDE.md).
+
+
+## Załączniki do laboratorium 03
+
+- [Załącznik 1. Papierowa karta pomiarowa (osobny plik Markdown)](../ZALACZNIK-1-KARTA-POMIAROWA.md)
+
+Każdy załącznik zaczyna się od osobnej strony, zawiera logotypy PRz/KIA i nadaje się do samodzielnego wydruku. Zapis wyników na papierze nie jest potwierdzeniem odbioru przez Supabase.
