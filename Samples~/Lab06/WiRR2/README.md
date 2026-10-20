@@ -1,7 +1,7 @@
 
 # Bliźniak cyfrowy powinien wiedzieć, kiedy nie wie
 
-Instrukcja dla studentów: [Laboratorium 06, krok po kroku](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-06/content.md). Eksport bloku jest lokalny; adapter automatycznego importu obejmuje aktualnie tylko laboratoria 03–04. Wyniki 06 wpisz ręcznie do `WiRR → Raporty → Formularz raportu laboratoryjnego`, zaznacz źródło `ROS_REPLAY` i nie wpisuj fikcyjnego RTT. Raport wysyła `Zapisz raport lokalnie (bez logowania)`, a dopiero potwierdzenie serwera oznacza jego przyjęcie.
+Instrukcja dla studentów: [Laboratorium 06, krok po kroku](https://github.com/MatPomGit/prz/blob/main/courses/wirtualna-i-rozszerzona-rzeczywistosc/laboratories/lab-06/content.md). Eksport bloku jest lokalny; adapter importu w PR #116 obejmuje laboratoria 01–08. Po zakończeniu Play użyj `WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu`, wybierz laboratorium 06 i zweryfikuj tryb `ROS_REPLAY`; nie wpisuj fikcyjnego RTT. Raport wysyła `Zapisz raport lokalnie (bez logowania)`, a dopiero potwierdzenie serwera oznacza jego przyjęcie.
 
 Materiały pilotażowe do instrukcji 2.0.0-draft.2.
 
