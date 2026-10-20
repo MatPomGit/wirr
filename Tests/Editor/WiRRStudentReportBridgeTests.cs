@@ -62,6 +62,37 @@ namespace KIA.WiRR.Editor.Tests
             Assert.Throws<ArgumentOutOfRangeException>(() => Invoke("ExpectedMode", lab));
         }
 
+        [TestCase(3, 3, "DESKTOP_SIM")]
+        [TestCase(3, 4, "ROS_REPLAY")]
+        [TestCase(3, 5, "DESKTOP_SIM")]
+        [TestCase(2, 3, "SIM_AR")]
+        public void ImportRejectsMissingOrMismatchedLabsWithoutCreatingResults(int block, int lab, string mode)
+        {
+            var session = new WiRRStudentSession { block = block };
+            if (lab == 3 && block == 2)
+                session.labs.Add(new WiRRStudentLabResult { labNumber = 3,
+                    trials = new List<WiRRStudentTrial> { new WiRRStudentTrial { deviceMode = mode } } });
+            else if (lab == 3 && block == 3)
+                session.labs.Add(new WiRRStudentLabResult { labNumber = 3,
+                    trials = new List<WiRRStudentTrial> { new WiRRStudentTrial { deviceMode = mode } } });
+            else if (lab == 4)
+                session.labs.Add(new WiRRStudentLabResult { labNumber = 4,
+                    trials = new List<WiRRStudentTrial> { new WiRRStudentTrial { deviceMode = mode } } });
+            Assert.Throws<ArgumentException>(() => Invoke("ValidateLabForImport", session, lab));
+            Assert.AreEqual(lab == 5 ? 0 : 1, session.labs.Count);
+        }
+
+        [Test]
+        public void ValidReplayLabCanBeSelectedWithoutDraftMutation()
+        {
+            var session = new WiRRStudentSession { block = 3 };
+            session.labs.Add(new WiRRStudentLabResult { labNumber = 6,
+                trials = new List<WiRRStudentTrial> { new WiRRStudentTrial {
+                    deviceMode = "ROS_REPLAY" } } });
+            Assert.DoesNotThrow(() => Invoke("ValidateLabForImport", session, 6));
+            Assert.AreEqual(1, session.labs.Count);
+        }
+
         [Test]
         public void ForeignDraftWithoutTeamIdIsRejectedWithoutRelabelling()
         {
