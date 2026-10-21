@@ -23,3 +23,7 @@
 **MatPomGit/wirr** jest repozytorium **rozwojowym**: Unity, UPM, Samples, implementacja, testy, walidatory i poprawki trafiają tutaj przez issue i PR. **KIA-students/wirr** jest repozytorium **produkcyjnym dla studentów**: publikuj tam wyłącznie zatwierdzone, sprawdzone wydania i materiały, nigdy automatycznie roboczego HEAD. **MatPomGit/prz** odpowiada za program, instrukcje dydaktyczne, wykłady, rubryki i chronione dane prowadzącego. **MatPomGit/research-autopilot** odpowiada za orkiestrację, audyty, runner dispatch i ewidencję dowodów, nie za implementację Unity, materiały czy ocenianie.
 
 Przed promocją development → produkcja odnotuj SHA źródła, wyniki testów Unity/CI i w razie potrzeby testów sprzętowych, przegląd zawartości i zatwierdzenie wydania. Zmiany instrukcji w `prz` wymagające modyfikacji Unity realizuj jako zależne issue/PR w tym repo. Nie publikuj raportów indywidualnych, ocen, SSQ, kluczy odpowiedzi ani sekretów. Nie zastępuj realnych testów statycznym audytem. Automatyczne zadania uruchamiaj wyłącznie na zweryfikowanym self-hosted, GitHub-hosted tylko ręcznie zgodnie z polityką kosztów.
+
+## Oddawanie i walidacja WiRR
+
+Zasady dla wszystkich agentów: [STUDENT_WORKS.md](STUDENT_WORKS.md). `KIA-students/wirr` jest produkcją; `MatPomGit/wirr` nie jest adresem podawanym studentom. Nie umieszczaj pełnej ewidencji w repo publicznym.
