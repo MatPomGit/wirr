@@ -1,10 +1,5 @@
 # WiRR: rozpoczęcie i oddanie pracy
 
-## Spis treści
-
-
-
-
 1. Otwórz przygotowany projekt Unity 6000.6.5f1 i bieżący blok. Pracuj solo lub w parze. We wszystkich scenach WiRR2 (Lab01–08) po zakończeniu Play [przenieś zapisaną sesję do formularza](../WiRR2/SUPABASE-REPORT-BRIDGE.md). Adapter rozpoznaje właściwy blok, dwa laboratoria i źródło danych. Lokalny eksport dwóch wyników sam nie oddaje pracy.
 2. Wpisz indeksy i grupę G1/G2 raz na blok.
 3. Wykonaj pierwsze laboratorium i zakończ tryb Play. Wybierz **WiRR → Nowe instrukcje → Przenieś wyniki do formularza raportu**, wskaż plik sesji bloku i pierwsze laboratorium. Sprawdź dane w formularzu, jego kompletność i dopiero wtedy kliknij **Zapisz raport lokalnie (bez logowania)**. Import nie wysyła danych.
@@ -20,3 +15,5 @@ Sam zapis lokalny nie oznacza oddania. Potwierdzenie serwera oznacza przyjęcie 
 [Wybierz jeden z czterech bloków](../Campaign/README.md)
 
 WiRR 2.0 pozostaje wersją redakcyjną do odbioru scen, pomiarów i pełnego przepływu raportów.
+
+**Repozytorium produkcyjne:** [KIA-students/wirr](https://github.com/KIA-students/wirr). Docelowy katalog po migracji to `students-works/`; aktualne zgłoszenia przechodzą jeszcze przez `student-work/`. Nie wysyłaj pracy do `MatPomGit/wirr`. W przypadku e-maila prowadzący wprowadza zweryfikowany raport do tej samej kolejki, bez danych korespondencyjnych.
