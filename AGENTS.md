@@ -17,3 +17,9 @@
 - Autopilot może weryfikować schematy, pomiary i CI oraz przygotowywać PR. Zatwierdzanie ocen, punktacji i rozstrzyganie podejrzeń wymaga decyzji prowadzącego.
 - Do odbioru scen wymagaj rzeczywistego wyniku Unity 6000.6.5f1. Kontrola statyczna nie jest równoważna uruchomieniu Edytora.
 - Kontrakt nadrzędny procesu: `MatPomGit/research-autopilot/docs/integrations/WIRR_AUTOPILOT.md`.
+
+## Role repozytoriów WiRR (obowiązkowe)
+
+**MatPomGit/wirr** jest repozytorium **rozwojowym**: Unity, UPM, Samples, implementacja, testy, walidatory i poprawki trafiają tutaj przez issue i PR. **KIA-students/wirr** jest repozytorium **produkcyjnym dla studentów**: publikuj tam wyłącznie zatwierdzone, sprawdzone wydania i materiały, nigdy automatycznie roboczego HEAD. **MatPomGit/prz** odpowiada za program, instrukcje dydaktyczne, wykłady, rubryki i chronione dane prowadzącego. **MatPomGit/research-autopilot** odpowiada za orkiestrację, audyty, runner dispatch i ewidencję dowodów, nie za implementację Unity, materiały czy ocenianie.
+
+Przed promocją development → produkcja odnotuj SHA źródła, wyniki testów Unity/CI i w razie potrzeby testów sprzętowych, przegląd zawartości i zatwierdzenie wydania. Zmiany instrukcji w `prz` wymagające modyfikacji Unity realizuj jako zależne issue/PR w tym repo. Nie publikuj raportów indywidualnych, ocen, SSQ, kluczy odpowiedzi ani sekretów. Nie zastępuj realnych testów statycznym audytem. Automatyczne zadania uruchamiaj wyłącznie na zweryfikowanym self-hosted, GitHub-hosted tylko ręcznie zgodnie z polityką kosztów.
