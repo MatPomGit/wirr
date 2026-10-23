@@ -22,7 +22,7 @@ jobs:
   sync-pr:
     if: ${{ (github.repository == 'MatPomGit/wirr') && github.ref == 'refs/heads/main' }}
     name: Przygotuj bezpieczny eksport i Pull Request
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, ARM64]
     timeout-minutes: 10
 
     steps:
@@ -203,6 +203,10 @@ jobs:
             "wirr-modified-files.txt"
             "scripts~/test_wirr_report_exporter.py"
             "tools/wirr2/test_sync_export_guard.py"
+            "tools/wirr2"
+            "tests/test_windows_unity_harness_policy.py"
+            "tests/test_upm_distribution_policy.py"
+            ".github/workflows/unity-windows-cli.yml"
             "tools/unity-ci/run-homeserver-offline.sh"
             "tools/unity-ci/stress-report-exporter.py"
             "tools/unity-ci"

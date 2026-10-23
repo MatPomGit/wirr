@@ -40,6 +40,10 @@ class ExportGuardRegressionTests(unittest.TestCase):
             "scripts~/test_wirr_report_exporter.py",
             ".github/workflows/sync-kia-students-pr.yml",
             ".github/workflows/unity-docker-manual.yml",
+            "tools/wirr2",
+            "tests/test_windows_unity_harness_policy.py",
+            "tests/test_upm_distribution_policy.py",
+            ".github/workflows/unity-windows-cli.yml",
         ):
             self.assertIn(f'"{internal_path}"', workflow)
         self.assertIn('git rm -r -f --ignore-unmatch -- "${path}"', workflow)
