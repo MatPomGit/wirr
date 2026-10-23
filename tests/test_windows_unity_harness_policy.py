@@ -2,7 +2,6 @@
 
 These do not substitute for running Unity EditMode/PlayMode tests on Andromeda.
 """
-import re
 import unittest
 from pathlib import Path
 
@@ -35,6 +34,7 @@ class UnityWindowsRunnerPolicyTests(unittest.TestCase):
         self.assertIn("WaitForExit($TimeoutMinutes * 60000)", self.script)
         self.assertIn('Remove-Item -LiteralPath $xml,$log', self.script)
         self.assertIn("if (-not $passed)", self.script)
+        self.assertIn("if ($dirty)", self.script)
 
     def test_workflow_uses_correct_artifact_root_and_manual_trigger(self):
         self.assertIn('artifacts\\unity-native', self.script)
