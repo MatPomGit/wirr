@@ -46,8 +46,23 @@ def find_report_pr(name):
 def acknowledge_report(submission_id, path, sha, pr):
     receipt = {"status":"reviewed", "github_path":path, "github_commit_sha":sha,
                "github_pr_url":pr["html_url"], "last_error":None}
-    request("PATCH", BASE + "/rest/v1/wirr_public_intake?submission_id=eq." + submission_id,
-            {**auth_supabase(), "Prefer":"return=minimal"}, receipt)
+    # A successful HTTP status is not proof that a row was updated. Constrain
+    # the write to pending submissions and require the exact returned receipt.
+    params = urllib.parse.urlencode({
+        "submission_id": "eq." + submission_id,
+        "status": "eq.pending",
+        "select": "submission_id,status,github_path,github_commit_sha,github_pr_url",
+    })
+    rows = request("PATCH", BASE + "/rest/v1/wirr_public_intake?" + params,
+                   {**auth_supabase(), "Prefer":"return=representation"}, receipt)
+    if not isinstance(rows, list) or len(rows) != 1:
+        raise RuntimeError("Supabase did not confirm exactly one pending report update")
+    expected = {"submission_id": submission_id, **{
+        key: receipt[key] for key in
+        ("status", "github_path", "github_commit_sha", "github_pr_url")
+    }}
+    if not isinstance(rows[0], dict) or any(rows[0].get(key) != value for key, value in expected.items()):
+        raise RuntimeError("Supabase receipt does not match the confirmed GitHub report")
     print(f"GitHub PR confirmed: {pr['html_url']}")
 
 def export_report(row):

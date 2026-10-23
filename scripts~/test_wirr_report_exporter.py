@@ -37,6 +37,8 @@ class Services:
         self.pr = None
         self.receipt = None
         self.fail_ack = False
+        self.drop_ack_update = False
+        self.mismatch_ack_reply = False
         self.fail_pr = False
         self.lose_pr_response = False
         self.wrong_pr_head = False
@@ -51,12 +53,22 @@ class Services:
             if method == 'GET':
                 return [copy.deepcopy(self.row)] if self.row['status'] == 'pending' else []
             if method == 'PATCH':
+                query = parse_qs(urlsplit(url).query)
+                if query.get('status') != ['eq.pending']:
+                    raise AssertionError('Receipt must be conditional on pending status')
+                if query.get('submission_id') != ['eq.' + self.row['submission_id']]:
+                    raise AssertionError('Receipt submission ID filter mismatch')
                 if self.fail_ack:
                     self.fail_ack = False
                     raise HTTPError(url, 503, 'acknowledgement unavailable', {}, None)
+                if self.drop_ack_update or self.row['status'] != 'pending':
+                    return []
                 self.receipt = copy.deepcopy(data)
                 self.row.update(data)
-                return {}
+                reply = copy.deepcopy(self.row)
+                if self.mismatch_ack_reply:
+                    reply['github_commit_sha'] = 'mismatched-sha'
+                return [reply]
         if url.endswith('/git/ref/heads/main'):
             return {'object': {'sha': 'base-commit'}}
         if url.endswith('/git/refs') and method == 'POST':
@@ -122,6 +134,25 @@ class TestWiRRReportExporter(unittest.TestCase):
         self.assertEqual(services.receipt['status'], 'reviewed')
         self.assertEqual(json.loads(services.blob)['observation'], 'Syntetyczna obserwacja: ąęł')
         self.assertEqual(services.count('PUT', '/contents/'), 1)
+
+    def test_zero_updated_rows_do_not_confirm_queue_receipt(self):
+        services = Services()
+        services.drop_ack_update = True
+        self.assertEqual(self.run_export(services), 1)
+        self.assertIsNone(services.receipt)
+        self.assertEqual(services.row['status'], 'pending')
+        self.assertEqual(services.count('PUT', '/contents/'), 1)
+        services.drop_ack_update = False
+        self.assertEqual(self.run_export(services), 0)
+        self.assertEqual(services.count('PUT', '/contents/'), 1)
+        self.assertEqual(services.count('POST', '/pulls'), 1)
+
+    def test_wrong_ack_response_does_not_return_success(self):
+        services = Services()
+        services.mismatch_ack_reply = True
+        self.assertEqual(self.run_export(services), 1)
+        self.assertIsNotNone(services.receipt)
+        self.assertNotEqual(services.receipt['github_commit_sha'], 'mismatched-sha')
 
     def test_lost_ack_retry_reuses_file_commit_and_pr(self):
         services = Services()
