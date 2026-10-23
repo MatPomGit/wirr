@@ -1,0 +1,56 @@
+name: WiRR HomeServer runner preflight (manual)
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    if: ${{ github.repository == 'MatPomGit/wirr' && github.ref == 'refs/heads/main' }}
+    runs-on: [self-hosted, Linux, ARM64]
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify checkout and runner tools (no credentials required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${RUNNER_TEMP}/wirr-preflight"
+          report="${RUNNER_TEMP}/wirr-preflight/summary.txt"
+          {
+            printf 'repository=%s\n' "${GITHUB_REPOSITORY}"
+            printf 'ref=%s\n' "${GITHUB_REF}"
+            printf 'sha=%s\n' "${GITHUB_SHA}"
+            printf 'runner_os=%s\n' "${RUNNER_OS}"
+            printf 'runner_arch=%s\n' "${RUNNER_ARCH}"
+          } > "${report}"
+          test "${GITHUB_REPOSITORY}" = 'MatPomGit/wirr'
+          test "${GITHUB_REF}" = 'refs/heads/main'
+          test "${RUNNER_OS}" = 'Linux'
+          test "${RUNNER_ARCH}" = 'ARM64'
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          for executable in git python3 gh bash; do
+            command -v "${executable}" >/dev/null || {
+              printf 'missing_tool=%s\n' "${executable}" >> "${report}"
+              exit 1
+            }
+          done
+          {
+            git --version
+            python3 --version
+            gh --version | head -n 1
+            printf 'result=PASS\n'
+          } >> "${report}"
+          cat "${report}"
+          cat "${report}" >> "${GITHUB_STEP_SUMMARY}"
+      - name: Archive non-sensitive preflight evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wirr-selfhosted-preflight-${{ github.run_number }}
+          path: ${{ runner.temp }}/wirr-preflight/summary.txt
+          if-no-files-found: warn
+          retention-days: 7
