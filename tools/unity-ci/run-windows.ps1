@@ -44,6 +44,7 @@ try {
   $commit = (& git -C $PackageRoot rev-parse HEAD 2>$null | Out-String).Trim()
   $passedAll = $false
   $dirty = [bool]((& git -C $PackageRoot status --porcelain | Out-String).Trim())
+  if ($dirty) { throw "Refusing Unity acceptance on dirty package working tree: $PackageRoot" }
   Write-Host "Project for diagnostics: $project"
   foreach ($mode in @("EditMode","PlayMode")) {
     $xml = Join-Path $results "$mode.xml"
