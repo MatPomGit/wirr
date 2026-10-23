@@ -1,17 +1,8 @@
 name: Publish WiRR lightweight UPM and optional assets
+# Manual release gate. Updating development main must never overwrite
+# student UPM/assets branches without a reviewed native Unity acceptance.
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/publish_upm_channels.py'
-      - 'Runtime/**'
-      - 'Editor/**'
-      - 'Samples~/**'
-      - 'package.json'
-      - 'Editor/WiRRHdriTools.cs'
-      - '.github/workflows/publish-student-upm.yml'
-      - 'Documentation~/Reference/LIGHTWEIGHT_UPM.md'
 
 permissions:
   contents: read
@@ -21,7 +12,7 @@ concurrency:
 jobs:
   publish:
     if: ${{ github.ref == 'refs/heads/main' }}
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, ARM64]
     environment: student-package-publishing
     steps:
       - uses: actions/checkout@v4
