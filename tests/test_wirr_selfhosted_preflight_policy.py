@@ -35,7 +35,7 @@ class HomeServerPreflightPolicyTests(unittest.TestCase):
 
     def test_private_workflow_never_reaches_students(self):
         src = EXPORT.read_text(encoding="utf-8")
-        self.assertIn('" .github/workflows/wirr-selfhosted-preflight.yml"'.strip(), src)
+        self.assertIn('".github/workflows/wirr-selfhosted-preflight.yml"', src)
         self.assertIn('"tests/test_wirr_selfhosted_preflight_policy.py"', src)
         self.assertIn('"docs/operations"', src)
         self.assertIn('git checkout "upstream/${UPSTREAM_BRANCH}" -- student-work', src)
