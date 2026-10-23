@@ -12,9 +12,26 @@ def included(path, channel):
     if any(part in {".git", "Library", "Temp", "Logs", "Build", "Builds", "artifacts", "__pycache__", ".pytest_cache"} for part in parts):
         return False
     if channel == "upm":
-        return not (parts[0] in {".github", "Project~", "competition", "scripts", "tests"} or
-                    (len(parts) > 1 and parts[0] == "Textures" and
-                     parts[1] in {"HDRI", "Surfaces"}))
+        # Strict allowlist: host-side tooling, CI, grading and agent policy
+        # must never enter a student-facing UPM snapshot.
+        package_folders = {
+            "Editor", "Runtime", "Tests", "Samples~", "Documentation~",
+            "WebSim~", "scripts~",
+        }
+        root_files = {
+            "package.json", "package.json.meta",
+            "README.md", "README.md.meta", "CHANGELOG.md", "CHANGELOG.md.meta",
+            "LICENSE", "LICENSE.meta", "THIRD_PARTY_TEXTURES.md",
+            ".icon.png", ".icon.png.meta", "icon.png", "icon.png.meta",
+            "icon.ico", "icon.ico.meta",
+            "RoboAnimation.unitypackage", "RoboAnimation.unitypackage.meta",
+            "Editor.meta", "Runtime.meta", "Tests.meta", "Textures.meta",
+        }
+        if parts[0] == "Textures":
+            return len(parts) > 1 and parts[1] in {"Grid", "Grid.meta"}
+        if len(parts) == 1:
+            return parts[0] in root_files
+        return parts[0] in package_folders
     return len(parts) > 1 and parts[0] == "Textures" and parts[1] in {"HDRI", "Surfaces"}
 
 def build(channel, dest):
