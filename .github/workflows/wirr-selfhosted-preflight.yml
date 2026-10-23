@@ -41,7 +41,7 @@ jobs:
           {
             git --version
             python3 --version
-            gh --version | head -n 1
+            gh --version | sed -n '1p'
             printf 'result=PASS\n'
           } >> "${report}"
           cat "${report}"
