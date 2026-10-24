@@ -69,6 +69,18 @@ class Lecture04SampleTests(unittest.TestCase):
                 if not usable:
                     self.assertFalse(usable or False)
 
+
+    def test_imu_drift_model_and_visualization_are_explicit(self):
+        source = SCRIPT.read_text(encoding="utf-8")
+        self.assertIn("private void DrawImu()", source)
+        self.assertIn("private void BuildImuVisualization()", source)
+        self.assertIn("imuPanel.SetActive(mode == 3)", source)
+        self.assertIn("gyroBiasDegPerSec * imuTimeSeconds", source)
+        self.assertIn("0.5f * accelBiasMps2 * imuTimeSeconds * imuTimeSeconds", source)
+        self.assertIn("Mathf.Clamp(posErrorM, 0f, 1.2f)", source)
+        self.assertTrue(math.isclose(0.1 * 30, 3.0))
+        self.assertTrue(math.isclose(0.5 * 0.01 * 10 * 10, 0.5))
+
     def test_standalone_source_is_structurally_balanced(self):
         source = SCRIPT.read_text(encoding="utf-8")
         # Basic fast guard; actual C# compilation/PlayMode must run in Unity.
