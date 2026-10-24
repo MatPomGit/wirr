@@ -60,8 +60,8 @@
       "path": "Samples~/VITURE XR"
     },
     {
-      "displayName": "Wykład 04: Śledzenie, stereo i okluzja",
-      "description": "Opcjonalny, nieoceniany demonstrator desktop Unity: bramka poprawności kotwicy, dysparycja stereo i okluzja. Trzy tryby, wartości syntetyczne; bez sprzętu XR.",
+      "displayName": "Wykład 04: Tracking, IMU, stereo i okluzja",
+      "description": "Opcjonalny, nieoceniany demonstrator Unity: dryft IMU, bramka poprawności kotwicy, dysparycja stereo i okluzja. Cztery tryby, wartości syntetyczne; bez sprzętu XR.",
       "path": "Samples~/Lecture04"
     }
   ],
