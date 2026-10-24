@@ -36,6 +36,10 @@ Suwaki sterują stałym **biasem żyroskopu** (0–0,5°/s), **biasem akcelerome
 
 Ruch czerwonej bryły jest **obcięty do 1,2 m tylko na potrzeby wizualizacji**, a wynik liczbowy nie. Nie modelujemy dryftu losowego, grawitacji, synchronizacji kamery ani algorytmu VIO. Pokaz przedstawia wynik rachunkowy, nie rzeczywiste dane z IMU.
 
+## Widoczność kontrolek
+
+Panel okluzji ma osobną wysokość 765 jednostek UI, a główna ramka 1010 jednostek przy referencyjnym widoku Game 1920×1080. Dzięki temu dolne przyciski nie powinny być obcinane przy rozdzielczości referencyjnej. Układ wymaga nadal sprawdzenia w Play Mode, zwłaszcza przy innych proporcjach ekranu.
+
 ## Ograniczenia i kontrola wydania
 
 - Przykład jest tylko do prowadzenia wykładu. Nie zapisuje raportów studentów i nie przydziela ocen.
