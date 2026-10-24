@@ -28,7 +28,7 @@ class Lecture04SampleTests(unittest.TestCase):
         self.assertIn("using UnityEngine.UI;", source)
         self.assertNotIn("OnGUI()", source)
         self.assertNotIn("GUILayout", source)
-        self.assertNotIn("Input.GetKey", source.replace("Input.GetKey i płatnych usług", ""))
+        self.assertNotIn("Input.GetKey", source)
         self.assertNotIn("UnityEditor", source)
         self.assertNotIn("HttpClient", source)
         self.assertNotIn("UnityWebRequest", source)
