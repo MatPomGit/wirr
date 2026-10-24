@@ -601,9 +601,9 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         imuStatus.text =
             "Czas: " + imuTimeSeconds.ToString("F1") + " s" +
             " | b_gyro: " + gyroBiasDegPerSec.ToString("F3") + " °/s" +
-            "\\nBłąd kąta: " + angleErrorDeg.ToString("F2") + " °" +
+            "\nBłąd kąta: " + angleErrorDeg.ToString("F2") + " °" +
             " | b_accel: " + accelBiasMps2.ToString("F3") + " m/s²" +
-            "\\nBłąd pozycji: " + posErrorM.ToString("F2") + " m";
+            "\nBłąd pozycji: " + posErrorM.ToString("F2") + " m";
     }
 
     private void DrawOcclusion()
