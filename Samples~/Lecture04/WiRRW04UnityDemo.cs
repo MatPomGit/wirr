@@ -1,6 +1,6 @@
 // WiRR W04: deterministyczny demonstrator dydaktyczny, NIE odczyt AR/IMU.
 // Unity 6000.6.5f1: dodaj do pustego GameObject w nowej scenie i uruchom Play.
-// Bez AR Foundation, urządzeń, Input.GetKey i płatnych usług.
+// Bez AR Foundation, urządzeń, starego Input Managera i płatnych usług.
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
