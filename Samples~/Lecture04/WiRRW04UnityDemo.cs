@@ -373,7 +373,8 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         frameRect.anchorMax = new Vector2(0f, 1f);
         frameRect.pivot = new Vector2(0f, 1f);
         frameRect.anchoredPosition = new Vector2(22f, -22f);
-        frameRect.sizeDelta = new Vector2(690f, 920f);
+        // 1080p: cala zawartosc najdluzszego panelu musi zmiescic sie w ramce.
+        frameRect.sizeDelta = new Vector2(690f, 1010f);
         frame.GetComponent<Image>().color = new Color(0.06f, 0.10f, 0.17f, 0.96f);
         var stack = frame.GetComponent<VerticalLayoutGroup>();
         stack.padding = new RectOffset(16, 16, 16, 16);
@@ -497,8 +498,9 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         layout.childControlHeight = false;
         layout.childForceExpandHeight = false;
         layout.childAlignment = TextAnchor.UpperLeft;
-        // Cała sekcja zajmuje przewidywalne miejsce w panelu.
-        section.GetComponent<LayoutElement>().preferredHeight = 690f;
+        // Okluzja ma wiecej kontrolek niz pozostale tryby: nie ucinaj dolnych przyciskow.
+        section.GetComponent<LayoutElement>().preferredHeight =
+            name == "Okluzja" ? 765f : 690f;
         return section;
     }
 
