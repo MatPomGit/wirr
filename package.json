@@ -58,6 +58,11 @@
       "displayName": "VITURE XR: Full SBS i Immersive 3D",
       "description": "Trzy gotowe sceny Unity dla VITURE XR: warstwy głębi Full SBS, komfort stereo oraz źródło 2D do porównania z Immersive 3D 2D-to-3D. Sample zawiera też instrukcję 3840×1080 i generator kompatybilnych scen.",
       "path": "Samples~/VITURE XR"
+    },
+    {
+      "displayName": "Wykład 04: Śledzenie, stereo i okluzja",
+      "description": "Opcjonalny, nieoceniany demonstrator desktop Unity: bramka poprawności kotwicy, dysparycja stereo i okluzja. Trzy tryby, wartości syntetyczne; bez sprzętu XR.",
+      "path": "Samples~/Lecture04"
     }
   ],
   "keywords": [
