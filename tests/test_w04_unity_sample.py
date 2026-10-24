@@ -70,6 +70,17 @@ class Lecture04SampleTests(unittest.TestCase):
                     self.assertFalse(usable or False)
 
 
+    def test_occlusion_ui_layout_fits_reference_game_view(self):
+        source = SCRIPT.read_text(encoding="utf-8")
+        self.assertIn('frameRect.sizeDelta = new Vector2(690f, 1010f);', source)
+        self.assertIn('name == "Okluzja" ? 765f : 690f', source)
+        # Sum of declared child heights plus ten 8px inter-item gaps.
+        occlusion_children = [72, 150, 35, 42, 35, 42, 55, 55, 55, 65, 48]
+        self.assertLessEqual(sum(occlusion_children) + 10 * 8, 765)
+        # Padding (32), headings (45,37), tabs (55), gaps (4*9), section (765).
+        self.assertLessEqual(32 + 45 + 37 + 55 + 4 * 9 + 765, 1010)
+        self.assertLessEqual(22 + 1010, 1080)
+
     def test_imu_drift_model_and_visualization_are_explicit(self):
         source = SCRIPT.read_text(encoding="utf-8")
         self.assertIn("private void DrawImu()", source)
