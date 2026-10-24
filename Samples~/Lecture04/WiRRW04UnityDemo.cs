@@ -179,16 +179,16 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         float half = 0.49f;
         float thickness = 0.045f;
         Color outlineColor = new Color(0.85f, 0.90f, 0.95f);
-        Cube("Krawędź górna", new Vector3(0f, 1.3f + half, zReal),
+        Cube("Krawędź górna", new Vector3(0f, 1.3f + half, 0f),
             new Vector3(2f * half, thickness, thickness), outlineColor)
             .transform.SetParent(physicalSurfaceOutline.transform, true);
-        Cube("Krawędź dolna", new Vector3(0f, 1.3f - half, zReal),
+        Cube("Krawędź dolna", new Vector3(0f, 1.3f - half, 0f),
             new Vector3(2f * half, thickness, thickness), outlineColor)
             .transform.SetParent(physicalSurfaceOutline.transform, true);
-        Cube("Krawędź lewa", new Vector3(-half, 1.3f, zReal),
+        Cube("Krawędź lewa", new Vector3(-half, 1.3f, 0f),
             new Vector3(thickness, 2f * half, thickness), outlineColor)
             .transform.SetParent(physicalSurfaceOutline.transform, true);
-        Cube("Krawędź prawa", new Vector3(half, 1.3f, zReal),
+        Cube("Krawędź prawa", new Vector3(half, 1.3f, 0f),
             new Vector3(thickness, 2f * half, thickness), outlineColor)
             .transform.SetParent(physicalSurfaceOutline.transform, true);
         physicalSurfaceOutline.SetActive(false);
@@ -222,13 +222,9 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         realDepthProxy.SetActive(depthMode && depthUsable);
         virtualObject.SetActive(depthMode && (depthUsable || showUnsafeFailure));
         physicalSurfaceOutline.SetActive(depthMode);
-        // Korekta wspólnej pozy sceny, ale NIE sztuczne uzupełnienie próbki depth.
-        // Kontur pokazuje fizyczną przeszkodę mimo braku rekonstrukcji głębi.
-        foreach (Transform edge in physicalSurfaceOutline.transform)
-        {
-            Vector3 p = edge.position;
-            edge.position = new Vector3(p.x, p.y, zReal);
-        }
+        // Kontur niezależnej referencji przesuwamy razem z przeszkodą.
+        // Nie zastępuje on brakujących danych z czujnika głębi.
+        physicalSurfaceOutline.transform.position = new Vector3(0f, 0f, zReal);
         realDepthProxy.transform.position = new Vector3(0f, 1.3f, zReal);
         virtualObject.transform.position = new Vector3(0f, 1.3f, zVirtual);
 
