@@ -19,6 +19,8 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
     private GameObject approvedOverlay;
     private GameObject realDepthProxy;
     private GameObject physicalSurfaceOutline; // niezależna referencja, nie mapa depth
+    private GameObject imuGroundTruth;
+    private GameObject imuEstimate;
     private GameObject virtualObject;
     private GameObject stereoRig;
     private GameObject stereoTarget;
@@ -30,16 +32,24 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
     private GameObject trackingPanel;
     private GameObject stereoPanel;
     private GameObject occlusionPanel;
+    private GameObject imuPanel;
     private Text trackingStatus;
     private Text stereoStatus;
     private Text occlusionStatus;
+    private Text imuStatus;
     private Slider stereoSlider;
     private Slider realSlider;
     private Slider virtualSlider;
+    private Slider gyroSlider;
+    private Slider accelSlider;
+    private Slider timeSlider;
     private Font labelFont;
     private float nextUiRefreshAt;
 
-    private int mode; // 0: tracking, 1: stereo, 2: okluzja
+    private int mode; // 0: tracking, 1: stereo, 2: okluzja, 3: dryft IMU
+    private float gyroBiasDegPerSec = 0.1f;
+    private float accelBiasMps2 = 0.01f;
+    private float imuTimeSeconds = 10f;
     private bool tracking = true;
     private bool mapMatched = true;
     private bool referenceConfirmed = true;
@@ -97,6 +107,7 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
 
         BuildStereoVisualization();
         BuildPhysicalSurfaceOutline();
+        BuildImuVisualization();
         lastPoseTime = Time.unscaledTime;
         BuildUI();
     }
@@ -194,6 +205,30 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         physicalSurfaceOutline.SetActive(false);
     }
 
+
+    // Wartości są wynikiem uproszczonego modelu stałego biasu, nie sensora.
+    // Szara bryła: odniesienie; czerwona bryła: zintegrowana estymata.
+    private void BuildImuVisualization()
+    {
+        imuGroundTruth = Cube("IMU: znany cel odniesienia", new Vector3(0f, 1.3f, 2f),
+            new Vector3(0.50f, 0.52f, 0.30f), new Color(0.60f, 0.70f, 0.80f));
+        imuEstimate = Cube("IMU: estymacja z błędnym biasem", new Vector3(0f, 1.3f, 1.75f),
+            new Vector3(0.38f, 0.38f, 0.32f), new Color(0.93f, 0.28f, 0.20f));
+        imuGroundTruth.SetActive(false);
+        imuEstimate.SetActive(false);
+    }
+
+    private void UpdateImuVisualization()
+    {
+        // Jednowymiarowy błąd translacji i błąd yaw przy stałych biasach.
+        float angleErrorDeg = gyroBiasDegPerSec * imuTimeSeconds;
+        float posErrorM = 0.5f * accelBiasMps2 * imuTimeSeconds * imuTimeSeconds;
+        // Tylko pozycja wizualna jest obcięta, obliczony wynik w UI już nie.
+        float visualX = Mathf.Clamp(posErrorM, 0f, 1.2f);
+        imuEstimate.transform.position = new Vector3(visualX, 1.3f, 1.75f);
+        imuEstimate.transform.rotation = Quaternion.Euler(0f, angleErrorDeg, 0f);
+    }
+
     private void Update()
     {
         // Symulowany estymator publikuje nową pozę tylko w stanie tracking.
@@ -216,6 +251,12 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
                 UpdateStereoVisualization();
         }
 
+        bool imuMode = mode == 3;
+        imuGroundTruth.SetActive(imuMode);
+        imuEstimate.SetActive(imuMode);
+        if (imuMode)
+            UpdateImuVisualization();
+
         bool depthMode = mode == 2;
         // Brak pomiaru NIE oznacza zReal = nieskończoność ani pustego świata.
         bool depthUsable = depthValid && depthSynchronized;
@@ -234,6 +275,7 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
             DrawTracking();
             DrawStereo();
             DrawOcclusion();
+            DrawImu();
             nextUiRefreshAt = Time.unscaledTime + 0.1f;
         }
     }
@@ -341,7 +383,7 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         stack.childControlHeight = false;
         stack.childForceExpandHeight = false;
 
-        AddLabel(frame.transform, "WiRR W04  |  Tracking · stereo · okluzja", 29, 45);
+        AddLabel(frame.transform, "WiRR W04  |  Tracking · stereo · okluzja · IMU", 26, 45);
         AddLabel(frame.transform, "Eksperyment syntetyczny. Bez kamery i gogli.", 20, 37);
 
         GameObject tabs = CreateUIObject(frame.transform, "Tryby",
@@ -355,6 +397,7 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         AddButton(tabs.transform, "1. Kotwica", () => SelectMode(0));
         AddButton(tabs.transform, "2. Stereo", () => SelectMode(1));
         AddButton(tabs.transform, "3. Okluzja", () => SelectMode(2));
+        AddButton(tabs.transform, "4. IMU", () => SelectMode(3));
 
         trackingPanel = AddSection(frame.transform, "Tracking");
         AddLabel(trackingPanel.transform,
@@ -405,6 +448,25 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         AddLabel(occlusionPanel.transform,
             "Z-buffer Unity, nie kamera głębi ani shader AR.", 20, 48);
 
+        imuPanel = AddSection(frame.transform, "IMU");
+        AddLabel(imuPanel.transform,
+            "Szara bryła: odniesienie. Czerwona: estymator z biasem.", 21, 68);
+        imuStatus = AddLabel(imuPanel.transform, "", 25, 112);
+        AddLabel(imuPanel.transform, "Bias żyroskopu [stopnie/s]", 21, 36);
+        gyroSlider = AddSlider(imuPanel.transform, 0f, 0.5f, gyroBiasDegPerSec,
+            value => gyroBiasDegPerSec = value);
+        AddLabel(imuPanel.transform, "Bias akcelerometru [m/s²]", 21, 36);
+        accelSlider = AddSlider(imuPanel.transform, 0f, 0.05f, accelBiasMps2,
+            value => accelBiasMps2 = value);
+        AddLabel(imuPanel.transform, "Czas całkowania [s]", 21, 36);
+        timeSlider = AddSlider(imuPanel.transform, 0f, 30f, imuTimeSeconds,
+            value => imuTimeSeconds = value);
+        AddButton(imuPanel.transform, "Powrót: 0,1°/s · 0,01 m/s² · 10 s",
+            () => { gyroSlider.value = 0.1f; accelSlider.value = 0.01f;
+                    timeSlider.value = 10f; });
+        AddLabel(imuPanel.transform,
+            "Przesunięcie czerwonej bryły obcięto do 1,2 m tylko wizualnie.", 20, 66);
+
         SelectMode(0);
     }
 
@@ -414,6 +476,7 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         trackingPanel.SetActive(mode == 0);
         stereoPanel.SetActive(mode == 1);
         occlusionPanel.SetActive(mode == 2);
+        imuPanel.SetActive(mode == 3);
     }
 
     private static GameObject CreateUIObject(Transform parent, string name,
@@ -526,6 +589,21 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         stereoStatus.text = "Dysparycja: " + disparityPx.ToString("F1") + " px" +
             "\nGłębia Z: " + z.ToString("F2") + " m" +
             "\nModelowa niepewność σZ: " + (sigmaZ * 100f).ToString("F1") + " cm";
+    }
+
+
+    private void DrawImu()
+    {
+        if (imuStatus == null)
+            return;
+        float angleErrorDeg = gyroBiasDegPerSec * imuTimeSeconds;
+        float posErrorM = 0.5f * accelBiasMps2 * imuTimeSeconds * imuTimeSeconds;
+        imuStatus.text =
+            "Czas: " + imuTimeSeconds.ToString("F1") + " s" +
+            " | b_gyro: " + gyroBiasDegPerSec.ToString("F3") + " °/s" +
+            "\\nBłąd kąta: " + angleErrorDeg.ToString("F2") + " °" +
+            " | b_accel: " + accelBiasMps2.ToString("F3") + " m/s²" +
+            "\\nBłąd pozycji: " + posErrorM.ToString("F2") + " m";
     }
 
     private void DrawOcclusion()
