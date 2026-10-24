@@ -280,8 +280,8 @@ jobs:
                   continue
               content = path.read_text(encoding="utf-8")
               updated = re.sub(
-                  r"\\[([^\\]]+)\\]\\(https://github\\.com/MatPomGit/prz/[^\\s)]+\\)",
-                  r"\\1 (materiał udostępnia prowadzący)",
+                  r"\[([^\]]+)\]\(https://github\.com/MatPomGit/prz/[^\s)]+\)",
+                  r"\1 (materiał udostępnia prowadzący)",
                   content,
               )
               updated = updated.replace("MatPomGit/wirr", "repozytorium rozwojowe WiRR")
