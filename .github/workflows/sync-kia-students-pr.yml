@@ -269,6 +269,29 @@ jobs:
             fi
           done
 
+          # Keep student-facing materials while removing development-only links.
+          # Never rewrite them to unverified public destinations.
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+
+          for path in Path(".").rglob("*.md"):
+              if ".git" in path.parts:
+                  continue
+              content = path.read_text(encoding="utf-8")
+              updated = re.sub(
+                  r"\\[([^\\]]+)\\]\\(https://github\\.com/MatPomGit/prz/[^\\s)]+\\)",
+                  r"\\1 (materiał udostępnia prowadzący)",
+                  content,
+              )
+              updated = updated.replace("MatPomGit/wirr", "repozytorium rozwojowe WiRR")
+              updated = updated.replace("MatPomGit/prz", "repozytorium dydaktyczne prowadzącego")
+              updated = updated.replace("MatPomGit/research-autopilot", "system automatyzacji badań")
+              if updated != content:
+                  path.write_text(updated, encoding="utf-8")
+          PY
+          git add -u
+
           forbidden_matches="$(
             grep -RInE               --exclude-dir=.git               --binary-files=without-match               'MatPomGit'               . || true
           )"
