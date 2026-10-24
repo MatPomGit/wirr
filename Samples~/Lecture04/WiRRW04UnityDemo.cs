@@ -18,6 +18,7 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
     private GameObject diagnosticOverlay;
     private GameObject approvedOverlay;
     private GameObject realDepthProxy;
+    private GameObject physicalSurfaceOutline; // niezależna referencja, nie mapa depth
     private GameObject virtualObject;
     private GameObject stereoRig;
     private GameObject stereoTarget;
@@ -95,6 +96,7 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
             new Color(1f, 0.70f, 0.17f));
 
         BuildStereoVisualization();
+        BuildPhysicalSurfaceOutline();
         lastPoseTime = Time.unscaledTime;
         BuildUI();
     }
@@ -167,6 +169,31 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         SetRay(stereoRightRay, stereoRightCamera, target);
     }
 
+
+    // Kontur znanej, fizycznej przeszkody pozostaje na ekranie również wtedy,
+    // gdy czujnik głębi nie dostarcza próbki. Same krawędzie nie zasłaniają
+    // centralnego obszaru: można zobaczyć błędny hologram przez przeszkodę.
+    private void BuildPhysicalSurfaceOutline()
+    {
+        physicalSurfaceOutline = new GameObject("Realna przeszkoda: kontur referencyjny");
+        float half = 0.49f;
+        float thickness = 0.045f;
+        Color outlineColor = new Color(0.85f, 0.90f, 0.95f);
+        Cube("Krawędź górna", new Vector3(0f, 1.3f + half, zReal),
+            new Vector3(2f * half, thickness, thickness), outlineColor)
+            .transform.SetParent(physicalSurfaceOutline.transform, true);
+        Cube("Krawędź dolna", new Vector3(0f, 1.3f - half, zReal),
+            new Vector3(2f * half, thickness, thickness), outlineColor)
+            .transform.SetParent(physicalSurfaceOutline.transform, true);
+        Cube("Krawędź lewa", new Vector3(-half, 1.3f, zReal),
+            new Vector3(thickness, 2f * half, thickness), outlineColor)
+            .transform.SetParent(physicalSurfaceOutline.transform, true);
+        Cube("Krawędź prawa", new Vector3(half, 1.3f, zReal),
+            new Vector3(thickness, 2f * half, thickness), outlineColor)
+            .transform.SetParent(physicalSurfaceOutline.transform, true);
+        physicalSurfaceOutline.SetActive(false);
+    }
+
     private void Update()
     {
         // Symulowany estymator publikuje nową pozę tylko w stanie tracking.
@@ -194,6 +221,14 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         bool depthUsable = depthValid && depthSynchronized;
         realDepthProxy.SetActive(depthMode && depthUsable);
         virtualObject.SetActive(depthMode && (depthUsable || showUnsafeFailure));
+        physicalSurfaceOutline.SetActive(depthMode);
+        // Korekta wspólnej pozy sceny, ale NIE sztuczne uzupełnienie próbki depth.
+        // Kontur pokazuje fizyczną przeszkodę mimo braku rekonstrukcji głębi.
+        foreach (Transform edge in physicalSurfaceOutline.transform)
+        {
+            Vector3 p = edge.position;
+            edge.position = new Vector3(p.x, p.y, zReal);
+        }
         realDepthProxy.transform.position = new Vector3(0f, 1.3f, zReal);
         virtualObject.transform.position = new Vector3(0f, 1.3f, zVirtual);
 
@@ -355,7 +390,7 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
 
         occlusionPanel = AddSection(frame.transform, "Okluzja");
         AddLabel(occlusionPanel.transform,
-            "Niebieski: proxy powierzchni. Żółty: obiekt wirtualny.", 21, 72);
+            "Jasna ramka: realny cel. Niebieski: depth proxy. Żółty: AR.", 21, 72);
         occlusionStatus = AddLabel(occlusionPanel.transform, "", 23, 150);
         AddLabel(occlusionPanel.transform, "Głębia powierzchni realnej [m]", 20, 35);
         realSlider = AddSlider(occlusionPanel.transform, 0.6f, 4f, zReal,
@@ -369,6 +404,8 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
             () => depthSynchronized = !depthSynchronized);
         AddButton(occlusionPanel.transform, "Pokaż / ukryj błędną implementację",
             () => showUnsafeFailure = !showUnsafeFailure);
+        AddLabel(occlusionPanel.transform,
+            "Ramka pozostaje widoczna bez danych depth; obiekt AR nie powinien przechodzić przez jej środek.", 19, 65);
         AddLabel(occlusionPanel.transform,
             "Z-buffer Unity, nie kamera głębi ani shader AR.", 20, 48);
 
