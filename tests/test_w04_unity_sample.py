@@ -60,7 +60,9 @@ class Lecture04SampleTests(unittest.TestCase):
         source = SCRIPT.read_text(encoding="utf-8")
         self.assertIn("physicalSurfaceOutline.SetActive(depthMode);", source)
         self.assertIn("realDepthProxy.SetActive(depthMode && depthUsable);", source)
-        self.assertIn("virtualObject.SetActive(depthMode && (depthUsable || showUnsafeFailure));", source)
+        self.assertIn("virtualObject.SetActive(depthMode &&", source)
+        self.assertIn("((depthUsable && !depthAmbiguous) || showUnsafeFailure)", source)
+        self.assertIn('depthAmbiguous ? "NIEJEDNOZNACZNA GŁĘBIA (AR ukryte)"', source)
         self.assertIn("bool depthUsable = depthValid && depthSynchronized;", source)
         self.assertEqual(len(re.findall(r'Cube\("Krawędź (?:górna|dolna|lewa|prawa)"', source)), 4)
         for valid in (False, True):
@@ -74,6 +76,9 @@ class Lecture04SampleTests(unittest.TestCase):
         source = SCRIPT.read_text(encoding="utf-8")
         self.assertIn('frameRect.sizeDelta = new Vector2(690f, 1010f);', source)
         self.assertIn('name == "Okluzja" ? 765f : 690f', source)
+        self.assertIn("stack.childControlHeight = true;", source)
+        self.assertIn("layout.childControlHeight = true;", source)
+        self.assertNotIn("childControlHeight = false;", source)
         # Sum of declared child heights plus ten 8px inter-item gaps.
         occlusion_children = [72, 150, 35, 42, 35, 42, 55, 55, 55, 65, 48]
         self.assertLessEqual(sum(occlusion_children) + 10 * 8, 765)
@@ -91,6 +96,27 @@ class Lecture04SampleTests(unittest.TestCase):
         self.assertIn("Mathf.Clamp(posErrorM, 0f, 1.2f)", source)
         self.assertTrue(math.isclose(0.1 * 30, 3.0))
         self.assertTrue(math.isclose(0.5 * 0.01 * 10 * 10, 0.5))
+
+    def test_existing_event_system_and_disabled_input_module(self):
+        source = SCRIPT.read_text(encoding="utf-8")
+        self.assertIn("EventSystem events = EventSystem.current;", source)
+        self.assertIn("events.GetComponent<InputSystemUIInputModule>()", source)
+        self.assertIn("foreach (BaseInputModule other in events.GetComponents<BaseInputModule>())", source)
+        self.assertIn("if (other != inputModule)", source)
+        self.assertIn("other.enabled = false;", source)
+        self.assertIn("inputModule.enabled = true;", source)
+
+    def test_ambiguous_depth_is_rejected(self):
+        source = SCRIPT.read_text(encoding="utf-8")
+        match = re.search(r"DepthOrderToleranceMeters = ([0-9.]+)f;", source)
+        self.assertIsNotNone(match)
+        tolerance = float(match.group(1))
+        self.assertGreater(tolerance, 0)
+        self.assertLess(tolerance, .1)
+        self.assertLessEqual(abs(1.50 - 1.51), tolerance)
+        self.assertGreater(abs(1.50 - 1.60), tolerance)
+        self.assertIn("depthUsable && !depthAmbiguous", source)
+        self.assertIn("NIEJEDNOZNACZNA GŁĘBIA (AR ukryte)", source)
 
     def test_standalone_source_is_structurally_balanced(self):
         source = SCRIPT.read_text(encoding="utf-8")

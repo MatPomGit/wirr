@@ -28,6 +28,8 @@ Dwie schematyczne kamery, promienie i ruchomy punkt 3D to wizualizacja **poza sk
 
 Niebieski prostopadłościan to **proxy geometrii rzeczywistej**, żółty to obiekt wirtualny. Zmieniaj `Z real` oraz `Z virtual` i wyłączaj dostępność lub synchronizację głębi. **Jasny kontur przeszkody pozostaje widoczny nawet przy braku danych głębi**. Wariant domyślny nie renderuje wtedy obiektu zależnego od depth; dodatkowy przełącznik celowo pokazuje błędne wyświetlanie hologramu w obszarze przeszkody. Kontur oznacza referencję geometryczną, a nie zrekonstruowaną głębię.
 
+Przy różnicy głębokości nie większej niż **2 cm** (arbitralny próg dydaktyczny) program traktuje kolejność powierzchni jako niejednoznaczną i domyślnie ukrywa hologram. Wariant błędny służy wyłącznie do porównania zachowań. Próg nie jest deklaracją dokładności sensora.
+
 To pokaz klasycznego Z-bufora Unity, **nie** rzeczywista integracja z AR Depth API ani algorytm segmentacji.
 
 ### 4. Dryft IMU
@@ -38,7 +40,7 @@ Ruch czerwonej bryły jest **obcięty do 1,2 m tylko na potrzeby wizualizacji**,
 
 ## Widoczność kontrolek
 
-Panel okluzji ma osobną wysokość 765 jednostek UI, a główna ramka 1010 jednostek przy referencyjnym widoku Game 1920×1080. Dzięki temu dolne przyciski nie powinny być obcinane przy rozdzielczości referencyjnej. Układ wymaga nadal sprawdzenia w Play Mode, zwłaszcza przy innych proporcjach ekranu.
+Panel okluzji ma osobną wysokość 765 jednostek UI, a główna ramka 1010 jednostek przy referencyjnym widoku Game 1920×1080. Dwie grupy `VerticalLayoutGroup` mają `childControlHeight = true`, a skrypt aktywuje istniejący moduł `InputSystemUIInputModule` i wyłącza konkurencyjne moduły wejścia w scenie demonstracyjnej. Dzięki temu dolne przyciski nie powinny być obcinane przy rozdzielczości referencyjnej. Układ wymaga nadal sprawdzenia w Play Mode, zwłaszcza przy innych proporcjach ekranu.
 
 ## Ograniczenia i kontrola wydania
 

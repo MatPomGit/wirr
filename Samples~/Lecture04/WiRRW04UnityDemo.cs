@@ -10,6 +10,8 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
 {
     private const float MaxPoseAgeSeconds = 0.25f;
     private const float ReferenceToleranceMeters = 0.05f;
+    // Modelowy próg nierozróżnialnych głębokości, nie dokładność sensora.
+    private const float DepthOrderToleranceMeters = 0.02f;
     private const float FocalPx = 800f;
     private const float BaselineMeters = 0.10f;
     private const float DisparitySigmaPx = 0.5f;
@@ -261,7 +263,11 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         // Brak pomiaru NIE oznacza zReal = nieskończoność ani pustego świata.
         bool depthUsable = depthValid && depthSynchronized;
         realDepthProxy.SetActive(depthMode && depthUsable);
-        virtualObject.SetActive(depthMode && (depthUsable || showUnsafeFailure));
+        // Prawie równe głębokości są nierozstrzygalne, nie "VIRTUAL z przodu".
+        bool depthAmbiguous = depthUsable &&
+            Mathf.Abs(zReal - zVirtual) <= DepthOrderToleranceMeters;
+        virtualObject.SetActive(depthMode &&
+            ((depthUsable && !depthAmbiguous) || showUnsafeFailure));
         physicalSurfaceOutline.SetActive(depthMode);
         // Kontur niezależnej referencji przesuwamy razem z przeszkodą.
         // Nie zastępuje on brakujących danych z czujnika głębi.
@@ -332,22 +338,27 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
     // Testowany kontrakt projektu WiRR: com.unity.ugui i com.unity.inputsystem.
     private void BuildUI()
     {
-        if (EventSystem.current == null)
+        EventSystem events = EventSystem.current;
+        if (events == null)
         {
-            GameObject events = new GameObject("W04 EventSystem");
-            events.AddComponent<EventSystem>();
-            // Dodany moduł otrzymuje domyślne UI Input Actions dostawcy Input System.
-            events.AddComponent<InputSystemUIInputModule>();
+            GameObject eventObject = new GameObject("W04 EventSystem");
+            events = eventObject.AddComponent<EventSystem>();
         }
-        else if (EventSystem.current.GetComponent<InputSystemUIInputModule>() == null)
+
+        var inputModule = events.GetComponent<InputSystemUIInputModule>();
+        if (inputModule == null)
         {
-            // Własna scena dydaktyczna może istnieć w starszym projekcie z
-            // StandaloneInputModule. Używamy jawnie Input System UI.
-            var legacy = EventSystem.current.GetComponent<StandaloneInputModule>();
-            if (legacy != null)
-                legacy.enabled = false;
-            EventSystem.current.gameObject.AddComponent<InputSystemUIInputModule>();
+            // Dodanie komponentu w runtime domyślnie przypisuje akcje UI.
+            inputModule = events.gameObject.AddComponent<InputSystemUIInputModule>();
         }
+        // Istniejący moduł Input System może być wyłączony. Dwa aktywne
+        // moduły wejścia mogą też prowadzić do konfliktów zdarzeń UI.
+        foreach (BaseInputModule other in events.GetComponents<BaseInputModule>())
+        {
+            if (other != inputModule)
+                other.enabled = false;
+        }
+        inputModule.enabled = true;
 
         labelFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         if (labelFont == null)
@@ -373,7 +384,6 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         frameRect.anchorMax = new Vector2(0f, 1f);
         frameRect.pivot = new Vector2(0f, 1f);
         frameRect.anchoredPosition = new Vector2(22f, -22f);
-        // 1080p: cala zawartosc najdluzszego panelu musi zmiescic sie w ramce.
         frameRect.sizeDelta = new Vector2(690f, 1010f);
         frame.GetComponent<Image>().color = new Color(0.06f, 0.10f, 0.17f, 0.96f);
         var stack = frame.GetComponent<VerticalLayoutGroup>();
@@ -381,7 +391,7 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         stack.spacing = 9f;
         stack.childAlignment = TextAnchor.UpperLeft;
         stack.childControlWidth = true;
-        stack.childControlHeight = false;
+        stack.childControlHeight = true; // respektuj preferredHeight elementów
         stack.childForceExpandHeight = false;
 
         AddLabel(frame.transform, "WiRR W04  |  Tracking · stereo · okluzja · IMU", 26, 45);
@@ -495,10 +505,10 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         var layout = section.GetComponent<VerticalLayoutGroup>();
         layout.spacing = 8f;
         layout.childControlWidth = true;
-        layout.childControlHeight = false;
+        layout.childControlHeight = true; // respektuj preferredHeight etykiet i kontrolek
         layout.childForceExpandHeight = false;
         layout.childAlignment = TextAnchor.UpperLeft;
-        // Okluzja ma wiecej kontrolek niz pozostale tryby: nie ucinaj dolnych przyciskow.
+        // Cała sekcja zajmuje przewidywalne miejsce w panelu.
         section.GetComponent<LayoutElement>().preferredHeight =
             name == "Okluzja" ? 765f : 690f;
         return section;
@@ -613,14 +623,16 @@ public sealed class WiRRW04UnityDemo : MonoBehaviour
         if (occlusionStatus == null)
             return;
         bool usable = depthValid && depthSynchronized;
+        bool depthAmbiguous = usable &&
+            Mathf.Abs(zReal - zVirtual) <= DepthOrderToleranceMeters;
         bool realOccludes = usable && zReal < zVirtual;
         occlusionStatus.text =
             "Z real: " + zReal.ToString("F2") + " m | Z virtual: " +
             zVirtual.ToString("F2") + " m" +
             "\nGłębia: " + depthValid + " | Synchronizacja: " +
             depthSynchronized + " | Błędny wariant: " + showUnsafeFailure +
-            "\nWynik: " + (usable
-                ? (realOccludes ? "REAL zasłania" : "VIRTUAL z przodu")
-                : "BRAK WIARYGODNEJ GŁĘBI");
+            "\nWynik: " + (!usable ? "BRAK WIARYGODNEJ GŁĘBI"
+                : depthAmbiguous ? "NIEJEDNOZNACZNA GŁĘBIA (AR ukryte)"
+                : realOccludes ? "REAL zasłania" : "VIRTUAL z przodu");
     }
 }
