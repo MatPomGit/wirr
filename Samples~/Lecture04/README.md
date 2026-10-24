@@ -26,7 +26,7 @@ Dwie schematyczne kamery, promienie i ruchomy punkt 3D to wizualizacja **poza sk
 
 ### 3. Okluzja
 
-Niebieski prostopadłościan to **proxy geometrii rzeczywistej**, żółty to obiekt wirtualny. Zmieniaj `Z real` oraz `Z virtual` i wyłączaj dostępność lub synchronizację głębi. Wariant domyślny nie renderuje obiektu zależnego od głębi przy danych niepoprawnych; dodatkowy przełącznik celowo ujawnia błędne zachowanie.
+Niebieski prostopadłościan to **proxy geometrii rzeczywistej**, żółty to obiekt wirtualny. Zmieniaj `Z real` oraz `Z virtual` i wyłączaj dostępność lub synchronizację głębi. **Jasny kontur przeszkody pozostaje widoczny nawet przy braku danych głębi**. Wariant domyślny nie renderuje wtedy obiektu zależnego od depth; dodatkowy przełącznik celowo pokazuje błędne wyświetlanie hologramu w obszarze przeszkody. Kontur oznacza referencję geometryczną, a nie zrekonstruowaną głębię.
 
 To pokaz klasycznego Z-bufora Unity, **nie** rzeczywista integracja z AR Depth API ani algorytm segmentacji.
 
